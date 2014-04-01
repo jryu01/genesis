@@ -1,0 +1,32 @@
+{
+  "name": "genesis",
+  "version": "0.0.0",
+  "description": "social network platform for anyone who likes to play sports",
+  "main": "server.js",
+  "dependencies": {
+    "bcrypt": "~0.7.6",
+    "connect-mongo": "~0.3.3",
+    "consolidate": "^0.10.0",
+    "express": "~3.4.8",
+    "mongoose": "~3.8.8",
+    "passport": "~0.2.0",
+    "passport-facebook": "~0.1.5",
+    "passport-local": "~0.1.6",
+    "underscore": "^1.6.0"
+  },
+  "devDependencies": {
+    "jshint": "~2.4.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jryu01/expAuth-session.git"
+  },
+  "keywords": [
+  ],
+  "author": "Jaehwan Ryu",
+  "readmeFilename": "README.md"
+}
