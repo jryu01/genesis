@@ -6,7 +6,7 @@ angular.module('genesisApp', ['ui.router'])
   //================================================
   // Check if the user is connected
   //================================================
-  var checkSignin = function ($q, $timeout, $http, $location, $rootScope) {
+  var checkSignin = ['$q', '$timeout', '$http', '$state', '$rootScope', function ($q, $timeout, $http, $state, $rootScope) {
     // Initialize a new promise
     var deferred = $q.defer();
 
@@ -19,17 +19,21 @@ angular.module('genesisApp', ['ui.router'])
 
       // Not Authenticated
       } else {
+        $rootScope.user = '0';
         $rootScope.message = 'You need to log in.';
         $timeout(function () { deferred.reject(); }, 0);
-        $location.url('/login');
+        $state.go('public.login');
       }
     });
     return deferred.promise;
-  };
+  }];
 
   //================================================
   // Route configurations 
   //================================================
+
+  // Use html5 push state 
+  $locationProvider.html5Mode(true);
 
   // Public routes
   $stateProvider
@@ -38,7 +42,6 @@ angular.module('genesisApp', ['ui.router'])
       template: "<div ui-view></div>"
     })
     .state('public.login', {
-      url: '/login',
       templateUrl: '/views/partials/login.html'
     });
 
@@ -56,15 +59,18 @@ angular.module('genesisApp', ['ui.router'])
       templateUrl: '/views/partials/home.html',
       controller: 'HomeController'
     });
-  
-  $locationProvider.html5Mode(true);
-  $urlRouterProvider.otherwise('/');
+
+  // Handle invalid routes
+  $urlRouterProvider.otherwise(function($injector, $location){
+    var $state = $injector.get('$state');
+    $state.go('user.home');
+  });
 
   //================================================
   // An interceptor for AJAX errors
   //================================================
 
-  $httpProvider.interceptors.push(['$q', '$location', function($q, $location) {
+  $httpProvider.interceptors.push(['$q', '$injector', function($q, $injector) {
     return function (promise) {
       return promise.then(
         // Successs
@@ -74,7 +80,8 @@ angular.module('genesisApp', ['ui.router'])
         // Error 
         function (response) {
           if (response.status === 401) {
-            $location.url('login');
+            var $state = $injector.get('$state');
+            $state.go('public.login');
             return $q.reject(response);
           }
         }

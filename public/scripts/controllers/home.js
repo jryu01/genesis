@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('genesisApp')
-  .controller('HomeController', ['$scope', '$location', 'Auth', function ($scope, $location, Auth) {
+  .controller('HomeController', ['$scope', '$state', 'Auth', function ($scope, $state, Auth) {
 
     //controller code goes here
     $scope.greeting = 'Hello ' + $scope.user.facebook.name + '!';  
@@ -11,7 +11,7 @@ angular.module('genesisApp')
       Auth.signout(
         // Success
         function (reponse) {
-          $location.path('/login');
+          $state.go('public.login');
         },
         // Fauilure
         function (response) {
