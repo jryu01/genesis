@@ -4,27 +4,28 @@ angular.module('genesisApp', ['ui.router'])
 .config(['$stateProvider','$urlRouterProvider', '$locationProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
   //================================================
-  // Check if the user is connected
+  // Check if a user is connected
   //================================================
-  var checkSignin = ['$q', '$timeout', '$http', '$state', '$rootScope', function ($q, $timeout, $http, $state, $rootScope) {
+  var checkSignin = ['$q', '$timeout', '$state', '$rootScope', 'Auth', 
+  function ($q, $timeout, $state, $rootScope, Auth) {
     // Initialize a new promise
     var deferred = $q.defer();
 
-    // Make an AJAX call to check if the user is logged in
-    $http.get('/signedin').success(function (user) {
-      // Authenticated
-      if (user !== '0') {
-        $rootScope.user = user;
-        $timeout(deferred.resolve, 0);
-
-      // Not Authenticated
-      } else {
-        $rootScope.user = '0';
-        $rootScope.message = 'You need to log in.';
-        $timeout(function () { deferred.reject(); }, 0);
-        $state.go('public.login');
-      }
-    });
+    // Check if the user is signed in
+    Auth.signedin(
+      // On Success
+      function (isSignedIn) {
+        // Authenticated
+        if (isSignedIn) {
+          $timeout(deferred.resolve, 0);
+        // Not authenticated
+        } else {
+          $rootScope.message = 'You need to log in.';
+          $timeout(function () { deferred.reject(); }, 0);
+          $state.go('public.login');
+        } 
+      } 
+    );
     return deferred.promise;
   }];
 
@@ -61,10 +62,7 @@ angular.module('genesisApp', ['ui.router'])
     });
 
   // Handle invalid routes
-  $urlRouterProvider.otherwise(function($injector, $location){
-    var $state = $injector.get('$state');
-    $state.go('user.home');
-  });
+  $urlRouterProvider.otherwise('/');
 
   //================================================
   // An interceptor for AJAX errors

@@ -4,7 +4,8 @@ angular.module('genesisApp')
   .controller('HomeController', ['$scope', '$state', 'Auth', function ($scope, $state, Auth) {
 
     //controller code goes here
-    $scope.greeting = 'Hello ' + $scope.user.facebook.name + '!';  
+    console.log(Auth.currentUser);
+    $scope.greeting = 'Hello ' + Auth.currentUser.facebook.name + '!';  
 
     // signout function
     $scope.signout = function () {
