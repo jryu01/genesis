@@ -3,29 +3,30 @@
 angular.module('genesisApp')
 .factory('Auth', ['$http', function ($http) {
 
-  var currentUser = {};
-
+  var currentUser = null;
   return {
-    signedin: function (success, error) {
-      $http.get('/signedin').success(function (user) {
-        var isSignedIn = false;
+    getSignedinUser: function (callback) {
+      // check if user is signed in and get ther user from serrver
 
+      // add query date to prevent http get it from cache
+      $http.get('/signedin?date='+ new Date()).success(function (user) {
         // change currentUser to signed in user
         if (user !== '0') {
-          angular.extend(currentUser, user);
-          isSignedIn = true;
-          
-        // change currentUser to empty object
-        } else {
-          angular.extend(currentUser, {});
-        }
-        success(isSignedIn);
-      }).error(error);
+          currentUser = user;
+        } 
+        callback(currentUser);
+      });
     },
     signout: function (success, error) {
-      $http.post('/signout').success(success).error(error);
+      $http.post('/signout').success(function() {
+        currentUser = null;
+        success();
+      }).error(error);
     },
-    currentUser: currentUser
+    // check if user is authenticated
+    isAuthenticated: function () {
+      return !!currentUser;
+    },
   };
 }])
 .factory('Users', ['$http', function ($http) {
