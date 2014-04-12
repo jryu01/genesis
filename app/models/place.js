@@ -19,7 +19,7 @@ var PlaceSchema = new Schema({
   address: {
     country: String,
     city: String,
-    loc: [Number, Number], // [longitude, latitude]
+    loc: {type: [Number], index: '2d'} // [longitude, latitude]
   },
   type: String, // Community Center, Outside Court, Paid Facility, School, etc
   openHour: [{
