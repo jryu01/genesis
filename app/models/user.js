@@ -16,18 +16,37 @@ var SALT_WORK_FACTOR = 10;
  */
 var UserSchema = new Schema({
 
-  local: {
-    email: String,
-    password: String, 
+  activated: { type: Boolean, default: true },
+  dateJoined: { type: Date, default: Date.now },
+  lastLogined: Date,
+  name: {
+    givenName: String,
+    familyName: String,
   },
+  email: {
+    primaryEmail: String,
+  },
+  groupsJoined: [{
+    groupId: Schema.Types.ObjectId,
+    groupName: String,
+  }],
+  favSports: [String],
 
+  // Authentication information
+
+  // local authentication disabled for now
+  // local: {
+  //   email: String,
+  //   password: String, 
+  // },
   facebook: {
     id: String,
     name: String,
     email: String,
     acessToken: String
-  } 
+  }
 }); 
+
 
 /**
  * Add toJSON option to transform document before returnig the result

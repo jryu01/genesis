@@ -54,13 +54,16 @@ module.exports = function (passport, config) {
   }, 
   function (accessToken, refreshToken, profile, done) {
     User.findOne({'facebook.id': profile.id}, function (err, user) {
-
       if (err) { return done(err); }
       if (user) { return done(null, user); }
       if (!user) {
 
         // create a new user
         user = new User();
+
+        user.name.givenName = profile.name.givenName;
+        user.name.familyName = profile.name.familyName;
+        user.email.primaryEmail = profile.emails[0].value;
 
         user.facebook.id = profile.id;
         user.facebook.name = profile.name.givenName + 

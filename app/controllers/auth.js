@@ -11,9 +11,17 @@ var User = require('../models/user');
 // authentication controller functions 
 var facebookAuth = passport.authenticate('facebook', { scope : 'email' });
 var facebookCallback = passport.authenticate('facebook', { 
-  successRedirect : '/',
-  failureRedirect : '/'
+  failureRedirect : '/',
 });
+
+function facebookRedirect(req, res) {
+  // update lastLogined field of the user and redirect to home
+  var operator = { "$set": { "lastLogined": new Date() } };
+  User.findByIdAndUpdate(req.user.id, operator, {}, function (err, user) {
+    if (err) { console.log(err); }
+    res.redirect('/');
+  });
+}
 
 function signin(req, res, next) {
   passport.authenticate('local', function (err, user, info) {
@@ -76,17 +84,6 @@ function checkSignin(req, res) {
   res.send(req.isAuthenticated() ? req.user.toJSON() : '0');
 }
 
-function facebookAuth() {
-  return  passport.authenticate('facebook', { scope : 'email' });
-}
-
-function facebookCallback() {
-  return passport.authenticate('facebook', {
-      successRedirect : '/',
-      failureRedirect : '/'
-    });
-}
-
 // public functions and variables 
 exports.signin = signin;
 exports.signup = signup;
@@ -94,3 +91,4 @@ exports.signout = signout;
 exports.checkSignin = checkSignin;
 exports.facebookAuth = facebookAuth;
 exports.facebookCallback = facebookCallback;
+exports.facebookRedirect = facebookRedirect;

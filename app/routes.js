@@ -28,8 +28,10 @@ module.exports = function (app) {
 
   // routes for facebook authentication
   app.get('/auth/facebook', authCtrl.facebookAuth);
-  app.get('/auth/facebook/callback', authCtrl.facebookCallback);
+  app.get('/auth/facebook/callback', authCtrl.facebookCallback, 
+      authCtrl.facebookRedirect);
+
 
   // serve index.html for all other route
-  app.all('/*', function (req, res) { res.render('index'); }); 
+  app.all('/', function (req, res) { res.render('index'); }); 
 };
