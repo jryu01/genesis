@@ -9,12 +9,19 @@ var passport = require('passport');
 var auth = require('../config/middlewares/authorization');
 var authCtrl = require('./controllers/auth');
 var userCtrl = require('./controllers/user');
+var groupCtrl = require('./controllers/group');
+var placeCtrl = require('./controllers/place');
 
 module.exports = function (app) {
 
   // secured restful api routes
   app.get('/api/users', auth.requiresSignin, userCtrl.list);
   
+  app.get('/api/groups', auth.requiresSignin, groupCtrl.list);
+  app.post('/api/groups', auth.requiresSignin, groupCtrl.create);
+
+  app.get('/api/places', auth.requiresSignin, placeCtrl.list);
+  app.post('/api/places', auth.requiresSignin, placeCtrl.create);
   
   // routes for sign in,  sigin up, and signout processes
 
@@ -33,5 +40,5 @@ module.exports = function (app) {
 
 
   // serve index.html for all other route
-  app.all('/', function (req, res) { res.render('index'); }); 
+  app.all('/*', function (req, res) { res.render('index'); }); 
 };

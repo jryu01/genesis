@@ -12,7 +12,6 @@ var SALT_WORK_FACTOR = 10;
 
 /**
  * User Schema
- *
  */
 var UserSchema = new Schema({
 
@@ -20,6 +19,7 @@ var UserSchema = new Schema({
   dateJoined: { type: Date, default: Date.now },
   lastLogined: Date,
   name: {
+    displayName: String,
     givenName: String,
     familyName: String,
   },

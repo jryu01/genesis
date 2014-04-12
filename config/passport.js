@@ -63,6 +63,8 @@ module.exports = function (passport, config) {
 
         user.name.givenName = profile.name.givenName;
         user.name.familyName = profile.name.familyName;
+        user.name.displayName = profile.name.givenName + 
+                            ' ' + profile.name.familyName;
         user.email.primaryEmail = profile.emails[0].value;
 
         user.facebook.id = profile.id;
