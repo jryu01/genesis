@@ -1,39 +1,29 @@
 /**
- * app/models/place.js
- * place model
+ * app/models/post.js
+ * post model
  */
+
 'use strict';
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-// var PostSchema = mongoose.model('Post', PostSchema);
 
 /**
- * Place Schema
+ * Post Schema
  */
-var PlaceSchema = new Schema({
+var PostSchema = new Schema({
 
-
+  activated: { type: Boolean, default: true },
   createdAt: { type: Date, default: Date.now },
   createdBy: {
     name: String,
     id: Schema.Types.ObjectId
   },
-  name: String,
-  desc: String,
-  address: {
-    country: String,
-    city: String,
-    loc: {type: [Number], index: '2d'} // [longitude, latitude]
-  },
-  type: String, // Community Center, Outside Court, Paid Facility, School, etc
-  sports: [String],
+  sport: String, // type of sport
+  contents: String,
+  loc: {type: [Number], index: '2d'}, // [longitude, latitude]
 
-  openHour: [{
-    weekday: String,
-    openhour: String,
-    closehour: String, 
-  }],
+  from: Schema.Types.ObjectId, // eventId if posted from event page
   comments: [{
     activated: { type: Boolean, default: true },
     createdAt: { type: Date, default: Date.now },
@@ -44,12 +34,15 @@ var PlaceSchema = new Schema({
     text: String,
     score: Number,
   }],
+  numComments: Number,
+  score: Number,
 }); 
+
 
 /**
  * Add toJSON option to transform document before returnig the result
  */
-PlaceSchema.options.toJSON = {
+PostSchema.options.toJSON = {
   transform: function (doc, ret, options) {
 
     // add id feild and remove _id and __v
@@ -60,4 +53,4 @@ PlaceSchema.options.toJSON = {
   }
 };
 
-module.exports = mongoose.model('Place', PlaceSchema);
+module.exports = mongoose.model('Post', PostSchema);

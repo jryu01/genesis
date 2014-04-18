@@ -1,12 +1,12 @@
 /*
-* app/controllers/group.js
+* app/controllers/event.js
 */
 
 'use strict';
 
-var Group = require('../models/group');
+var Event = require('../models/event');
 function list(req, res) {
-  Group.find(req.query, function (err, groups) {
+  Event.find(req.query, function (err, groups) {
     if (err) return res.send(500);
     res.send(groups);
   }); 
@@ -21,11 +21,12 @@ function create(req, res){
 
   //TODO: name, desc, place, city, and sports must be provided and validated
 
-  var group = new Group({
+  // following is sample code
+  var event = new Event({
     name: req.body.name,
     desc: req.body.desc,
     createdBy: {
-      userId: req.user.id,
+      id: req.user.id,
       name: req.user.name.displayName
     },
     place: req.body.place,
@@ -34,9 +35,9 @@ function create(req, res){
     members: [req.user.id]
   });
 
-  group.save(function (err, group) {
+  event.save(function (err, Event) {
     if (err) { return res.send(500); }
-    res.send(group);
+    res.send(Event);
   });
 }
 

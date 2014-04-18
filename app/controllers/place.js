@@ -21,9 +21,10 @@ function create(req, res){
 
   //TODO: all mandatory fields must be provided and validated
 
+  // following is a sample code
   var place = new Place({
     createdBy: {
-      userId: req.user.id,
+      id: req.user.id,
       name: req.user.name.displayName
     },
     name: req.body.name,

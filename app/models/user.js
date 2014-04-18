@@ -26,9 +26,9 @@ var UserSchema = new Schema({
   email: {
     primaryEmail: String,
   },
-  groupsJoined: [{
-    groupId: Schema.Types.ObjectId,
-    groupName: String,
+  eventJoined: [{
+    eventId: Schema.Types.ObjectId,
+    eventName: String,
   }],
   favSports: [String],
 

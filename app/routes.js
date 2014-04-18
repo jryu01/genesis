@@ -9,19 +9,26 @@ var passport = require('passport');
 var auth = require('../config/middlewares/authorization');
 var authCtrl = require('./controllers/auth');
 var userCtrl = require('./controllers/user');
-var groupCtrl = require('./controllers/group');
+var eventCtrl = require('./controllers/event');
 var placeCtrl = require('./controllers/place');
+var postCtrl = require('./controllers/post');
 
 module.exports = function (app) {
 
   // secured restful api routes
   app.get('/api/users', auth.requiresSignin, userCtrl.list);
   
-  app.get('/api/groups', auth.requiresSignin, groupCtrl.list);
-  app.post('/api/groups', auth.requiresSignin, groupCtrl.create);
+  app.get('/api/events', auth.requiresSignin, eventCtrl.list);
+  app.post('/api/events', auth.requiresSignin, eventCtrl.create);
 
   app.get('/api/places', auth.requiresSignin, placeCtrl.list);
   app.post('/api/places', auth.requiresSignin, placeCtrl.create);
+
+  app.get('/api/posts', auth.requiresSignin, postCtrl.list);
+  app.post('/api/posts', auth.requiresSignin, postCtrl.create);
+
+  // app.get('/api/posts', auth.requiresSignin, postCtrl.list);
+  // app.post('/api/posts', auth.requiresSignin, postCtrl.create);
   
   // routes for sign in,  sigin up, and signout processes
 
