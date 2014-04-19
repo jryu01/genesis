@@ -12,7 +12,8 @@
     "passport": "~0.2.0",
     "passport-facebook": "~0.1.5",
     "passport-local": "~0.1.6",
-    "underscore": "^1.6.0"
+    "underscore": "^1.6.0",
+    "validator": "^3.10.0"
   },
   "devDependencies": {
     "jshint": "~2.4.4"
@@ -25,8 +26,7 @@
     "type": "git",
     "url": "https://github.com/jryu01/expAuth-session.git"
   },
-  "keywords": [
-  ],
+  "keywords": [],
   "author": "Jaehwan Ryu",
   "readmeFilename": "README.md"
 }

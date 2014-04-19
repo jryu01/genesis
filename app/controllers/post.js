@@ -1,10 +1,11 @@
 /*
 * app/controllers/post.js
 */
-
 'use strict';
 
+var validator = require('validator');
 var Post = require('../models/post');
+
 function list(req, res) {
   Post.find(req.query, function (err, posts) {
     if (err) return res.send(500);
@@ -18,19 +19,38 @@ function list(req, res) {
 
 function create(req, res){
 
-  console.log(req.body);
-  console.log(req.user.id);
-  //TODO: input validation
+  var sport = req.body.sport;
+  var contents = req.body.contents;
+  var loc = req.body.loc;
+  var createdBy = {
+    id: req.body.id,
+    name: req.user.name.displayName
+  };
+
+  // Validate Inputs
+  var message = "";
+  if (!sport || !contents || !loc) {
+    message = "values for sport, contents, and loc must be provided.";
+    return res.send(400, { message: message });
+  }
+  if (Object.prototype.toString.call(loc) !== '[object Array]' || 
+      loc.length !== 2 ||
+      !(typeof loc[0] === "number" && typeof loc[1] === "number")) {
+    message = "loc must be a form of Number Array with length 2.";
+    return res.send(400, { message: message });
+  }
+
+  // Sanitize inputs
+  contents = validator.sanitize(contents).escape();
+  // substitute some <br> for the paragraph breaks
+  contents = contents.replace(/\r?\n/g, '<br>');
 
   // following is sample code
   var post = new Post({
-    sport: req.body.sport,
-    createdBy: {
-      id: req.user.id,
-      name: req.user.name.displayName
-    },
-    contents: req.body.contents,
-    loc: req.body.loc
+    sport: sport,
+    createdBy: createdBy,
+    contents: contents,
+    loc: loc
   });
 
   post.save(function (err, post) {

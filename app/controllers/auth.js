@@ -28,7 +28,7 @@ function signin(req, res, next) {
     if (err) { return next(err); }
     if (!user) {
       req.session.message = [info.message];
-      return res.send(401, { success: false, info: info });
+      return res.send(401, info);
     }
     // if user, Log in
     req.logIn(user, function(err) {
@@ -77,7 +77,7 @@ function signup(req, res, next) {
 
 function signout(req, res) {
   req.logout();
-  res.send(200, {success: true, message: "siginout successfull"});
+  res.send(200);
 }
 
 function checkSignin(req, res) {

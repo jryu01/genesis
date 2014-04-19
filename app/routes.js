@@ -35,7 +35,7 @@ module.exports = function (app) {
   // singnin and signup route now disabled since we are only using fb now
   // app.post('/signin', authCtrl.signin);
   // app.post('/signup', authCtrl.signup);
-  app.post('/signout', authCtrl.signout);
+  // app.post('/signout', authCtrl.signout);
 
   // check if current user is signed in 
   app.get('/signedin', authCtrl.checkSignin);
