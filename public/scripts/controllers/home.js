@@ -7,8 +7,8 @@ angular.module('genesisApp')
     //controller code goes here
     $scope.greeting = 'Hello ' + $scope.currentUser.facebook.name + '!';  
 
-    $scope.goHome2 = function () {
-      $state.go('app.user.home2');
+    $scope.goProfile = function () {
+      $state.go('app.user.profile');
     };
 
     // signout function
@@ -16,7 +16,7 @@ angular.module('genesisApp')
       Auth.signout(
         // Success
         function (reponse) {
-          $state.go('app.public.login');
+          $state.go('app.public.start');
         },
         // Fauilure
         function (response) {

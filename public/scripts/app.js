@@ -29,8 +29,8 @@ angular.module('genesisApp', ['ui.router'])
         authenticate: false
       }
     })
-    .state('app.public.login', {
-      templateUrl: '/views/partials/login.html'
+    .state('app.public.start', {
+      templateUrl: '/views/partials/start.html'
     });
 
   // Regular user routes
@@ -39,9 +39,9 @@ angular.module('genesisApp', ['ui.router'])
       abstract: true,
       template: "<div ui-view></div>"
     })
-    .state('app.user.home2', {
-      url: 'home2', 
-      template: '<h1>home2</h1>'
+    .state('app.user.profile', {
+      url: 'profile', 
+      template: '<h1>profile</h1>'
     })
     .state('app.user.home', {
       templateUrl: '/views/partials/home.html',
@@ -70,7 +70,7 @@ angular.module('genesisApp', ['ui.router'])
         function (response) {
           if (response.status === 401) {
             var $state = $injector.get('$state');
-            $state.go('app.public.login');
+            $state.go('app.public.start');
             return $q.reject(response);
           }
         }
@@ -100,7 +100,7 @@ angular.module('genesisApp', ['ui.router'])
 
           // need to sign in           
           } else {
-            $state.go('app.public.login');
+            $state.go('app.public.start');
           }
         });
       // if there is current user

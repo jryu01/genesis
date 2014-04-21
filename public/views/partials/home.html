@@ -1,3 +1,175 @@
-<h1>{{ greeting }}</h1>
-<button class="btn btn-primary btn-sm" ng-click="signout()">Signout</button>
-<button class="btn btn-primary btn-sm" ng-click="goHome2()">home2</button>
+<div class="page-container">
+  <!-- headerbar -->
+  <div class="navbar navbar-color navbar-fixed-top" role="navigation">
+    <button id="menu-button" type="button" class="navbar-toggle menu-button" >
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <div class="container">
+      <a class="navbar-brand hidden-xs" href="#">ToBridge</a>
+      <form class="navbar-form">
+        <div class="form-group">
+          <div class="input-group">
+            <input id="search-box" type="text" class="form-control" placeholder="I'm looking for...">
+            <span class="input-group-btn">
+              <button type="submit" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </span>
+          </div>
+        </div>
+        <div class="form-group hidden-xs">
+          <input type="text" class="form-control" placeholder="city" value="Toronto">
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- /header bar -->
+
+  <!-- body -->
+  <div class="row">
+    <!-- content div -->
+    <div class="content-container col-xs-12 col-sm-12 col-md-12">
+      <div class="content row content">       
+        <!-- side bar -->
+        <div class= "col-sm-3 col-md-2 sidebar" id="sidebar" role="navigation">     
+          <ul class="nav nav-stacked" id="sidebar-nav">
+            <li class="">
+              <a href="#" class="" style="background-color:#EEEEEE">News Feed 
+                <span class="badge pull-right">3</span>
+              </a>
+            </li> 
+            <li class="">
+              <a href ng-click="goProfile()" class="">Profile</a>
+            </li> 
+            <li class="">
+              <a href="#" class="">Messages
+                <span class="badge pull-right">49</span>
+              </a>
+            </li> 
+            <hr class="sideDivider"/>
+            <li class="">
+              <a href="#" class=""><span class="glyphicon glyphicon-fire"></span> YKPC Badminton</a>
+            </li>
+            <li class="">
+              <a href="#" class=""><span class="glyphicon glyphicon-flag"></span> Bicycle Group</a>
+            </li>   
+            <li class="">
+              <a href="#" class="">Edit Following Events...</a>
+            </li> 
+            <hr class="sideDivider"/>
+            <li class=""><a href="#">Settings...</a></li> 
+            <hr class="sideDivider"/>
+            <li class=""><a href ng-click="signout()" >Signout</a></li> 
+
+          </ul> 
+        </div>
+        <!-- /side bar -->
+        <!-- feeder -->
+        <div class="col-sm-9 col-md-5 feeder">
+          <!-- input -->
+          <div class="panel panel-default">
+              <form action="">
+                <div class="panel-body">     
+                  <div class="status_form">
+                      <textarea class="postings" placeholder="What is going on today?"></textarea>
+                  </div>
+                </div>
+                <div class="panel-footer">
+                  <div class="pull-right">
+                      <input type="submit" value="Post">
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+              </form>
+          </div>
+        <!-- make this as a template -->
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <div class="post-heading">
+                  <img class="pull-left img-rounded" src="https://lorempixel.com/50/50/" style="margin-right: 7px">
+                  <h5><a>Minwoo Lee</a> > <a>Toronto Biker's Club</a></h5>
+                  <h6>March 6</h6>
+                <div class="clearfix"></div>
+              </div>
+              <div class="post-body">
+                Anyone wants to go bike riding with me? 
+              </div>
+              <div class="visible-xs"><br> 4 Likes 10 Comments</div>
+            </div>
+            <div class="panel-footer">
+              <div class="pull-left">
+                <strong> 
+                  <span class="glyphicon glyphicon-thumbs-up"></span> 
+                  Like
+                </strong>
+
+                <strong>
+                  <span class="glyphicon glyphicon-edit"></span>
+                  Comment
+                </strong>
+              </div>
+              <div class="pull-right hidden-xs">
+                <span>4 Likes</span>
+                <span>10 Comments</span>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+              <ul class="hidden-xs list-group">
+                <li class="list-group-item panel-footer">comment</li>
+                <li class="list-group-item panel-footer">comment1</li>
+                <li class="list-group-item panel-footer">comment2</li>
+                <li class="list-group-item panel-footer">comment3</li>
+              </ul>
+          </div>
+
+        </div>
+        <!-- extra info only showon in medium and large screen -->
+        <div class= "hidden-xs hidden-sm col-md-5">
+          <!-- create a new event -->
+          <div class="create_button_wrapper">
+            <button class="create_button" type="button">Create a new Event</button>
+          </div>
+          
+          <div class="panel panel-default">
+            <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-danger">
+                <div class="panel-footer">
+                        <img class="pull-left img-rounded" src="https://lorempixel.com/40/40/" style="margin-right: 5px;">  
+                        <h4 class="event_title">YKPC Weekly Basketball</h4> 
+                        at <b>YKPC Church </b> on <b>7:00 PM EST, Today</b>.
+                        <div class="clearfix"></div>  
+                </div>                    
+              </a>
+              <a href="#" class="list-group-item list-group-item-warning">
+                <div class="panel-footer">
+                        <img class="pull-left img-rounded" src="https://lorempixel.com/40/40/" style="margin-right: 5px;">  
+                        <h4 class="event_title">Weekly Badminton</h4> 
+                        at <b>YKPC Church </b> on <b>8:00 PM EST, Today</b>.
+                        <div class="clearfix"></div>  
+                </div>  
+              </a>
+              <a href="#" class="list-group-item list-group-item-success">
+                <div class="panel-footer">
+                        <img class="pull-left img-rounded" src="https://lorempixel.com/40/40/" style="margin-right: 5px;">  
+                        <h4 class="event_title">Weekly Biking</h4> 
+                        at <b>Central Park </b> on <b>7:00 PM EST, Apr. 24th Monday, 2014</b>.
+                        <div class="clearfix"></div>  
+                </div>  
+              </a>
+              <a href="#" class="list-group-item list-group-item-success">
+                <div class="panel-footer">
+                        <img class="pull-left img-rounded" src="https://lorempixel.com/40/40/" style="margin-right: 5px;">  
+                        <h4 class="event_title">Monthly Walk</h4> 
+                        at <b>Central Park </b> on <b>6:00 PM EST, Apr. 24th Monday, 2014</b>.
+                        <div class="clearfix"></div>  
+                </div>  
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>  
+    </div>
+  </div>
+</div> <!-- /page-container -->

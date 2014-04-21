@@ -35,17 +35,17 @@ function create(req, res){
   }
   if (Object.prototype.toString.call(loc) !== '[object Array]' || 
       loc.length !== 2 ||
-      !(typeof loc[0] === "number" && typeof loc[1] === "number")) {
+      !(validator.isNumeric(loc[0]) && validator.isNumeric(loc[1]))) {
     message = "loc must be a form of Number Array with length 2.";
     return res.send(400, { message: message });
   }
 
   // Sanitize inputs
-  contents = validator.sanitize(contents).escape();
+  contents = validator.escape(contents);
   // substitute some <br> for the paragraph breaks
   contents = contents.replace(/\r?\n/g, '<br>');
 
-  // following is sample code
+  // Create a new post
   var post = new Post({
     sport: sport,
     createdBy: createdBy,
