@@ -14,7 +14,7 @@ angular.module('genesisApp', ['ui.router'])
   $stateProvider
     .state('app', {
     url: '/',
-    template: '<div ui-view class="full-height"></div>',
+    template: '<div ui-view></div>',
     data: {
       authenticate: true
     }
@@ -24,7 +24,7 @@ angular.module('genesisApp', ['ui.router'])
   $stateProvider
     .state('app.public', {
       abstract: true,
-      template: '<div ui-view class="full-height"></div>',
+      template: '<div ui-view></div>',
       data: {
         authenticate: false
       }
@@ -40,16 +40,33 @@ angular.module('genesisApp', ['ui.router'])
       templateUrl: '/views/partials/layout.html'
     })
     .state('app.user.home', {
-      templateUrl: '/views/partials/home.html',
-      controller: 'HomeController'
+      views: {
+        '': {
+          templateUrl: 'views/partials/home.html',
+          controller: 'HomeController'
+        },
+        'side-menu@app.user.home': {
+          templateUrl: 'views/partials/side-menu.html'
+        },
+        'feeder@app.user.home': {
+          templateUrl: 'views/partials/feeder.html',
+        },
+        'event-organizer@app.user.home': {
+          templateUrl: 'views/partials/event-organizer.html',
+        }
+      }
     })
     .state('app.user.profile', {
       url: 'profile', 
-      template: '<h1>profile</h1>'
+      template: '<div>Profile</div>'
     })
     .state('app.user.messages', {
       url: 'messages', 
-      template: '<h1>messages</h1>'
+      template: '<div>Messages</div>'
+    })
+    .state('app.user.settings', {
+      url: 'settings',
+      template: '<div>Settings</div>'
     });
 
   // Handle invalid routes
