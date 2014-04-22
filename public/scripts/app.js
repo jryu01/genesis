@@ -14,7 +14,7 @@ angular.module('genesisApp', ['ui.router'])
   $stateProvider
     .state('app', {
     url: '/',
-    template: '<div ui-view></div>',
+    template: '<div ui-view class="full-height"></div>',
     data: {
       authenticate: true
     }
@@ -24,7 +24,7 @@ angular.module('genesisApp', ['ui.router'])
   $stateProvider
     .state('app.public', {
       abstract: true,
-      template: "<div ui-view></div>",
+      template: '<div ui-view class="full-height"></div>',
       data: {
         authenticate: false
       }
@@ -37,17 +37,20 @@ angular.module('genesisApp', ['ui.router'])
   $stateProvider
     .state('app.user', {
       abstract: true,
-      template: "<div ui-view></div>"
+      templateUrl: '/views/partials/layout.html'
+    })
+    .state('app.user.home', {
+      templateUrl: '/views/partials/home.html',
+      controller: 'HomeController'
     })
     .state('app.user.profile', {
       url: 'profile', 
       template: '<h1>profile</h1>'
     })
-    .state('app.user.home', {
-      templateUrl: '/views/partials/home.html',
-      controller: 'HomeController'
+    .state('app.user.messages', {
+      url: 'messages', 
+      template: '<h1>messages</h1>'
     });
-
 
   // Handle invalid routes
   $urlRouterProvider.otherwise(function ($injector, $location) {
@@ -103,7 +106,7 @@ angular.module('genesisApp', ['ui.router'])
             $state.go('app.public.start');
           }
         });
-      // if there is current user
+      // if there is a current user using this app
       } else {
         if (toState.name === "app") {
           event.preventDefault();

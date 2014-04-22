@@ -7,10 +7,10 @@ angular.module('genesisApp')
     //controller code goes here
     $scope.greeting = 'Hello ' + $scope.currentUser.facebook.name + '!';  
 
-    $scope.goProfile = function () {
-      $state.go('app.user.profile');
+    $scope.navigate = function (to) {
+      $state.go('app.user.' + to); 
     };
-
+    
     // signout function
     $scope.signout = function () {
       Auth.signout(

@@ -1,0 +1,31 @@
+<div class="body-container full-height">
+  <!-- headerbar -->
+  <div class="navbar navbar-color navbar-fixed-top" role="navigation">
+<!--      <button id="menu-button" type="button" class="navbar-toggle menu-button" >
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button> -->
+    <div class="container">
+      <a class="navbar-brand" href="/">ToBridge</a>
+      <form class="navbar-form">
+        <div class="form-group">
+          <div class="input-group">
+            <input id="search-box" type="text" class="form-control" placeholder="I'm looking for...">
+            <span class="input-group-btn">
+              <button type="submit" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </span>
+          </div>
+        </div>
+        <div class="form-group hidden-xs">
+          <input type="text" class="form-control" placeholder="city" value="Toronto">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- page content -->
+  <div ui-view class="page-container full-height"></div>
+</div>
