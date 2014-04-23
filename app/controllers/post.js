@@ -14,8 +14,7 @@ function list(req, res) {
   if (validator.isDate(req.query.dateBefore)) {
     query.createdAt = { $lt: req.query.dateBefore };
   }
-
-  var projector = {};
+  var projection = { comments: { $slice: -1 * req.query.commentsLimit } };
 
   var options = {
     limit: req.query.limit || LIMIT,
@@ -24,10 +23,17 @@ function list(req, res) {
     }
   };
 
-  Post.find(query, projector, options, function (err, posts) {
+  Post.find(query, projection, options, function (err, posts) {
     if (err) return res.send(500);
     res.send(posts);
   }); 
+}
+
+function get(req, res) {
+  Post.findById(req.params.id, function (err, post) {
+    if (err) { return res.send(500); }
+    res.send(post);
+  });
 }
 
 // function get(req, res){:w
@@ -75,13 +81,52 @@ function create(req, res){
 }
 
 // function update(req, res){
-  
+
+  // var operator = {};
+  // var options = {};
+
+  // Post.findByIdAndUpdate(req.params.id, operator, options);
+  // console.log(req.params.id);
+  // console.log(req.body.comment);
+  // res.send("DONE"); 
 // }
 
 // function remove(req, res){
   
 // }
 
+function addComments(req, res) {
+  var postId = req.params.id;
+  var text = req.body.text;
+  var createdBy = {
+    id: req.body.id,
+    name: req.user.name.displayName
+  };
+  if (!text) {
+    var message = "string value for text must be provided.";
+    return res.send(400, { message: message });
+  }
+  // sanitize
+  text = validator.escape(text);
+  var newComment = {
+    createdBy: createdBy,
+    text: text
+  };
+  var operator = {
+    $push: { comments: newComment },
+    $inc: { numComments: 1 }
+  };
+  var options = {};
+
+  Post.findByIdAndUpdate(postId, operator, options, function(err, post) {
+    if (err) { return res.send(500); }
+    post = post.toJSON();
+    res.send(post.comments);
+  });
+}
+
 // public functions
 exports.list = list;
+exports.get = get;
 exports.create = create;
+exports.addComments = addComments;

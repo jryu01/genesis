@@ -25,7 +25,10 @@ module.exports = function (app) {
   app.post('/api/places', auth.requiresSignin, placeCtrl.create);
 
   app.get('/api/posts', auth.requiresSignin, postCtrl.list);
+  app.get('/api/posts/:id', auth.requiresSignin, postCtrl.get);
   app.post('/api/posts', auth.requiresSignin, postCtrl.create);
+
+  app.post('/api/posts/:id/comments', auth.requiresSignin, postCtrl.addComments);
 
   // app.get('/api/posts', auth.requiresSignin, postCtrl.list);
   // app.post('/api/posts', auth.requiresSignin, postCtrl.create);

@@ -32,11 +32,27 @@ angular.module('genesisApp')
 }])
 .factory('Posts', ['$http', function ($http) {
   return {
-    list: function (config, success, error) {
-      $http.get('api/posts', config).success(success).error(error);
+    list: function (options, success, error) {
+      $http.get('api/posts', options.config)
+      .success(success)
+      .error(error);
     },
-    create: function (data, success, error) {
-      $http.post('api/posts', data).success(success).error(error); 
-    }
+    get: function (options, success, error) {
+      var url = 'api/posts/' + options.postId;
+      $http.get(url, options.config)
+      .success(success)
+      .error(error);
+    },
+    create: function (options, success, error) {
+      $http.post('api/posts', options.data)
+      .success(success)
+      .error(error); 
+    },
+    addComment: function (options, success, error) {
+      var url = 'api/posts/' + options.postId + '/comments' ;
+      $http.post(url, options.data)
+      .success(success)
+      .error(error);
+    },
   };
 }]);
