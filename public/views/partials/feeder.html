@@ -24,7 +24,7 @@
         <div class="clearfix"></div>
       </div>
       <div class="post-body">
-        <p style="white-space: pre;">{{ post.contents }}</p>
+        <p class="text-wrap">{{ post.contents }}</p>
       </div>
       <div class="pull-left">
           <button class="btn btn-default btn-xs">
@@ -50,7 +50,7 @@
               <a href><img class="img-rounded profile-img" src="https://lorempixel.com/30/30/"></a>
               <div>
                 <a href class="profile-name pull-left">{{ post.createdBy.name }}</a>
-                <span> {{ comment.text }} </span>
+                <span class="text-wrap"> {{ comment.text }} </span>
                 <div class="clearfix" style="height:0"></div>
                 <span class="date-text"> {{ comment.createdAt | date:'MMM d' }} </span>
                 <!-- <a href>Score</a> <span> {{ comment.score}}</span> -->

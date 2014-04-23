@@ -170,6 +170,10 @@ body {
 .feeder .date-text {
 	color: #898f9c;
 }
+.feeder .text-wrap {
+	white-space: pre;
+	overflow-wrap: break-word;	
+}
 .feeder .postings {
     width:100%;
     min-height: 80px;
