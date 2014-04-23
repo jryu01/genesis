@@ -1,33 +1,36 @@
 <div class="feeder">
   <!-- input -->
   <div class="panel panel-default">
-    <form action="">
-      <div class="panel-body">     
-        <div class="status_form">
-            <textarea class="postings" placeholder="What is going on today?"></textarea>
-        </div>
+    <form name="postForm" ng-submit="submit()">
+      <div class="panel-body" style="padding: 0px">     
+        <textarea ng-model="postText"  ng-minlength=3 class="postings" placeholder="What is going on today?" required></textarea>
       </div>
       <div class="panel-footer">
         <div class="pull-right">
-            <input type="submit" value="Post">
+            <input type="submit" >
         </div>
         <div class="clearfix"></div>
       </div>
+      <p class="bg-danger" style="margin:0"ng-show="postForm.$error.minlength">Text is too short!</p>
     </form>
   </div>
   <!-- make this as a directive -->
-  <div class="panel panel-default">
+  <div ng-repeat="post in posts" class="panel panel-default">
     <div class="panel-body">
       <div class="post-heading">
           <img class="pull-left img-rounded" src="https://lorempixel.com/50/50/" style="margin-right: 7px">
-          <h5><a>Minwoo Lee</a> > <a>Toronto Biker's Club</a></h5>
-          <h6>March 6</h6>
+          <h5><a>{{ post.createdBy.name }}</a></h5>
+          <h6>{{ post.createdAt | date:'MMM d' }}</h6>
         <div class="clearfix"></div>
       </div>
       <div class="post-body">
-        Anyone wants to go bike riding with me? 
+        <p style="white-space: pre;">{{ post.contents }}</p>
       </div>
-      <div class="visible-xs"><br> 4 Likes 10 Comments</div>
+      <div class="visible-xs">
+        <br> 
+        <span ng-show="true">4 Likes</span>
+        <span ng-show="true">10 Comments</span>
+      </div>
     </div>
     <div class="panel-footer">
       <div class="pull-left">
@@ -35,23 +38,24 @@
           <span class="glyphicon glyphicon-thumbs-up"></span> 
           Like
         </strong>
-
         <strong>
           <span class="glyphicon glyphicon-edit"></span>
           Comment
         </strong>
       </div>
       <div class="pull-right hidden-xs">
-        <span>4 Likes</span>
-        <span>10 Comments</span>
+        <span ng-show="true">4 Likes</span>
+        <span ng-show="true">10 Comments</span>
       </div>
       <div class="clearfix"></div>
     </div>
     <ul class="hidden-xs list-group">
-      <li class="list-group-item panel-footer">comment</li>
+      <li ng-repeat="comment in post.comments" class="list-group-item panel-footer">comment</li>
       <li class="list-group-item panel-footer">comment1</li>
       <li class="list-group-item panel-footer">comment2</li>
       <li class="list-group-item panel-footer">comment3</li>
     </ul>
   </div> 
+  <button ng-show="!loading" type="button" ng-click="loadMorePosts()" style="color: white; background-color:orange" class="btn  btn-sm btn-block">Load More</button>
+  <p ng-show="loading" class="text-center" style="color:orange"><i class="fa fa-refresh fa-spin fa-2x"></i></p>
 </div>

@@ -4,6 +4,7 @@ angular.module('genesisApp')
 .factory('Auth', ['$http', function ($http) {
 
   var currentUser = null;
+
   return {
     getSignedinUser: function (callback) {
       // check if user is signed in and get ther user from serrver
@@ -29,10 +30,13 @@ angular.module('genesisApp')
     },
   };
 }])
-.factory('Users', ['$http', function ($http) {
+.factory('Posts', ['$http', function ($http) {
   return {
-    list: function (success, error) {
-      $http.get('/api/users').success(success).error(error);
+    list: function (config, success, error) {
+      $http.get('api/posts', config).success(success).error(error);
+    },
+    create: function (data, success, error) {
+      $http.post('api/posts', data).success(success).error(error); 
     }
   };
 }]);

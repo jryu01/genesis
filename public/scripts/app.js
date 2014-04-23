@@ -45,14 +45,16 @@ angular.module('genesisApp', ['ui.router'])
           templateUrl: 'views/partials/home.html',
           controller: 'HomeController'
         },
-        'side-menu@app.user.home': {
-          templateUrl: 'views/partials/side-menu.html'
+        'sideMenu@app.user.home': {
+          templateUrl: 'views/partials/sideMenu.html'
         },
         'feeder@app.user.home': {
           templateUrl: 'views/partials/feeder.html',
+          controller: 'FeederController'
         },
-        'event-organizer@app.user.home': {
-          templateUrl: 'views/partials/event-organizer.html',
+        'eventOrganizer@app.user.home': {
+          templateUrl: 'views/partials/eventOrganizer.html',
+          controller: 'EventOrganizerController'
         }
       }
     })

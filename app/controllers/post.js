@@ -5,9 +5,26 @@
 
 var validator = require('validator');
 var Post = require('../models/post');
+var LIMIT = 5;
 
 function list(req, res) {
-  Post.find(req.query, function (err, posts) {
+
+  var query = {};
+
+  if (validator.isDate(req.query.dateBefore)) {
+    query.createdAt = { $lt: req.query.dateBefore };
+  }
+
+  var projector = {};
+
+  var options = {
+    limit: req.query.limit || LIMIT,
+    sort: {
+      createdAt: -1
+    }
+  };
+
+  Post.find(query, projector, options, function (err, posts) {
     if (err) return res.send(500);
     res.send(posts);
   }); 
@@ -42,8 +59,6 @@ function create(req, res){
 
   // Sanitize inputs
   contents = validator.escape(contents);
-  // substitute some <br> for the paragraph breaks
-  contents = contents.replace(/\r?\n/g, '<br>');
 
   // Create a new post
   var post = new Post({
