@@ -171,8 +171,11 @@ body {
 	color: #898f9c;
 }
 .feeder .text-wrap {
-	white-space: pre;
-	overflow-wrap: break-word;	
+  word-wrap: break-word;      /* IE 5.5-7 */
+  overflow-wrap: break-word;
+  white-space: -moz-pre-wrap; /* Firefox 1.0-2.0 */
+  white-space: pre-wrap;
+  word-break: break-all;
 }
 .feeder .postings {
     width:100%;

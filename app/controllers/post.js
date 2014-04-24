@@ -9,12 +9,22 @@ var LIMIT = 5;
 
 function list(req, res) {
 
+  /**
+   * query parameters
+   * dateBefore: Date
+   * limit: Number
+   * commentsLimit: Number
+   */
   var query = {};
-
   if (validator.isDate(req.query.dateBefore)) {
     query.createdAt = { $lt: req.query.dateBefore };
   }
-  var projection = { comments: { $slice: -1 * req.query.commentsLimit } };
+
+  var projection = {};
+  if (validator.isNumeric(req.query.commentsLimit) && 
+      req.query.commentsLimit > 0) {
+    projection.comments = { $slice: -1 * req.query.commentsLimit };
+  }
 
   var options = {
     limit: req.query.limit || LIMIT,
