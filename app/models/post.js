@@ -19,11 +19,14 @@ var PostSchema = new Schema({
     name: String,
     id: Schema.Types.ObjectId
   },
+  from: {
+    profileType: String, //User, Event, etc
+    profileId: Schema.Types.ObjectId,
+  },
   sport: String, // type of sport
   contents: String,
   loc: {type: [Number], index: '2d'}, // [longitude, latitude]
 
-  from: Schema.Types.ObjectId, // eventId if posted from event page
   comments: [{
     activated: { type: Boolean, default: true },
     createdAt: { type: Date, default: Date.now },

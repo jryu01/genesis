@@ -6,6 +6,7 @@
 var validator = require('validator');
 var Post = require('../models/post');
 var LIMIT = 5;
+var PROFILE_TYPE = ['User', 'Event'];
 
 function list(req, res) {
 
@@ -56,8 +57,12 @@ function create(req, res){
   var contents = req.body.contents;
   var loc = req.body.loc;
   var createdBy = {
-    id: req.body.id,
+    id: req.user.id,
     name: req.user.name.displayName
+  };
+  var from =  {
+      profileType: PROFILE_TYPE[0], // User Profile
+      profileId: req.user.id
   };
 
   // Validate Inputs
@@ -81,7 +86,8 @@ function create(req, res){
     sport: sport,
     createdBy: createdBy,
     contents: contents,
-    loc: loc
+    loc: loc,
+    from: from
   });
 
   post.save(function (err, post) {
@@ -109,7 +115,7 @@ function addComments(req, res) {
   var postId = req.params.id;
   var text = req.body.text;
   var createdBy = {
-    id: req.body.id,
+    id: req.user.id,
     name: req.user.name.displayName
   };
   if (!text) {
@@ -130,6 +136,10 @@ function addComments(req, res) {
 
   Post.findByIdAndUpdate(postId, operator, options, function(err, post) {
     if (err) { return res.send(500); }
+
+    //TODO: If current user have no acess to this post then return 403
+    //  (eg. if post is from private event page and user is not a member of it)
+
     post = post.toJSON();
     res.send(post.comments);
   });
