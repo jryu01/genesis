@@ -29,10 +29,9 @@ module.exports = function (app) {
   app.post('/api/posts', auth.requiresSignin, postCtrl.create);
 
   app.post('/api/posts/:id/comments', auth.requiresSignin, postCtrl.addComments);
+  app.post('/api/posts/:id/score', auth.requiresSignin, postCtrl.addScore);
+  app.del('/api/posts/:id/score', auth.requiresSignin, postCtrl.removeScore);
 
-  // app.get('/api/posts', auth.requiresSignin, postCtrl.list);
-  // app.post('/api/posts', auth.requiresSignin, postCtrl.create);
-  
   // routes for sign in,  sigin up, and signout processes
 
   // singnin and signup route now disabled since we are only using fb now

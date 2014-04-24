@@ -54,5 +54,17 @@ angular.module('genesisApp')
       .success(success)
       .error(error);
     },
+    addScore: function (options, success, error) {
+      var url = 'api/posts/' + options.postId + '/score' ;
+      $http.post(url, options.data)
+      .success(success)
+      .error(error);
+    },
+    removeScore: function (options, success, error) {
+      var url = 'api/posts/' + options.postId + '/score' ;
+      $http.delete(url, options.data)
+      .success(success)
+      .error(error);
+    },
   };
 }]);

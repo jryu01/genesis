@@ -4,6 +4,7 @@
 'use strict';
 
 var validator = require('validator');
+var _ = require('underscore');
 var Post = require('../models/post');
 var LIMIT = 5;
 var PROFILE_TYPE = ['User', 'Event'];
@@ -145,8 +146,64 @@ function addComments(req, res) {
   });
 }
 
+function addScore(req, res) {
+  var postId = req.params.id;
+  // var commentId = req.query.commentId;
+
+  var query = {
+    _id: postId,
+    scorers: { $ne: req.user.id }
+  };
+
+  var operator = {
+    $push: { scorers: req.user.id },
+    $inc: { score: 1 }
+  };
+
+  Post.findOneAndUpdate(query, operator, function (err, post) {
+    if (err) {
+      return res.send(500, err);
+    }
+    //TODO: If current user have no acess to this post then return 403
+    //  (eg. if post is from private event page and user is not a member of it)
+    if (!post) {
+      return res.send(404, { message: "post with postId not exist or post is already scored by current user" });
+    }
+    res.send(post);
+  });
+}
+function removeScore(req, res) {
+  var postId = req.params.id;
+  // var commentId = req.query.commentId;
+
+  var query = {
+    _id: postId,
+    scorers: req.user.id
+  };
+
+  var operator = {
+    $pull: { scorers: req.user.id },
+    $inc: { score: -1 }
+  };
+
+  Post.findOneAndUpdate(query, operator, function (err, post) {
+    if (err) {
+      return res.send(500, err);
+    }
+    //TODO: If current user have no acess to this post then return 403
+    //  (eg. if post is from private event page and user is not a member of it)
+    if (!post) {
+      return res.send(404, { message: "post with postId not exist or post is not scored by current user" });
+    }
+    res.send(post);
+  });
+}
+
+
 // public functions
 exports.list = list;
 exports.get = get;
 exports.create = create;
 exports.addComments = addComments;
+exports.addScore = addScore;
+exports.removeScore = removeScore;

@@ -36,9 +36,11 @@ var PostSchema = new Schema({
     },
     text: String,
     score: Number,
+    scorers: [Schema.Types.ObjectId], //array of User Ids
   }],
   numComments: Number,
   score: Number,
+  scorers: [Schema.Types.ObjectId], //array of User Ids
 }); 
 
 

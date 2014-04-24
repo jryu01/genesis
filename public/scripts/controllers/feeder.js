@@ -8,6 +8,7 @@
 function ($scope, $state, Posts) {
 
   init();
+
   // Submit post form
   $scope.submitPost = function () {
     if (!$scope.postText) {
@@ -87,7 +88,49 @@ function ($scope, $state, Posts) {
 
       }
     );
+  };
+  $scope.addScore = function (postId) {
+    var $scope = this;
+    var options = {
+      postId: postId
+    };
+    Posts.addScore(
+      options,
+      // Success
+      function (data, status, headers, config) {
+        if (!$scope.post.score) {
+          $scope.post.score = 0;
+          $scope.post.scorers = [];
+        }
+        // update score and scorers array of the post
+        $scope.post.score +=1;
+        $scope.post.scorers.push($scope.currentUser.id);
+      },
+      // Failure
+      function (data, status, headers, config) {
 
+      }
+    );
+  };
+  $scope.removeScore = function (postId) {
+    var $scope = this;
+    var options = {
+      postId: postId
+    };
+    Posts.removeScore(
+      options,
+      // Success
+      function (data, status, headers, config) {
+        // update score and scorers array of the post
+        $scope.post.score -=1;
+        var index = $scope.post.scorers.indexOf($scope.currentUser.id);
+        $scope.post.scorers.splice(index,1);
+      },
+      // Failure
+      function (data, status, headers, config) {
+
+      }
+    );
   };
   $scope.loadMorePosts = function () {
     $scope.loading = true;
