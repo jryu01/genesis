@@ -17,10 +17,10 @@ var PostSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
   createdBy: {
     name: String,
-    id: Schema.Types.ObjectId
+    userId: Schema.Types.ObjectId
   },
   from: {
-    profileType: String, //User, Event, etc
+    profileType: String, //User, Event, Team etc
     profileId: Schema.Types.ObjectId,
   },
   sport: String, // type of sport
@@ -32,7 +32,7 @@ var PostSchema = new Schema({
     createdAt: { type: Date, default: Date.now },
     createdBy: {
       name: String,
-      id: Schema.Types.ObjectId
+      userId: Schema.Types.ObjectId
     },
     text: String,
     score: Number,

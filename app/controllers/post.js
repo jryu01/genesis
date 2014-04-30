@@ -58,7 +58,7 @@ function create(req, res){
   var contents = req.body.contents;
   var loc = req.body.loc;
   var createdBy = {
-    id: req.user.id,
+    userId: req.user.id,
     name: req.user.name.displayName
   };
   var from =  {

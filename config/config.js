@@ -16,8 +16,8 @@ module.exports = {
       name: "genesis"
     },
     facebook: {
-      clientID: "460644617395896",
-      clientSecret: "03f0be755cb52da940870179680222b6",
+      clientID: "260509677458558",
+      clientSecret: "de40af5c2c28469be077a5527ac37f66",
       callbackURL: "http://localhost:3000/auth/facebook/callback" 
     }
   },
