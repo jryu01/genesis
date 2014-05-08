@@ -7,13 +7,23 @@
 
 var path = require('path');
 var rootPath = path.normalize(__dirname + '/..');
+var express = require('express');
+var mongoStore = require('connect-mongo')(express);
 
 module.exports = {
   development: {
-    root: rootPath, 
-    db: "mongodb://localhost/genesis-dev",
     app: {
       name: "genesis"
+    },
+    root: rootPath, 
+    db: "mongodb://localhost/genesis-dev",
+    session: {
+      key: "sid",
+      secret: "thisisthefirstclasssecrets",
+      store: new mongoStore({
+        url: "mongodb://localhost/genesis-dev",
+        collection: 'sessions'
+      })
     },
     facebook: {
       clientID: "260509677458558",

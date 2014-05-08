@@ -9,6 +9,10 @@ var Post = require('../models/post');
 var LIMIT = 5;
 var PROFILE_TYPE = ['User', 'Event'];
 
+/**
+ * Handlers for REST API
+ */
+
 function list(req, res) {
 
   /**
@@ -199,6 +203,56 @@ function removeScore(req, res) {
   });
 }
 
+/**
+ * Handlers for Socket Connections
+ */
+function newPost(socket) {
+  return function (data, callback) {
+    var sport = data.sport;
+    var contents = data.contents;
+    var loc = data.loc;
+    var createdBy = {
+      userId: "534995d9df28141ab9f27b8e",
+      name: "Jaehwan Ryu"
+    };
+    var from =  {
+        profileType: PROFILE_TYPE[0], // User Profile
+        profileId: "534995d9df28141ab9f27b8e"
+    };
+
+    // Validate Inputs
+    var message = "";
+    if (!sport || !contents || !loc) {
+      message = "values for sport, contents, and loc must be provided.";
+      return callback({ message: message }, null);
+    }
+    if (Object.prototype.toString.call(loc) !== '[object Array]' || 
+        loc.length !== 2 ||
+        !(validator.isNumeric(loc[0]) && validator.isNumeric(loc[1]))) {
+      message = "loc must be a form of Number Array with length 2.";
+      return callback({ message: message }, null);
+    }
+
+    // Sanitize inputs
+    contents = validator.escape(contents);
+
+    // Create a new post
+    var post = new Post({
+      sport: sport,
+      createdBy: createdBy,
+      contents: contents,
+      loc: loc,
+      from: from
+    });
+
+    post.save(function (err, post) {
+      if (err) { return callback(err, null); }
+      // broadcast to all other clients
+      socket.broadcast.emit('newPost', post);
+      callback(null, post);
+    });
+  };
+}
 
 // public functions
 exports.list = list;
@@ -207,3 +261,4 @@ exports.create = create;
 exports.addComments = addComments;
 exports.addScore = addScore;
 exports.removeScore = removeScore;
+exports.newPost = newPost;

@@ -4,8 +4,8 @@
  'use strict';
 
  angular.module('genesisApp')
-.controller('FeederController', ['$scope', '$state', 'Posts', 
-function ($scope, $state, Posts) {
+.controller('FeederController', ['$scope', '$state', 'Posts', 'socket',
+function ($scope, $state, Posts, socket) {
 
   init();
 
@@ -19,15 +19,23 @@ function ($scope, $state, Posts) {
       loc: [0,0],  // TODO: get location of current user
       contents: $scope.postText
     };
-    Posts.create({data: newPost}, 
-      function (data, status, headers, config) {
-        $scope.postText = null;
-        $scope.posts.unshift(data);
-      },
-      // Failure
-      function (data, status, headers, config) {
+    // Posts.create({data: newPost}, 
+    //   function (data, status, headers, config) {
+    //     $scope.postText = null;
+    //     $scope.posts.unshift(data);
+    //   },
+    //   // Failure
+    //   function (data, status, headers, config) {
 
-      });
+    //   });
+    socket.emit('newPost', newPost, function (err, data) {
+      if (err) {
+        // handle error   
+      }
+      console.log(data);
+      $scope.postText = null; 
+      $scope.posts.unshift(data);
+    });
   };
   // add comment to the post with postId
   $scope.addComment = function (postId) {
@@ -154,6 +162,15 @@ function ($scope, $state, Posts) {
   };
   // initializing with data load when page start
   function init() {
+
+    // when this controller destroyed remove all socket listeners
+    $scope.$on('$destroy', function (event) {
+      socket.removeAllListeners();
+    });
+
+    // register socket events
+    registerSocketEvents();
+
     // Get posts from server
     $scope.loading = true;
     var params = { 
@@ -172,5 +189,25 @@ function ($scope, $state, Posts) {
         // handle this situation
       }
     );
+  }
+  function registerSocketEvents() {
+
+    socket.on('newPost', function (data) {
+      $scope.postText = null; 
+      $scope.posts.unshift(data);
+    }); 
+
+    socket.on('error', function (data) {
+      console.log(data);
+    });
+
+    socket.on('connect', function (data) {
+      // TODO: enable all socket that uses socket
+    });
+    
+    socket.on('disconnect', function (data) {
+      // TODO: disable all feature that uses socket
+    });
+
   }
 }]);

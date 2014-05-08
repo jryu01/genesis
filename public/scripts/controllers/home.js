@@ -4,8 +4,8 @@
 'use strict';
 
 angular.module('genesisApp')
-.controller('HomeController', ['$scope', '$state', 'Auth', 
-function ($scope, $state, Auth) {
+.controller('HomeController', ['$scope', '$state', 'Auth', 'socket',
+function ($scope, $state, Auth, socket) {
   console.log("user from HomeController");
   console.log($scope.currentUser);
 
@@ -14,6 +14,7 @@ function ($scope, $state, Auth) {
     Auth.signout(
       // Success
       function (reponse) {
+        socket.emit('signout');
         $state.go('app.public.start');
       },
       // Fauilure
