@@ -10,7 +10,7 @@ var LIMIT = 5;
 var PROFILE_TYPE = ['User', 'Event'];
 
 /**
- * Handlers for REST API
+ * REST API Handlers ==========================================================
  */
 
 function list(req, res) {
@@ -152,7 +152,6 @@ function addComments(req, res) {
 
 function addScore(req, res) {
   var postId = req.params.id;
-  // var commentId = req.query.commentId;
 
   var query = {
     _id: postId,
@@ -204,33 +203,37 @@ function removeScore(req, res) {
 }
 
 /**
- * Handlers for Socket Connections
+ * Socket Event Handlers ======================================================
  */
-function newPost(socket) {
+
+function createNewPost(socket) {
   return function (data, callback) {
+    var user = socket.handshake.user;
+
     var sport = data.sport;
     var contents = data.contents;
     var loc = data.loc;
     var createdBy = {
-      userId: "534995d9df28141ab9f27b8e",
-      name: "Jaehwan Ryu"
+      userId: user.id,
+      name: user.name.displayName
     };
     var from =  {
         profileType: PROFILE_TYPE[0], // User Profile
-        profileId: "534995d9df28141ab9f27b8e"
+        profileId: user.id
     };
 
     // Validate Inputs
     var message = "";
+    var errorName = "ValidationError";
     if (!sport || !contents || !loc) {
       message = "values for sport, contents, and loc must be provided.";
-      return callback({ message: message }, null);
+      return callback({ name: errorName, message: message }, null);
     }
     if (Object.prototype.toString.call(loc) !== '[object Array]' || 
         loc.length !== 2 ||
         !(validator.isNumeric(loc[0]) && validator.isNumeric(loc[1]))) {
       message = "loc must be a form of Number Array with length 2.";
-      return callback({ message: message }, null);
+      return callback({ name: errorName, message: message }, null);
     }
 
     // Sanitize inputs
@@ -247,18 +250,130 @@ function newPost(socket) {
 
     post.save(function (err, post) {
       if (err) { return callback(err, null); }
+
+      // call client callback 
+      callback(null, post);
+
       // broadcast to all other clients
       socket.broadcast.emit('newPost', post);
-      callback(null, post);
+    });
+  };
+}
+
+function toggleScore (socket, isAddingScore) {
+  return function (data, callback) {
+    var user = socket.handshake.user;
+    var postId = data.postId;
+
+    var query = {};
+    var operator = {};
+
+    if (isAddingScore) {
+      // find a post with postId which user has not yet added score
+      query = {
+        _id: postId,
+        scorers: { $ne: user.id }
+      };
+      operator = {
+        $push: { scorers: user.id },
+        $inc: { score: 1 }
+      };
+    } else {
+      query = {
+        _id: postId,
+        scorers: user.id
+      };
+      operator = {
+        $pull: { scorers: user.id },
+        $inc: { score: -1 }
+      };
+    }
+
+    Post.findOneAndUpdate(query, operator, function (err, post) {
+      if (err) {
+        return callback(err, null);
+      }
+      //TODO: If current user have no acess to this post then return 403
+      //  (eg. if post is from private event page and user is not a member of it)
+      if (!post) {
+        err = {
+          name: "NotFoundError",
+          message: "post with postId does not exist or is " + 
+            (isAddingScore ? "" : "not ") + "already scored by current user.",
+        };
+        return callback(err, null);
+      }
+
+      // call client callback
+      callback(null, post.toJSON());
+
+      // broadcast to all other clients
+      socket.broadcast.emit('updateScore', {
+        postId: post.id,
+        score: operator.$inc.score,
+        scorerId: user.id
+      });
+    });
+  };
+}
+
+function addNewComment(socket) {
+  return function (data, callback) {
+    var user = socket.handshake.user;
+    var postId = data.postId;
+    var text = data.comment.text;
+    var createdBy = {
+      id: user.id,
+      name: user.name.displayName
+    };
+
+    if (!text) {
+      var message = "string value for comment.text must be provided.";
+      return callback({ name: "ValidationError", message: message }, null);
+    }
+    // sanitize
+    text = validator.escape(text);
+    var newComment = {
+      createdBy: createdBy,
+      text: text
+    };
+    var operator = {
+      $push: { comments: newComment },
+      $inc: { numComments: 1 }
+    };
+    var options = {};
+
+    Post.findByIdAndUpdate(postId, operator, options, function(err, post) {
+      if (err) { callback(err, null); }
+
+      //TODO: If current user have no acess to this post then return 403
+      //  (eg. if post is from private event page and user is not a member of it)
+
+      post = post.toJSON();
+      newComment = post.comments[post.comments.length -1];
+      callback(null, newComment);
+
+       // broadcast to all other clients
+      socket.broadcast.emit('newComment', {
+        postId: post.id,
+        comment: newComment
+      });
+      
     });
   };
 }
 
 // public functions
+
+// RREST API handlers
 exports.list = list;
 exports.get = get;
 exports.create = create;
 exports.addComments = addComments;
 exports.addScore = addScore;
 exports.removeScore = removeScore;
-exports.newPost = newPost;
+
+// sockets handlers
+exports.createNewPost = createNewPost;
+exports.toggleScore = toggleScore;
+exports.addNewComment = addNewComment;

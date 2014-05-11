@@ -27,10 +27,6 @@
         <p class="text-wrap">{{ post.contents }}</p>
       </div>
       <div class="pull-left">
-<!--                   {{ post.scorers }}
-            { currentUser.id }
-            {{ post.scorers.indexOf(currentUser.id) }}
- -->
         <!-- Toggle Score btn functionality -->
         <button ng-show="post.scorers.indexOf(currentUser.id) >= 0" class="btn btn-warning btn-xs" ng-click="removeScore(post.id)">
           <span ng-show="post.score > 0">{{ post.score }}</span> 
