@@ -50,7 +50,8 @@ module.exports = function (passport, config) {
 
     clientID: config.facebook.clientID,
     clientSecret: config.facebook.clientSecret,
-    callbackURL: config.facebook.callbackURL
+    callbackURL: config.facebook.callbackURL,
+    profileFields: ['id', 'name', 'emails', 'photos'],
   }, 
   function (accessToken, refreshToken, profile, done) {
     User.findOne({'facebook.id': profile.id}, function (err, user) {
@@ -65,16 +66,19 @@ module.exports = function (passport, config) {
         user.name.familyName = profile.name.familyName;
         user.name.displayName = profile.name.givenName + 
                             ' ' + profile.name.familyName;
-        user.email.primaryEmail = profile.emails[0].value;
+        user.emails.primaryEmail = profile.emails[0].value;
+        user.photos.profile = profile.photos[0].value;
 
         user.facebook.id = profile.id;
         user.facebook.name = profile.name.givenName + 
                             ' ' + profile.name.familyName;
         user.facebook.email = profile.emails[0].value;
+        user.facebook.profilePicture = profile.photos[0].value;
         user.facebook.accessToken = accessToken;
 
         user.save(function (err) {
           if (err) { return done(err); }
+          console.log(user);
           return done(null, user);
         });
       }

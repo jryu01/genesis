@@ -23,7 +23,10 @@ var UserSchema = new Schema({
     givenName: String,
     familyName: String,
   },
-  email: {
+  photos: {
+    profile: String,
+  },
+  emails: {
     primaryEmail: String,
   },
   eventJoined: [{
@@ -43,6 +46,7 @@ var UserSchema = new Schema({
     id: String,
     name: String,
     email: String,
+    profilePicture: String,
     acessToken: String
   }
 }); 

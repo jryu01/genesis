@@ -215,7 +215,8 @@ function createNewPost(socket) {
     var loc = data.loc;
     var createdBy = {
       userId: user.id,
-      name: user.name.displayName
+      name: user.name.displayName,
+      profilePicture: user.photos.profile
     };
     var from =  {
         profileType: PROFILE_TYPE[0], // User Profile
@@ -324,7 +325,8 @@ function addNewComment(socket) {
     var text = data.comment.text;
     var createdBy = {
       id: user.id,
-      name: user.name.displayName
+      name: user.name.displayName,
+      profilePicture: user.photos.profile
     };
 
     if (!text) {
@@ -358,7 +360,7 @@ function addNewComment(socket) {
         postId: post.id,
         comment: newComment
       });
-      
+
     });
   };
 }

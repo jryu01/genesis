@@ -17,6 +17,7 @@ var PostSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
   createdBy: {
     name: String,
+    profilePicture: String,
     userId: Schema.Types.ObjectId
   },
   from: {
@@ -32,6 +33,7 @@ var PostSchema = new Schema({
     createdAt: { type: Date, default: Date.now },
     createdBy: {
       name: String,
+      profilePicture: String,
       userId: Schema.Types.ObjectId
     },
     text: String,
