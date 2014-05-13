@@ -3,7 +3,7 @@
   <div class="panel panel-default">
     <form name="postForm" ng-submit="submitPost()">
       <div class="panel-body" style="padding: 0px">     
-        <textarea ng-model="postForm.postText" class="postings" placeholder="What is going on today?" required></textarea>
+        <textarea ng-model="postForm.postText" class="post-textarea" placeholder="What is going on today?" required></textarea>
       </div>
       <div class="panel-footer">
         <div class="pull-left">
@@ -16,13 +16,13 @@
             </button>
             <ul class="dropdown-menu" role="menu">
               <li>
-                <a href ng-click="selectDropdown('General')">General</a>
+                <a ng-click="selectDropdown('General')">General</a>
               </li>
               <li>
-                <a href ng-click="selectDropdown('Basketball')">Basketball</a>
+                <a ng-click="selectDropdown('Basketball')">Basketball</a>
               </li>
               <li>
-                <a href ng-click="selectDropdown('Badminton')">Badminton</a>
+                <a ng-click="selectDropdown('Badminton')">Badminton</a>
               </li>
             </ul>
           </div> 
@@ -35,24 +35,26 @@
     </form>
   </div>
 
-<!--   <div calss="filter-wrapper">
+  <div class="filter-wrapper">
     <div class="filter-border"></div>
     <div class="filter-box">
-      <a class="pull-left"> < </a>
-      <a class="pull-right"> > </a>
+      <a class="pull-left" ng-click="shiftFilter('prev')"> 
+        <i class="fa fa-chevron-left"></i>
+      </a>
+      <a class="pull-right" ng-click="shiftFilter('next')"> 
+        <i class="fa fa-chevron-right"></i>
+      </a>
       <ul class="filter-list list-inline">
-        <li style="border-bottom-color: orange; border-bottom-style: solid">
-          All
+        <li ng-class="{ selected: item === filter.selected }" 
+            ng-repeat="item in filter.items" 
+            ng-click="selectFilter(item)">
+          <a>{{ item }}</a>
         </li> 
-        <li>Favorites</li>
-        <li>General</li>
-        <li>Basketball</li>
-        <li>Badminton</li>
       </ul> 
     </div>
-  </div> -->
+  </div>
 
-  <div class="postsWrapper">
+  <div class="posts-wrapper">
     <!-- make this as a directive -->
     <div ng-repeat="post in posts" class="panel panel-default">
       <div class="panel-body">
@@ -60,7 +62,7 @@
             <img class="pull-left img-rounded" 
               src="{{ post.createdBy.profilePicture }}" 
               style="margin-right: 7px">
-            <h5><a href >{{ post.createdBy.name }}</a></h5>
+            <h5><a>{{ post.createdBy.name }}</a></h5>
             <span class="date-text"> {{ post.createdAt | date:'MMM d' }} </span>
           <div class="clearfix"></div>
         </div>
@@ -86,26 +88,26 @@
       <div class="panel-footer">
         <div class="comments-toggle">
           <span ng-show="!commentsExpand" ng-click="loadComments(post.id)">
-          <a href >
+          <a>
             {{ post.numComments }} Comments
           </a> 
           <span class="caret"></span>
           <!-- <i class="fa fa-chevron-down fa-1x"></i> -->
           </span>
-          <a href ng-show="commentsExpand" ng-click="hideComments()">Hide Comments</a>
+          <a ng-show="commentsExpand" ng-click="hideComments()">Hide Comments</a>
         </div>
         <div class="">
           <div class="comments-container">
             <div ng-repeat="comment in post.comments">
               <div class="comment-body">
-                <a href><img class="img-rounded profile-img" 
+                <a><img class="img-rounded profile-img" 
                   src="{{comment.createdBy.profilePicture}}"></a>
                 <div>
-                  <a href class="profile-name pull-left">{{ comment.createdBy.name }}</a>
+                  <a class="profile-name pull-left">{{ comment.createdBy.name }}</a>
                   <span class="text-wrap"> {{ comment.text }} </span>
                   <div class="clearfix" style="height:0"></div>
                   <span class="date-text"> {{ comment.createdAt | date:'MMM d' }} </span>
-                  <!-- <a href>Score</a> <span> {{ comment.score}}</span> -->
+                  <!-- <a>Score</a> <span> {{ comment.score}}</span> -->
                 </div>
               </div>
             </div> 
@@ -119,7 +121,7 @@
         </div>
       </div>
     </div> 
-    <button ng-show="!loading" type="button" ng-click="loadMorePosts()" style="color: white; background-color:orange" class="btn  btn-sm btn-block">Load More</button>
-    <p ng-show="loading" class="text-center" style="color:orange"><i class="fa fa-refresh fa-spin fa-2x"></i></p>
+    <button ng-show="!postsBox.loading" type="button" ng-click="loadMorePosts()" style="color: white; background-color:orange" class="btn  btn-sm btn-block">Load More</button>
+    <p ng-show="postsBox.loading" class="text-center" style="color:orange"><i class="fa fa-refresh fa-spin fa-2x"></i></p>
   </div>
 </div>

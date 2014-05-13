@@ -20,10 +20,14 @@ function list(req, res) {
    * dateBefore: Date
    * limit: Number
    * commentsLimit: Number
+   * sport: String
    */
   var query = {};
   if (validator.isDate(req.query.dateBefore)) {
     query.createdAt = { $lt: req.query.dateBefore };
+  }
+  if (req.query.sport) {
+    query.sport = req.query.sport;
   }
 
   var projection = {};

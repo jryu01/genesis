@@ -7,6 +7,12 @@ body {
 	background-color: #EEEEEE; 
 }
 
+.nav, .pagination, .carousel, .panel-title, a { cursor: pointer; }
+a {
+}
+a:hover {
+	text-decoration: none;
+}
 /* FrontPage STYLES
 -------------------------------------------------- */
 
@@ -177,7 +183,10 @@ body {
   white-space: pre-wrap;
   word-break: break-all;
 }
-.feeder .postings {
+
+/* post form */
+
+.feeder .post-textarea {
     width:100%;
     min-height: 80px;
     border-style: none; 
@@ -186,6 +195,32 @@ body {
     overflow: auto; 
     resize: vertical;
 }
+
+/* filter */
+
+.feeder .filter-wrapper a {
+	color: inherit;
+}
+.feeder .filter-wrapper .filter-border{
+	border-bottom: 1px solid #ccc;
+	width: 100%;
+}
+.feeder .filter-wrapper .filter-box {
+	padding-top: 15px;
+}
+.feeder .filter-wrapper .selected,
+.feeder .filter-wrapper li:hover {
+	border-bottom-color: orange; 
+	border-bottom-style: solid;
+}
+.feeder .filter-wrapper ul {
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+
+/* post */
+
 .feeder .post-body {
 	padding-top: 5px;
 }

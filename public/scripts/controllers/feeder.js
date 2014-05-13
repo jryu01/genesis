@@ -23,7 +23,7 @@ function ($scope, $state, Posts, socket) {
     if (!$scope.postForm.type) {
 
       // TODO: popup to inform user to select sport
-      
+
       return;
     }
     var newPost = {
@@ -51,8 +51,50 @@ function ($scope, $state, Posts, socket) {
   };
 
   /*
+   * Filter related functions
+   */
+    $scope.selectFilter = function (item) {
+      $scope.filter.selected = item;
+
+      // set postform sport to item
+      $scope.selectDropdown((item === 'All') ? null : item);
+
+      var params = { 
+        limit: 5,
+        commentsLimit: 1
+      }; 
+      if (item !== 'All') {
+        params.sport = item;
+      }  
+      $scope.postsBox.loading = true;
+      Posts.list(
+        { config : { params: params } },
+        // Success
+        function (data, status, headers, config) {
+          $scope.postsBox.loading = false;
+          $scope.posts = data;
+        },
+        // Failure
+        function (data, status, headers, config) {
+          // handle this situation
+        }
+      );
+    };
+    $scope.shiftFilter = function (flag) {
+      var filters = $scope.filter.items;
+      var index = filters.indexOf($scope.filter.selected);
+      if (flag === 'next') {
+        index = (index === filters.length - 1) ? 0 : index + 1;
+      } else if (flag === 'prev') {
+        index = (index === 0) ? filters.length - 1 : index - 1;
+      }
+      $scope.selectFilter(filters[index]);
+    };
+
+  /*
    * post related functions
    */
+
   // add comment to the post with postId
   $scope.addComment = function (postId) {
     var $scope = this;
@@ -206,17 +248,20 @@ function ($scope, $state, Posts, socket) {
   };
 
   $scope.loadMorePosts = function () {
-    $scope.loading = true;
+    $scope.postsBox.loading = true;
     var params = {
       limit: 5,
       commentsLimit: 1,
       dateBefore: $scope.posts[$scope.posts.length -1].createdAt
     };
+    if ($scope.filter.selected !== 'All') {
+      params.sport = $scope.filter.selected;
+    }  
     Posts.list(
       { config: { params: params } },
       // Success
       function (data, status, headers, config) {
-        $scope.loading = false;
+        $scope.postsBox.loading = false;
         $scope.posts = $scope.posts.concat(data);
       },
       // Failure
@@ -236,12 +281,20 @@ function ($scope, $state, Posts, socket) {
     // register socket events
     registerSocketEvents();
 
-    // setups
+    // register init data
 
     $scope.postForm = {};
 
+    $scope.filter = {
+      items: ['All', 'General', 'Basketball', 'Badminton'],
+      selected: "All"
+    };
+
+    $scope.postsBox = {
+      loading: true
+    };
+
     // Get posts from server
-    $scope.loading = true;
     var params = { 
       limit: 5,
       commentsLimit: 1
@@ -250,7 +303,7 @@ function ($scope, $state, Posts, socket) {
       { config : { params: params } },
       // Success
       function (data, status, headers, config) {
-        $scope.loading = false;
+        $scope.postsBox.loading = false;
         $scope.posts = data;
       },
       // Failure
@@ -262,8 +315,11 @@ function ($scope, $state, Posts, socket) {
   function registerSocketEvents() {
 
     socket.on('newPost', function (post) {
-      $scope.postText = null; 
-      $scope.posts.unshift(post);
+      var isViewing = $scope.filter.selected === 'All' ||
+                      $scope.filter.selected === post.sport;
+      if (isViewing) {
+        $scope.posts.unshift(post);
+      }
     }); 
 
     socket.on('updateScore', function (data) {
