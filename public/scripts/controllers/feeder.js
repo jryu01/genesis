@@ -7,19 +7,33 @@
 .controller('FeederController', ['$scope', '$state', 'Posts', 'socket',
 function ($scope, $state, Posts, socket) {
 
+  /*
+   * Post form related functions
+   */
+
+  // select dropdown
+  $scope.selectDropdown = function (select) {
+    $scope.postForm.type = select;
+  };
   // Submit post form
   $scope.submitPost = function () {
-    if (!$scope.postText) {
+    if (!$scope.postForm.postText) {
+      return;
+    }
+    if (!$scope.postForm.type) {
+
+      // TODO: popup to inform user to select sport
+      
       return;
     }
     var newPost = {
-      sport: "NYI", // TODO: select sport
+      sport: $scope.postForm.type, // TODO: select sport
       loc: [0,0],  // TODO: get location of current user
-      contents: $scope.postText
+      contents: $scope.postForm.postText
     };
     // Posts.create({data: newPost}, 
     //   function (data, status, headers, config) {
-    //     $scope.postText = null;
+    //     $scope.postForm = {};
     //     $scope.posts.unshift(data);
     //   },
     //   // Failure
@@ -31,10 +45,14 @@ function ($scope, $state, Posts, socket) {
         // handle error   
         return console.log(err);
       }
-      $scope.postText = null; 
+      $scope.postForm = {}; 
       $scope.posts.unshift(data);
     });
   };
+
+  /*
+   * post related functions
+   */
   // add comment to the post with postId
   $scope.addComment = function (postId) {
     var $scope = this;
@@ -186,6 +204,7 @@ function ($scope, $state, Posts, socket) {
     //   }
     // );
   };
+
   $scope.loadMorePosts = function () {
     $scope.loading = true;
     var params = {
@@ -216,6 +235,10 @@ function ($scope, $state, Posts, socket) {
 
     // register socket events
     registerSocketEvents();
+
+    // setups
+
+    $scope.postForm = {};
 
     // Get posts from server
     $scope.loading = true;

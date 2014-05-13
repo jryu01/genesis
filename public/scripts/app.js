@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('genesisApp', ['ui.router'])
+angular.module('genesisApp', ['ui.router', 'ui.bootstrap'])
 .config(['$stateProvider','$urlRouterProvider', '$locationProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
   //================================================
