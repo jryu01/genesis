@@ -14,7 +14,7 @@ angular.module('genesisApp', ['ui.router', 'ui.bootstrap'])
   $stateProvider
     .state('app', {
     url: '/',
-    template: '<div ui-view></div>',
+    template: '<div ui-view class="full-height"></div>',
     data: {
       authenticate: true
     }
@@ -24,14 +24,21 @@ angular.module('genesisApp', ['ui.router', 'ui.bootstrap'])
   $stateProvider
     .state('app.public', {
       abstract: true,
-      template: '<div ui-view></div>',
+      template: '<div ui-view class="full-height"></div>',
       data: {
         authenticate: false
       }
     })
     .state('app.public.start', {
-      templateUrl: '/views/partials/start.html'
+      templateUrl: '/views/partials/login.html',
+      controller: 'LoginController'
+    })
+    .state('app.public.login', {
+      url: 'login',
+      templateUrl: '/views/partials/login.html',
+      controller: 'LoginController'
     });
+
 
   // Regular user routes
   $stateProvider
@@ -113,7 +120,6 @@ angular.module('genesisApp', ['ui.router', 'ui.bootstrap'])
 
         // send request to server to check if user is signed in
         Auth.getSignedinUser(function (user) {
-
           // user is already signed in
           if (user) {
             $rootScope.currentUser = user;

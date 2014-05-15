@@ -24,12 +24,7 @@ module.exports = function (app, config, passport, mongoStore) {
     app.use(express.cookieParser());
     app.use(express.bodyParser());
     app.use(express.methodOverride());
-    app.use(express.session({ 
-      secret: config.session.secret, 
-      key: config.session.key,
-      // store: new mongoStore({ url: config.db, collection: 'sessions'}),
-      store: config.session.store
-    })); 
+    app.use(express.session(config.session));
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(app.router);

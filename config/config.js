@@ -19,6 +19,7 @@ module.exports = {
     db: "mongodb://localhost/genesis-dev",
     session: {
       key: "sid",
+      cookie: { maxAge: 1000 * 60 * 60 * 24 * 30 }, // expires in 30 days
       secret: "thisisthefirstclasssecrets",
       store: new mongoStore({
         url: "mongodb://localhost/genesis-dev",
@@ -39,6 +40,7 @@ module.exports = {
     db: "mongodb://localhost/genesis-test",
     session: {
       key: "sid",
+      cookie: { maxAge: 1000 * 60 * 60 * 24 * 30 }, 
       secret: "thisisthefirstclasssecrets",
       store: new mongoStore({
         url: "mongodb://localhost/genesis-test",

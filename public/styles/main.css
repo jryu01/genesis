@@ -5,6 +5,7 @@ html, body, .full-height { height: 100%; }
 body { 
 	font-size: 13px;
 	background-color: #F6F1DF;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
 }
 
 .nav, .pagination, .carousel, .panel-title, a { cursor: pointer; }
@@ -46,6 +47,39 @@ a:hover {
   letter-spacing: -1px;
 }
 
+/*** Login Screen ***/
+.login-screen {
+	  /* fallback */
+	background-color: orange;
+	color: white;
+	text-shadow: 0 1px 3px rgba(0,0,0,.5);
+	-webkit-transform-style: preserve-3d;
+
+	/* Safari 4-5, Chrome 1-9 */
+	/* Can't specify a percentage size? Laaaaaame. */
+	background: -webkit-gradient(radial, center center, 0, center center, 460, from(orange), to(#FFCC6F));
+
+	/* Safari 5.1+, Chrome 10+ */
+	background: -webkit-radial-gradient(circle, orange, #FFCC6F);
+
+	/* Firefox 3.6+ */
+	background: -moz-radial-gradient(circle, orange, #FFCC6F);
+
+	/* IE 10 */
+	background: -ms-radial-gradient(circle, orange, #FFCC6F);
+
+	/* Opera couldn't do radial gradients, then at some point they started supporting the -webkit- syntax, how it kinda does but it's kinda broken (doesn't do sizing) */
+}
+.login-screen .login-box {
+	text-align: center;
+	position: relative;
+  	top: 25%;
+  	transform: translateY(-30%);
+}
+.login-screen h1 {
+	font-size: 51px;
+	font-weight: bold;
+}
 
 /* Main STYLES
 -------------------------------------------------- */
@@ -67,7 +101,6 @@ a:hover {
 	opacity: 0.9;
 	background-color: orange; /* MAIN COLOR */ 
 	color:#ffffff;
-	font-family:verdana,arial,sans-serif;
 }
 
 .navbar-brand {
