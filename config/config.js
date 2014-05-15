@@ -48,7 +48,7 @@ module.exports = {
     facebook: {
       clientID: "150906278446583",
       clientSecret: "889134fea8ac45197b20d65b9edba5cc",
-      callbackURL: "http://localhost:3000/auth/facebook/callback" 
+      callbackURL: "http://www.test.pass-on.net/auth/facebook/callback" 
     }
   },
   production: {}
