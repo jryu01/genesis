@@ -31,6 +31,25 @@ module.exports = {
       callbackURL: "http://localhost:3000/auth/facebook/callback" 
     }
   },
-  test: {},
+  test: {
+    app: {
+      name: "genesis"
+    },
+    root: rootPath, 
+    db: "mongodb://localhost/genesis-test",
+    session: {
+      key: "sid",
+      secret: "thisisthefirstclasssecrets",
+      store: new mongoStore({
+        url: "mongodb://localhost/genesis-test",
+        collection: 'sessions'
+      })
+    },
+    facebook: {
+      clientID: "150906278446583",
+      clientSecret: "889134fea8ac45197b20d65b9edba5cc",
+      callbackURL: "http://localhost:3000/auth/facebook/callback" 
+    }
+  },
   production: {}
 };
