@@ -1,4 +1,24 @@
 <div class="feeder">
+
+  <div class="filter-wrapper">
+    <div class="filter-border"></div>
+    <div class="filter-box">
+      <a class="pull-left" ng-click="shiftFilter('prev')"> 
+        <i class="fa fa-chevron-left"></i>
+      </a>
+      <a class="pull-right" ng-click="shiftFilter('next')"> 
+        <i class="fa fa-chevron-right"></i>
+      </a>
+      <ul class="filter-list list-inline">
+        <li ng-class="{ selected: item === filter.selected }" 
+            ng-repeat="item in filter.items" 
+            ng-click="selectFilter(item)">
+          <a>{{ item }}</a>
+        </li> 
+      </ul> 
+    </div>
+  </div>
+
   <!-- input -->
   <div class="panel panel-default">
     <form name="postForm" ng-submit="submitPost()">
@@ -33,25 +53,6 @@
         <div class="clearfix"></div>
       </div>
     </form>
-  </div>
-
-  <div class="filter-wrapper">
-    <div class="filter-border"></div>
-    <div class="filter-box">
-      <a class="pull-left" ng-click="shiftFilter('prev')"> 
-        <i class="fa fa-chevron-left"></i>
-      </a>
-      <a class="pull-right" ng-click="shiftFilter('next')"> 
-        <i class="fa fa-chevron-right"></i>
-      </a>
-      <ul class="filter-list list-inline">
-        <li ng-class="{ selected: item === filter.selected }" 
-            ng-repeat="item in filter.items" 
-            ng-click="selectFilter(item)">
-          <a>{{ item }}</a>
-        </li> 
-      </ul> 
-    </div>
   </div>
 
   <div class="posts-wrapper">
