@@ -44,17 +44,17 @@ angular.module('genesisApp', ['ui.router', 'ui.bootstrap'])
   $stateProvider
     .state('app.user', {
       abstract: true,
-      templateUrl: '/views/partials/layout.html'
+      templateUrl: '/views/partials/layout.html',
+      controller: 'ToplevelController'
     })
     .state('app.user.home', {
       views: {
         '': {
           templateUrl: 'views/partials/home.html',
-          controller: 'HomeController'
         },
-        'sideMenu@app.user.home': {
-          templateUrl: 'views/partials/sideMenu.html'
-        },
+        // 'sideMenu@app.user.home': {
+        //   templateUrl: 'views/partials/sideMenu.html'
+        // },
         'feeder@app.user.home': {
           templateUrl: 'views/partials/feeder.html',
           controller: 'FeederController'

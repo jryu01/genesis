@@ -1,12 +1,12 @@
 /**
- * HomeController
+ * ToplevelController
  */
 'use strict';
 
 angular.module('genesisApp')
-.controller('HomeController', ['$scope', '$state', 'Auth', 'socket',
+.controller('ToplevelController', ['$scope', '$state', 'Auth', 'socket',
 function ($scope, $state, Auth, socket) {
-  console.log("user from HomeController");
+  console.log("user from ToplevelController");
   console.log($scope.currentUser);
 
   // signout function
