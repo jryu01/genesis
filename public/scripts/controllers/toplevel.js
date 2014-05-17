@@ -1,12 +1,12 @@
 /**
- * HomeController
+ * ToplevelController
  */
 'use strict';
 
 angular.module('genesisApp')
-.controller('HomeController', ['$scope', '$state', 'Auth', 
-function ($scope, $state, Auth) {
-  console.log("user from HomeController");
+.controller('ToplevelController', ['$scope', '$state', 'Auth', 'socket',
+function ($scope, $state, Auth, socket) {
+  console.log("user from ToplevelController");
   console.log($scope.currentUser);
 
   // signout function
@@ -14,6 +14,7 @@ function ($scope, $state, Auth) {
     Auth.signout(
       // Success
       function (reponse) {
+        socket.emit('signout');
         $state.go('app.public.start');
       },
       // Fauilure

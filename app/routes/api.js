@@ -6,12 +6,12 @@
 'use strict';
 
 var passport = require('passport');
-var auth = require('../config/middlewares/authorization');
-var authCtrl = require('./controllers/auth');
-var userCtrl = require('./controllers/user');
-var eventCtrl = require('./controllers/event');
-var placeCtrl = require('./controllers/place');
-var postCtrl = require('./controllers/post');
+var auth = require('../../config/middlewares/authorization');
+var authCtrl = require('../controllers/auth');
+var userCtrl = require('../controllers/user');
+var eventCtrl = require('../controllers/event');
+var placeCtrl = require('../controllers/place');
+var postCtrl = require('../controllers/post');
 
 module.exports = function (app) {
 

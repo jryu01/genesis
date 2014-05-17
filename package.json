@@ -12,6 +12,8 @@
     "passport": "~0.2.0",
     "passport-facebook": "~0.1.5",
     "passport-local": "~0.1.6",
+    "passport.socketio": "^3.0.1",
+    "socket.io": "^0.9.16",
     "underscore": "^1.6.0",
     "validator": "^3.10.0"
   },

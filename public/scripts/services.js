@@ -30,6 +30,30 @@ angular.module('genesisApp')
     },
   };
 }])
+.factory('socket', ['$rootScope', '$window', function ($rootScope, $window) {
+  var socket = $window.io.connect();
+  return {
+    on: function (eventName, callback) {
+      socket.on(eventName, function () {
+        var args = arguments;
+        $rootScope.$apply(function () {
+          callback.apply(socket, args);
+        });
+      });
+    },
+    emit: function (eventName, data, callback) {
+      socket.emit(eventName, data, function () {
+        var args = arguments;
+        $rootScope.$apply(function () {
+          callback.apply(socket, args);
+        });
+      });
+    },
+    removeAllListeners: function () {
+      socket.removeAllListeners();
+    }
+  };
+}])
 .factory('Posts', ['$http', function ($http) {
   return {
     list: function (options, success, error) {

@@ -14,6 +14,8 @@ var env = process.env.NODE_ENV || 'development'; // env variable
 var config = require('./config/config')[env]; // config file
 var app = express();// express app
 var server = http.createServer(app); // server
+var io = require('socket.io').listen(server);
+
 
 // configuration ===========================================
 
@@ -26,8 +28,18 @@ require('./config/passport')(passport, config);
 // express app config
 require('./config/express')(app, config, passport);
 
+// socket.io configuration with passportsocket.io
+
+require('./config/io')(io, config, passport);
+
 // routes ==================================================
-require('./app/routes')(app);
+
+// REST API
+require('./app/routes/api')(app);
+
+// socket 
+require('./app/routes/socket')(io);
+//io.sockets.on('connection', require('./app/routes/socket'));
 
 // start server ============================================
 server.listen(app.get('port'), function () {

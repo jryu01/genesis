@@ -7,9 +7,8 @@
 
 var express = require('express');
 var cons = require('consolidate');
-var mongoStore = require('connect-mongo')(express); // mongodb session store
 
-module.exports = function (app, config, passport) {
+module.exports = function (app, config, passport, mongoStore) {
 
   // express app configuration
   app.configure(function () {
@@ -25,10 +24,7 @@ module.exports = function (app, config, passport) {
     app.use(express.cookieParser());
     app.use(express.bodyParser());
     app.use(express.methodOverride());
-    app.use(express.session({ 
-      secret: 'thisisthefirstclasssecrets', 
-      store: new mongoStore({ url: config.db, collection: 'sessions'})
-    })); 
+    app.use(express.session(config.session));
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(app.router);
