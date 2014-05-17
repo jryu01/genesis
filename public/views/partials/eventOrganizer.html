@@ -1,8 +1,81 @@
 <div>
- <!-- create a new event -->
-  <div class="create_button_wrapper">
-    <button class="create_button" type="button">Create a new Event</button>
-  </div>
+  <!-- create button -->
+  <button class="btn btn-default create_button" ng-click="isCollapsed = !isCollapsed">Create a new Event</button>
+
+  <!-- Hidden field -->
+	<div collapse="isCollapsed">
+    
+    <!-- create a new event - input -->
+    <div class="create_button_wrapper">
+      <!-- $scope.submitEventFromPublic = function() -->
+      <form name="eventForm" ng-submit="submitEventFromPublic()">
+        <div class="panel-body" style="padding: 0px">     
+          <!-- $scope.inputText -->
+          Name: <input type="text" name="Name" ng-model="inputName" required></input>
+          <br/>
+          Description: <input type="text"  name="Desc"  ng-model="inputDesc" required></input>
+          <br/> 
+          Place: <input type="text"  name="Place"  ng-model="inputPlace"></input> 
+          <br/>
+    
+          Time: <input type="text" datepicker-popup="{{format}}" ng-model="inputTime" is-open="opened" min-date="minDate" ng-required="true" close-text="Close" />
+                <timepicker ng-model="inputTime" minute-step="mstep" show-meridian="ismeridian"></timepicker>
+          <br/>
+          Repeat:   <input type="radio" ng-model="inputRepeat" value="onetime"> One-Time
+                    <input type="radio" ng-model="inputRepeat" value="daily"> Daily 
+                    <input type="radio" ng-model="inputRepeat" value="weekly"> Weekly 
+                    <input type="radio" ng-model="inputRepeat" value="biweekly"> Bi-Weekly 
+                    <input type="radio" ng-model="inputRepeat" value="monthly"> Monthly 
+          <br/>
+          Sports: <input type="text"  name="Sports"  ng-model="inputSports" required></input>
+          <br/> 
+        </div>
+        <input type="submit">
+        <!--VALIDATION <p class="bg-danger" style="margin:0" ng-show="eventForm.Name.$error.minlength">Please fill out name field.</p>-->
+      </form>
+    </div>
+    
+	</div>
+  <!-- view -->
+  <!-- ForEach - event item in eventGroup -->
+  <div class="panel panel-default">
+    <div class="list-group">
+      <div ng-repeat="event in ongoingGroup">
+        <a href="#" class="list-group-item list-group-item-danger">
+          <div class="panel-footer">
+                  <img class="pull-left img-rounded" src="https://lorempixel.com/40/40/" style="margin-right: 5px;">  
+                  <h4 class="event_title">{{event.name}}</h4> 
+                  at <b>{{event.place.name}} </b> on <b>{{event.schedule.appDateTime | date:'EEEE hh:mma, MMMM d yyyy'}}</b>.
+                  <div class="clearfix"></div>  
+          </div>                    
+        </a>
+      </div>
+      
+      <div ng-repeat="event in todayGroup">
+        <a href="#" class="list-group-item list-group-item-warning">
+          <div class="panel-footer">
+                  <img class="pull-left img-rounded" src="https://lorempixel.com/40/40/" style="margin-right: 5px;">  
+                  <h4 class="event_title">{{event.name}}</h4> 
+                  at <b>{{event.place.name}} </b> on <b>{{event.schedule.appDateTime | date:'EEEE hh:mma, MMMM d yyyy'}}</b>.
+                  <div class="clearfix"></div>  
+          </div>                    
+        </a>
+      </div>
+      
+      <div ng-repeat="event in normalGroup">
+        <a href="#" class="list-group-item list-group-item-success">
+          <div class="panel-footer">
+                  <img class="pull-left img-rounded" src="https://lorempixel.com/40/40/" style="margin-right: 5px;">  
+                  <h4 class="event_title">{{event.name}}</h4> 
+                  at <b>{{event.place.name}} </b> on <b>{{event.schedule.appDateTime | date:'EEEE hh:mma, MMMM d yyyy'}}</b>.
+                  <div class="clearfix"></div>  
+          </div>                    
+        </a>
+      </div>
+    </div> 
+  </div> 
+
+  <!--
   
   <div class="panel panel-default">
     <div class="list-group">
@@ -10,7 +83,7 @@
         <div class="panel-footer">
                 <img class="pull-left img-rounded" src="https://lorempixel.com/40/40/" style="margin-right: 5px;">  
                 <h4 class="event_title">YKPC Weekly Basketball</h4> 
-                at <b>YKPC Church </b> on <b>7:00 PM EST, Today</b>.
+                at <b>YKPC Church </b> on <b>hh:MM am/pm timezone, Apr. 24th Monday, 2014</b>.
                 <div class="clearfix"></div>  
         </div>                    
       </a>
@@ -39,5 +112,7 @@
         </div>  
       </a>
     </div>
-  </div> 
+  </div>
+  
+  -->
 </div>

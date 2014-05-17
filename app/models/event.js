@@ -12,37 +12,34 @@ var Schema = mongoose.Schema;
  * Event Schema
  */
 var EventSchema = new Schema({
-
-  activated: { type: Boolean, default: true },
-  showPublic: { type: Boolean, default: true },
-  createdAt: { type: Date, default: Date.now },
+  activated: { type: Boolean, default: true }, // disable when deleted
+  showPublic: { type: Boolean, default: true }, // closed vs open
+  createdAt: { type: Date, default: Date.now }, // auto by server
   createdBy: {
-    name: String,
-    id: Schema.Types.ObjectId
+    name: String, // auto by server
+    id: Schema.Types.ObjectId // auto by server
   },
-  name: String,
-  desc: String,
-  schedule : {
+  name: String, // INPUT
+  desc: String, // INPUT
+  schedule : { // INPUT
     repeat: { type: Boolean, default: false },
-    week: [{
+    appDateTime : Date,
+    week: {
+      year: String,
+      month: String,
+      date: String,
       weekDay: String,
-      startTime: String, //or Number 
-      endTime: String,
-    }],
-    // for one time or menaully setted dates (repeat set to false)
-    dates: [{
-      startDate: Date,
-      endDate: Date,
-    }], // find all events where its scheduledDates.startDate contains date greater than currentDate
+      time: String,
+      eventDuration : String
+    }, // find all events where its scheduledDates.startDate contains date greater than currentDate
   },
-  place: {
+  place: { // INPUT
     id: Schema.Types.ObjectId,
     name: String,
     loc: {type: [Number], index: '2d'}, //address of the place
   },
-  sport: String,
-  members: [Schema.Types.ObjectId],
-  city: String,
+  sport: String, // INPUT
+  members: [Schema.Types.ObjectId]
 
 }); 
 
@@ -60,4 +57,4 @@ EventSchema.options.toJSON = {
   }
 };
 
-module.exports = mongoose.model('Event', EventSchema);
+module.exports = mongoose.model('Event', EventSchema); // access db/events
