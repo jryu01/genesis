@@ -267,13 +267,12 @@ a:hover {
 {
     width: 100%;
     margin:7px 0;
-    padding:1px;
-    text-align: center;
+    padding: 1px;
 }
 
 .create_button
 {
-    width: 80%;
+    width: 100%;
 }
 
 /*** Event Organizer ***/

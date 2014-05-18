@@ -91,4 +91,18 @@ angular.module('genesisApp')
       .error(error);
     },
   };
+}])
+.factory('EventsFromService', ['$http', function ($http) {
+  return {
+    list: function (options, success, error) {
+      $http.get('api/events', options.config)
+      .success(success)
+      .error(error);
+    },
+    create: function (options, success, error) {
+      $http.post('api/events', options.data)
+      .success(success)
+      .error(error); 
+    },
+  };
 }]);
