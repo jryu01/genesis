@@ -207,22 +207,22 @@ a:hover {
 
 /* filter */
 
-.feeder .filter-wrapper a {
+.filter-wrapper a {
 	color: inherit;
 }
-.feeder .filter-wrapper .filter-border{
+.filter-wrapper .filter-border{
 	border-bottom: 1px solid #ccc;
 	width: 100%;
 }
-.feeder .filter-wrapper .filter-box {
+.filter-wrapper .filter-box {
 	padding-top: 15px;
 }
-.feeder .filter-wrapper .selected,
-.feeder .filter-wrapper li:hover {
+.filter-wrapper .selected,
+.filter-wrapper li:hover {
 	border-bottom-color: orange; 
 	border-bottom-style: solid;
 }
-.feeder .filter-wrapper ul {
+.filter-wrapper ul {
 	padding-left: 30px;
 	padding-right: 30px;
 }

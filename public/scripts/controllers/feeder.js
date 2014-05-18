@@ -8,6 +8,38 @@
 function ($scope, $state, Posts, socket) {
 
   /*
+   * Filter related Event handler 
+   */
+  $scope.$on('select filter', function (e) {
+    var item = $scope.$parent.filter.selected;
+    console.log(item);
+
+    // set postform sport to selected item
+    $scope.selectDropdown((item === 'All') ? null : item);
+
+    var params = { 
+      limit: 5,
+      commentsLimit: 1
+    }; 
+    if (item !== 'All') {
+      params.sport = item;
+    }  
+    $scope.postsBox.loading = true;
+    Posts.list(
+      { config : { params: params } },
+      // Success
+      function (data, status, headers, config) {
+        $scope.postsBox.loading = false;
+        $scope.posts = data;
+      },
+      // Failure
+      function (data, status, headers, config) {
+        // handle this situation
+      }
+    );
+  });
+
+  /*
    * Post form related functions
    */
 
@@ -28,7 +60,7 @@ function ($scope, $state, Posts, socket) {
     }
     var newPost = {
       sport: $scope.postForm.type, // TODO: select sport
-      loc: [0,0],  // TODO: get location of current user
+      loc: [43.6525,-79.3816667], // TODO: get the location. 43,-79 for toronto
       contents: $scope.postForm.postText
     };
     // Posts.create({data: newPost}, 
@@ -49,47 +81,6 @@ function ($scope, $state, Posts, socket) {
       $scope.posts.unshift(data);
     });
   };
-
-  /*
-   * Filter related functions
-   */
-    $scope.selectFilter = function (item) {
-      $scope.filter.selected = item;
-
-      // set postform sport to item
-      $scope.selectDropdown((item === 'All') ? null : item);
-
-      var params = { 
-        limit: 5,
-        commentsLimit: 1
-      }; 
-      if (item !== 'All') {
-        params.sport = item;
-      }  
-      $scope.postsBox.loading = true;
-      Posts.list(
-        { config : { params: params } },
-        // Success
-        function (data, status, headers, config) {
-          $scope.postsBox.loading = false;
-          $scope.posts = data;
-        },
-        // Failure
-        function (data, status, headers, config) {
-          // handle this situation
-        }
-      );
-    };
-    $scope.shiftFilter = function (flag) {
-      var filters = $scope.filter.items;
-      var index = filters.indexOf($scope.filter.selected);
-      if (flag === 'next') {
-        index = (index === filters.length - 1) ? 0 : index + 1;
-      } else if (flag === 'prev') {
-        index = (index === 0) ? filters.length - 1 : index - 1;
-      }
-      $scope.selectFilter(filters[index]);
-    };
 
   /*
    * post related functions
@@ -254,8 +245,8 @@ function ($scope, $state, Posts, socket) {
       commentsLimit: 1,
       dateBefore: $scope.posts[$scope.posts.length -1].createdAt
     };
-    if ($scope.filter.selected !== 'All') {
-      params.sport = $scope.filter.selected;
+    if ($scope.$parent.filter.selected !== 'All') {
+      params.sport = $scope.$parent.filter.selected;
     }  
     Posts.list(
       { config: { params: params } },
@@ -285,10 +276,10 @@ function ($scope, $state, Posts, socket) {
 
     $scope.postForm = {};
 
-    $scope.filter = {
-      items: ['All', 'General', 'Basketball', 'Badminton'],
-      selected: "All"
-    };
+    // $scope.$parent.filter = {
+    //   items: ['All', 'General', 'Basketball', 'Badminton'],
+    //   selected: "All"
+    // };
 
     $scope.postsBox = {
       loading: true
@@ -315,8 +306,8 @@ function ($scope, $state, Posts, socket) {
   function registerSocketEvents() {
 
     socket.on('newPost', function (post) {
-      var isViewing = $scope.filter.selected === 'All' ||
-                      $scope.filter.selected === post.sport;
+      var isViewing = $scope.$parent.filter.selected === 'All' ||
+                      $scope.$parent.filter.selected === post.sport;
       if (isViewing) {
         $scope.posts.unshift(post);
       }

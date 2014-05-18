@@ -51,6 +51,7 @@ angular.module('genesisApp', ['ui.router', 'ui.bootstrap'])
       views: {
         '': {
           templateUrl: 'views/partials/home.html',
+          controller: 'HomeController'
         },
         // 'sideMenu@app.user.home': {
         //   templateUrl: 'views/partials/sideMenu.html'
