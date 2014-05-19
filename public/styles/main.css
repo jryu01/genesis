@@ -195,6 +195,7 @@ a:hover {
 }
 .home .scroll-area {
 	overflow: auto;
+	-webkit-overflow-scrolling: touch;
 }
 
 /* filter */
