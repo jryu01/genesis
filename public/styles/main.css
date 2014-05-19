@@ -89,6 +89,9 @@ a:hover {
 	/*float: left;*/
 	/*display: block;*/
 }
+.navbar-fixed-top {
+	position: absolute;	
+}
 .menu-button span {
 	background-color: #fff;
 }
@@ -167,7 +170,7 @@ a:hover {
 
 .sideDivider{
 	color: lightgrey;
-  border-top: 1px solid;
+	border-top: 1px solid;
 }
 
 @media (max-width: 767px) {
@@ -179,6 +182,46 @@ a:hover {
 	.sidebar.mobile-full-width {
 		width: 100%!important;
 	}
+}
+
+/* home */
+.home > .rn-carousel-container {
+	height: 100%;
+}
+@media (min-width: 768px) {
+	.home > .rn-carousel-container {
+		display: none;
+	}
+}
+.home .scroll-area {
+	overflow: auto;
+}
+
+/* filter */
+
+.filter-wrapper {
+	position: absolute;
+	z-index: 10;
+	width: 100%;
+}
+.filter-wrapper a {
+	color: inherit;
+}
+.filter-wrapper .filter-border{
+	border-bottom: 1px solid #ccc;
+	width: 100%;
+}
+.filter-wrapper .filter-box {
+	padding-top: 15px;
+}
+.filter-wrapper .selected,
+.filter-wrapper li:hover {
+	border-bottom-color: orange; 
+	border-bottom-style: solid;
+}
+.filter-wrapper ul {
+	padding-left: 30px;
+	padding-right: 30px;
 }
 
 /*** Feeder ***/
@@ -203,28 +246,6 @@ a:hover {
     border-color: Transparent; 
     overflow: auto; 
     resize: vertical;
-}
-
-/* filter */
-
-.filter-wrapper a {
-	color: inherit;
-}
-.filter-wrapper .filter-border{
-	border-bottom: 1px solid #ccc;
-	width: 100%;
-}
-.filter-wrapper .filter-box {
-	padding-top: 15px;
-}
-.filter-wrapper .selected,
-.filter-wrapper li:hover {
-	border-bottom-color: orange; 
-	border-bottom-style: solid;
-}
-.filter-wrapper ul {
-	padding-left: 30px;
-	padding-right: 30px;
 }
 
 

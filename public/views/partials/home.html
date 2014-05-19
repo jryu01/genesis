@@ -1,5 +1,5 @@
 <!-- content div -->
-<div class="content row full-height">       
+<div class="content full-height home">       
   <div class="filter-wrapper">
     <div class="filter-border"></div>
     <div class="filter-box">
@@ -19,12 +19,13 @@
     </div>
   </div>
 
-  <!-- Side bar -->
-  <!-- <div class= "hidden-xs hidden-sm col-md-2">      -->
-    <!-- <div ui-view="sideMenu"></div> -->
-  <!-- </div> -->
-  <!-- /Side bar -->
+<!-- for xs screen only -->
+<div rn-carousel class="visible-xs full-height" style="padding-top: 50px">
+  <div ui-view="feeder" class="full-height scroll-area"></div>
+  <div ui-view="eventOrganizer" class="full-height scroll-area"></div>
+</div>
 
+<div class="row hidden-xs full-height" style="padding-top: 50px">
   <!-- Feeder -->
   <div class="col-sm-6">
     <div ui-view="feeder"></div>
@@ -36,6 +37,14 @@
     <div ui-view="eventOrganizer"></div>
   </div>
   <!-- /Events  -->
+</div>
+
+  <!-- Side bar -->
+  <!-- <div class= "hidden-xs hidden-sm col-md-2">      -->
+    <!-- <div ui-view="sideMenu"></div> -->
+  <!-- </div> -->
+  <!-- /Side bar -->
+
   
 </div>  
-<!-- /content div -->
+<!-- /content div
