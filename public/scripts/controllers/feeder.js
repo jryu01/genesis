@@ -65,7 +65,8 @@ function ($scope, $state, Posts, socket) {
     }
     var newPost = {
       sport: $scope.postForm.type, // TODO: select sport
-      loc: [43.6525,-79.3816667], // TODO: get the location. 43,-79 for toronto
+      // loc: [43.6525,-79.3816667], // TODO: get the location. 43,-79 for toronto
+      loc: [0,0], // TODO: get the location. 43,-79 for toronto
       contents: $scope.postForm.postText
     };
     // Posts.create({data: newPost}, 
