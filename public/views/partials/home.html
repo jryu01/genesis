@@ -23,31 +23,18 @@
     </div>
   </div>
 
-<!-- for xs screen only -->
-<div rn-carousel class="full-height" style="padding-top: 50px">
-  <div ui-view="feeder" class="full-height scroll-area"></div>
-  <div ui-view="eventOrganizer" class="full-height scroll-area"></div>
-</div>
-
-<div class="row hidden-xs full-height" style="padding-top: 50px">
-  <!-- Feeder -->
-  <div class="col-sm-6">
-    <div ui-view="feeder"></div>
+  <!-- for xs screen only -->
+  <div rn-carousel class="scrollable" style="padding-top: 50px">
+    <div ui-view="feeder" class="scrollable-content"></div>
+    <div ui-view="eventOrganizer" class="scrollable-content"></div>
   </div>
-  <!-- /Feeder -->
 
-  <!-- Events  -->
-  <div class= "col-sm-6">
-    <div ui-view="eventOrganizer"></div>
+  <!-- for larger screen -->
+  <div class="visible-desktop row scrollable" style="padding-top: 50px">
+    <div class="scrollable-content">
+      <div ui-view="feeder" class="col-sm-6"></div>
+      <div ui-view="eventOrganizer" class="col-sm-6"></div>
+    </div>
   </div>
-  <!-- /Events  -->
-</div>
 
-  <!-- Side bar -->
-  <!-- <div class= "hidden-xs hidden-sm col-md-2">      -->
-    <!-- <div ui-view="sideMenu"></div> -->
-  <!-- </div> -->
-  <!-- /Side bar -->
-
-  
 </div>  

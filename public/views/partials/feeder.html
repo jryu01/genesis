@@ -1,4 +1,5 @@
 <div class="feeder">
+
   <!-- input -->
   <div class="panel panel-default">
     <form name="postForm" ng-submit="submitPost()">
@@ -7,14 +8,16 @@
       </div>
       <div class="panel-footer">
         <div class="pull-left">
-          <div dropdwon class="btn-group">
+          <div id="sportDropdown" class="btn-group" 
+              toggleable active-class="open">
             <button type="button" 
-                    class="btn btn-default btn-sm dropdown-toggle" 
-                    ng-disabled="disabled">
+                    class="btn btn-default btn-sm"
+                    toggle target="sportDropdown">
               {{ postForm.type || 'Sport' }} 
               <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu" role="menu">
+            <ul class="dropdown-menu" role="menu" 
+                toggle="off" bubble target="sportDropdown">
               <li>
                 <a ng-click="selectDropdown('General')">General</a>
               </li>

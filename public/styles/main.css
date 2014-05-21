@@ -111,14 +111,17 @@ a:hover {
 .home > .rn-carousel-container {
 	height: 100%;
 }
+/* on mobile */
+@media (max-width: 767px) {
+	.visible-desktop {
+		display: none!important;
+	}
+}
+/* on desktop */
 @media (min-width: 768px) {
 	.home > .rn-carousel-container {
 		display: none;
 	}
-}
-.home .scroll-area {
-	overflow: auto;
-	-webkit-overflow-scrolling: touch;
 }
 
 /* filter */
