@@ -1,118 +1,143 @@
 <div>
-  <!-- create button -->
-  <button class="btn btn-default create_button" ng-click="isCollapsed = !isCollapsed">Create a new Event</button>
-
-  <!-- Hidden field -->
-	<div collapse="isCollapsed">
-    
-    <!-- create a new event - input -->
-    <div class="create_button_wrapper">
-      <!-- $scope.submitEventFromPublic = function() -->
-      <form name="eventForm" ng-submit="submitEventFromPublic()">
-        <div class="panel-body" style="padding: 0px">     
-          <!-- $scope.inputText -->
-          Name: <input type="text" name="Name" ng-model="inputName" required></input>
-          <br/>
-          Description: <input type="text"  name="Desc"  ng-model="inputDesc" required></input>
-          <br/> 
-          Place: <input type="text"  name="Place"  ng-model="inputPlace"></input> 
-          <br/>
-    
-          Time: <input type="text" datepicker-popup="{{format}}" ng-model="inputTime" is-open="opened" min-date="minDate" ng-required="true" close-text="Close" />
-                <timepicker ng-model="inputTime" minute-step="mstep" show-meridian="ismeridian"></timepicker>
-          <br/>
-          Repeat:   <input type="radio" ng-model="inputRepeat" value="onetime"> One-Time
-                    <input type="radio" ng-model="inputRepeat" value="daily"> Daily 
-                    <input type="radio" ng-model="inputRepeat" value="weekly"> Weekly 
-                    <input type="radio" ng-model="inputRepeat" value="biweekly"> Bi-Weekly 
-                    <input type="radio" ng-model="inputRepeat" value="monthly"> Monthly 
-          <br/>
-          Sports: <input type="text"  name="Sports"  ng-model="inputSports" required></input>
-          <br/> 
-        </div>
-        <input type="submit">
-        <!--VALIDATION <p class="bg-danger" style="margin:0" ng-show="eventForm.Name.$error.minlength">Please fill out name field.</p>-->
-      </form>
-    </div>
-    
-	</div>
-  <!-- view -->
-  <!-- ForEach - event item in eventGroup -->
-  <div class="panel panel-default">
-    <div class="list-group">
-      <div ng-repeat="event in ongoingGroup">
-        <a href="#" class="list-group-item list-group-item-danger">
-          <div class="panel-footer">
-                  <img class="pull-left img-rounded" src="https://lorempixel.com/40/40/" style="margin-right: 5px;">  
-                  <h4 class="event_title">{{event.name}}</h4> 
-                  at <b>{{event.place.name}} </b> on <b>{{event.schedule.appDateTime | date:'EEEE hh:mma, MMMM d yyyy'}}</b>.
-                  <div class="clearfix"></div>  
-          </div>                    
-        </a>
-      </div>
-      
-      <div ng-repeat="event in todayGroup">
-        <a href="#" class="list-group-item list-group-item-warning">
-          <div class="panel-footer">
-                  <img class="pull-left img-rounded" src="https://lorempixel.com/40/40/" style="margin-right: 5px;">  
-                  <h4 class="event_title">{{event.name}}</h4> 
-                  at <b>{{event.place.name}} </b> on <b>{{event.schedule.appDateTime | date:'EEEE hh:mma, MMMM d yyyy'}}</b>.
-                  <div class="clearfix"></div>  
-          </div>                    
-        </a>
-      </div>
-      
-      <div ng-repeat="event in normalGroup">
-        <a href="#" class="list-group-item list-group-item-success">
-          <div class="panel-footer">
-                  <img class="pull-left img-rounded" src="https://lorempixel.com/40/40/" style="margin-right: 5px;">  
-                  <h4 class="event_title">{{event.name}}</h4> 
-                  at <b>{{event.place.name}} </b> on <b>{{event.schedule.appDateTime | date:'EEEE hh:mma, MMMM d yyyy'}}</b>.
-                  <div class="clearfix"></div>  
-          </div>                    
-        </a>
-      </div>
-    </div> 
-  </div> 
-
-  <!--
+  <!-- top tabletab -->
+  <tabset>
+    <tab select="publicUpdateLists()">
+      <tab-heading>
+        All
+      </tab-heading>
+    </tab>
+    <tab select="publicUpdateLists({eventType:'Casual'})">
+      <tab-heading>
+        Casual
+      </tab-heading>
+    </tab>
+    <tab select="publicUpdateLists({eventType:'Tournament'})">
+      <tab-heading>
+        Tournament
+      </tab-heading>
+    </tab>
+    <tab class="default_tab" select="openCollapsed()">
+      <tab-heading>
+        <i class="glyphicon glyphicon-plus"></i> Create Event
+      </tab-heading>
+    </tab>
+  </tabset>
   
-  <div class="panel panel-default">
-    <div class="list-group">
-      <a href="#" class="list-group-item list-group-item-danger">
+  <!-- collpased event input -->
+  <div collapse="isCollapsed">
+    <div class="panel panel-default">
+      <form name="eventForm" ng-submit="submitEventFromPublic()">
+        <div class="panel-body event_body">
+          <div class="post-heading">
+            <table class="create_event_table">
+              <tbody class="create_event_tbody">
+                <tr class="create_event_tr">
+                  <th class="create_event_th">Name</th>
+                  <td colspan="2" class="create_event_td"><input class="create_event_input" type="text" ng-model="inputName" required></input></td>
+                </tr>
+                <tr class="create_event_tr">
+                  <th class="create_event_th">Description</th>
+                  <td colspan="2" class="create_event_td"><input class="create_event_input" type="text" ng-model="inputDesc" required></input></td>
+                </tr>
+                <tr class="create_event_tr">
+                  <th class="create_event_th">Place</th>
+                  <td colspan="2" class="create_event_td"><input class="create_event_input" type="text" ng-model="inputPlace" required></input></td>
+                </tr>
+                <tr class="create_event_tr">
+                  <th class="create_event_th">Time</th>
+                  <td class="create_event_td_half">
+                    <div class="input-group">
+                      <input type="text" class="event_datepicker" datepicker-popup="{{format}}" ng-model="inputTime" is-open="opened" min-date="minDate" ng-required="true" close-text="Close" />
+                      <button type="button" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </div>
+                  </td>
+                  <td class="create_event_td_half">
+                    <input class="create_event_input_sm" type="text" ng-model="inputTime" required></input>
+                    Repeat: <input ng-model="inputRepeatBool" type="checkbox"></input>
+                  </td>
+                </tr>
+                <tr ng-show="inputRepeatBool" class="create_event_tr">
+                  <th class="create_event_th"></th>
+                  <td colspan="2" class="create_event_td">
+                    <input class="event_radio" type="radio" ng-model="inputRepeat" value="daily"> Daily </input>
+                    <input class="event_radio" type="radio" ng-model="inputRepeat" value="weekly"> Weekly </input>
+                    <input class="event_radio" type="radio" ng-model="inputRepeat" value="biweekly"> Bi-Weekly</input>
+                    <input class="event_radio" type="radio" ng-model="inputRepeat" value="monthly"> Monthly </input>
+                 </td>
+                </tr>
+                <tr class="create_event_tr">
+                  <th class="create_event_th">Sports</th>
+                  <td colspan="2" class="create_event_td">
+                    <div dropdwon class="btn-group">
+                      <button type="button" class="btn btn-default btn-sm dropdown-toggle" ng-disabled="disabled">
+                        {{ inputSports }} 
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a ng-click="selectDropdownSports('General')">General</a></li>
+                        <li><a ng-click="selectDropdownSports('Basketball')">Basketball</a></li>
+                        <li><a ng-click="selectDropdownSports('Badminton')">Badminton</a></li>
+                        <li><a ng-click="selectDropdownSports('TableTennis')">Table Tennis</a></li>
+                        <li><a ng-click="selectDropdownSports('Bicycle')">Bicycle</a></li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="create_event_tr">
+                  <th class="create_event_th">Type</th>
+                  <td colspan="2" class="create_event_td">
+                    <input class="event_radio" type="radio" ng-model="inputTypes" value="Casual"> Casual </input>
+                    <input class="event_radio" type="radio" ng-model="inputTypes" value="Tournament"> Tournament </input>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="clearfix"></div>
+          </div>
+        </div>
         <div class="panel-footer">
-                <img class="pull-left img-rounded" src="https://lorempixel.com/40/40/" style="margin-right: 5px;">  
-                <h4 class="event_title">YKPC Weekly Basketball</h4> 
-                at <b>YKPC Church </b> on <b>hh:MM am/pm timezone, Apr. 24th Monday, 2014</b>.
-                <div class="clearfix"></div>  
-        </div>                    
-      </a>
-      <a href="#" class="list-group-item list-group-item-warning">
-        <div class="panel-footer">
-                <img class="pull-left img-rounded" src="https://lorempixel.com/40/40/" style="margin-right: 5px;">  
-                <h4 class="event_title">Weekly Badminton</h4> 
-                at <b>YKPC Church </b> on <b>8:00 PM EST, Today</b>.
-                <div class="clearfix"></div>  
-        </div>  
-      </a>
-      <a href="#" class="list-group-item list-group-item-success">
-        <div class="panel-footer">
-                <img class="pull-left img-rounded" src="https://lorempixel.com/40/40/" style="margin-right: 5px;">  
-                <h4 class="event_title">Weekly Biking</h4> 
-                at <b>Central Park </b> on <b>7:00 PM EST, Apr. 24th Monday, 2014</b>.
-                <div class="clearfix"></div>  
-        </div>  
-      </a>
-      <a href="#" class="list-group-item list-group-item-success">
-        <div class="panel-footer">
-                <img class="pull-left img-rounded" src="https://lorempixel.com/40/40/" style="margin-right: 5px;">  
-                <h4 class="event_title">Monthly Walk</h4> 
-                at <b>Central Park </b> on <b>6:00 PM EST, Apr. 24th Monday, 2014</b>.
-                <div class="clearfix"></div>  
-        </div>  
-      </a>
+          <div class="pull-left"></div>
+          <div class="pull-right">
+            <input type="submit" class="btn btn-warning btn-sm" >
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </form> 
     </div>
   </div>
-  
-  -->
+  <!--VALIDATION <p class="bg-danger" style="margin:0" ng-show="eventForm.Name.$error.minlength">Please fill out name field.</p>-->
+
+  <!-- view -->
+  <div class="list-group">
+    <div ng-repeat="event in onGoingGroup">
+      <a href="#" class="list-group-item list-group-item-danger">
+        <div class="panel-footer">
+          <img class="pull-left img-rounded event_imgIcon" src="../../images/sportsIcon/{{event.sports}}.png">  
+          <h4 class="event_title">{{event.name}}</h4> 
+          at <b>{{event.place.name}} </b> on <b>{{event.schedule.appDateTime | date:'EEEE hh:mma, MMMM d yyyy'}}</b>.
+          <div class="clearfix"></div>  
+        </div>                    
+      </a>
+    </div>
+    <div ng-repeat="event in todayGroup">
+      <a href="#" class="list-group-item list-group-item-warning">
+        <div class="panel-footer">
+          <img class="pull-left img-rounded event_imgIcon" src="../../images/sportsIcon/{{event.sports}}.png">  
+          <h4 class="event_title">{{event.name}}</h4> 
+          at <b>{{event.place.name}} </b> on <b>{{event.schedule.appDateTime | date:'EEEE hh:mma, MMMM d yyyy'}}</b>.       
+          <div class="clearfix"></div>  
+        </div>                    
+      </a>
+    </div>
+    <div ng-repeat="event in normalGroup">
+      <a href="#" class="list-group-item list-group-item-success">
+        <div class="panel-footer">
+          <img class="pull-left img-rounded event_imgIcon" src="../../images/sportsIcon/{{event.sports}}.png">  
+          <h4 class="event_title">{{event.name}}</h4> 
+          at <b>{{event.place.name}} </b> on <b>{{event.schedule.appDateTime | date:'EEEE hh:mma, MMMM d yyyy'}}</b>.
+          <div class="clearfix"></div>  
+        </div>                    
+      </a>
+    </div>
+  </div> <!-- end of pannel -->
 </div>

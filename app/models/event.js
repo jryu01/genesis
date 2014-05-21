@@ -22,7 +22,7 @@ var EventSchema = new Schema({
   name: String, // INPUT
   desc: String, // INPUT
   schedule : { // INPUT
-    repeat: { type: Boolean, default: false },
+    repeat: String,
     appDateTime : Date,
     week: {
       year: String,
@@ -38,7 +38,8 @@ var EventSchema = new Schema({
     name: String,
     loc: {type: [Number], index: '2d'}, //address of the place
   },
-  sport: String, // INPUT
+  sports: String, // INPUT
+  eventType: String, // INPUT
   members: [Schema.Types.ObjectId]
 
 }); 

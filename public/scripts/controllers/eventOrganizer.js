@@ -9,10 +9,10 @@ var ONE_UNIT = 1000 * 60
  angular.module('genesisApp')
 .controller('EventOrganizerController', ['$scope', '$state', 'EventsFromService',
 function ($scope, $state, EventsFromService) {
-
+  
   // call initialization
   init();
-
+  
   // default open function of calender
   $scope.open = function($event) {
     $event.preventDefault();
@@ -24,10 +24,7 @@ function ($scope, $state, EventsFromService) {
   // Submit new Event form from public
   $scope.submitEventFromPublic = function () {
     
-    // somehow: it is empty string
-    if (!$scope.inputName || !$scope.inputSports || !$scope.inputDesc || !$scope.inputPlace || !$scope.inputTime) {
-      return;
-    }
+    if (!$scope.inputRepeatBool) $scope.inputRepeat = "";
     
     // wrapper 
     var newEventParams = {
@@ -36,7 +33,8 @@ function ($scope, $state, EventsFromService) {
       place: $scope.inputPlace,
       time: $scope.inputTime,
       repeat: $scope.inputRepeat,
-      sports: $scope.inputSports
+      sports: $scope.inputSports,
+      types: $scope.inputTypes
     };
     
     // call create from service
@@ -56,56 +54,34 @@ function ($scope, $state, EventsFromService) {
       });
   };
   
-    function updateGroups() {
-      
-        $scope.todayDate = new Date();
-        
-        $scope.onGoingGroup = {};
-        $scope.todayGroup = {};
-        $scope.normalGroup = {};
-        
-        angular.forEach($scope.eventGroup, function(value, key){
-          
-          var d = new Date(value.schedule.appDateTime);
-          var diffTime = d.getTime() - $scope.todayDate.getTime();
-          var diffTime = Math.round(diffTime/ONE_UNIT); // difference in minutes
-          
-          // iff negative more than 60 minutes, ongoing
-          // iff possitve, but within 60 x 24 today group
-          // if else, normal group
-          
-          if (diffTime > -60 && diffTime <= 0) $scope.onGoingGroup[key] = value;
-          else if (diffTime > 0 && diffTime <= 1440) $scope.todayGroup[key] = value;
-          else if (diffTime > 1440) $scope.normalGroup[key] = value;
-
-         });
-  }
-  
-  // initializing with data load when page start
-  function init() {
-    
-    // default input values
-    $scope.inputName = "";
-    $scope.inputDesc = "";
-    $scope.inputPlace = "";
-    $scope.inputTime = new Date(); 
-    $scope.inputRepeat = "onetime";
-    $scope.inputSprots = "";
-    
-    // time picker
-    $scope.ismeridian = true;
-    $scope.hstep = 1;
-    $scope.mstep = 1;
-    
-    // hide it when start with page
+  // update list from frontend
+  $scope.publicUpdateLists = function (inputParams) {
     $scope.isCollapsed = true;
+    updateLists(inputParams);
+  };
+  
+  // open collapsed
+  $scope.openCollapsed = function (select) {
+    $scope.isCollapsed = false;
+    updateLists();
+  };
+
+  // select dropdown for Sports
+  $scope.selectDropdownSports = function (select) {
+    $scope.inputSports  = select;
+  };
+  
+  // select dropdown for Types
+  $scope.selectDropdownTypes = function (select) {
+    $scope.inputTypes  = select;
+  };
+
+  // update list when updated
+  function updateLists(inputParams) {
     
-    // Get events from server
-    $scope.loading = true;
-    $scope.wow = "";
     // call all the event in return with eventGroup (array of events)
     EventsFromService.list(
-      { }, // options
+      { config : { params: inputParams } }, // options
       // Success
       function (data, status, headers, config) {
         $scope.loading = false;
@@ -117,6 +93,59 @@ function ($scope, $state, EventsFromService) {
         // TODO: handle this situation
       }
     );
+  
+  };
+  
+  // update list when updated
+  function updateGroups() {
+    
+      $scope.todayDate = new Date();
+
+      $scope.onGoingGroup = {};
+      $scope.todayGroup = {};
+      $scope.normalGroup = {};
+
+      angular.forEach($scope.eventGroup, function(value, key){
+
+        var d = new Date(value.schedule.appDateTime);
+        var diffTime = d.getTime() - $scope.todayDate.getTime();
+        var diffTime = Math.round(diffTime/ONE_UNIT); // difference in minutes
+
+        // iff negative more than 60 minutes, ongoing
+        // iff possitve, but within 60 x 24 today group
+        // if else, normal group
+
+        if (diffTime <= 0) $scope.onGoingGroup[key] = value;
+        else if (diffTime > 0 && diffTime <= 1440) $scope.todayGroup[key] = value;
+        else if (diffTime > 1440) $scope.normalGroup[key] = value;
+        
+       });
+  };
+  
+  // initializing with data load when page start
+  function init() {
+    
+    // default input values
+    $scope.inputName = "";
+    $scope.inputDesc = "";
+    $scope.inputPlace = "";
+    $scope.inputTime = new Date(); 
+    $scope.inputRepeatBool = false;
+    $scope.inputRepeat = "daily";
+    $scope.inputSports = "General";
+    $scope.inputTypes = "Casual";
+    
+    // hide it when start with page
+    $scope.isCollapsed = true;
+
+    // param for listing
+    var tempInputParams = { 
+      limit: 5,
+    }; 
+    
+    // update list
+    updateLists(tempInputParams);
+    
   }
   
 }]);

@@ -262,29 +262,72 @@ a:hover {
 	padding-left: 5px;
 }
 
-/*** Event ***/
-.create_button_wrapper
-{
-    width: 100%;
-    margin:7px 0;
-    padding: 1px;
+/*** Event create event table ***/
+.create_event_table{
+  width: 550px;
 }
 
-.create_button
+.create_event_tbody{
+  display: table-row-group;
+  vertical-align: middle;
+}
+
+.create_event_tr{
+}
+
+.create_event_th{
+  text-align: right;
+  max-width: 150px;
+  width: 150px;
+  padding: 11px;
+}
+
+.create_event_td{
+  margin: 8px;
+  width: 480px;
+  
+}
+
+.create_event_td_half{
+  margin-left: 4px;
+  width: 240px;
+}
+
+.create_event_input{
+  width: 400px;
+}
+
+.create_event_input_sm{
+  width: 100px;
+  margin-right: 10px;
+}
+
+.event_body{
+  background-color:white;
+}
+
+.event_datepicker
 {
-    width: 100%;
+  width: 170px;
+  padding-left: 10px;
+}
+
+.event_radio
+{
+  margin-left: 10px !important;
 }
 
 /*** Event Organizer ***/
+
 .event_title {
  font-size: 18px;
  margin: 1px;
 }
 
-.event_border{
- margin-top: 8px;
- margin-bottom: 5px;
- margin-left: 1px;
- margin-right: 1px;
- border-top: 1px solid;
+.event_imgIcon {
+  height:auto; 
+  width:auto; 
+  max-width:40px; 
+  max-height:40px; 
+  margin-right: 5px;
 }

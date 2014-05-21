@@ -10,7 +10,14 @@ var EventModel = require('../models/event');
 /* list function */
 function list(req, res) {
 
+  console.log(req.query.eventType);
+  
   var query = {};
+  // if eventtypes query exsists
+  if (req.query.eventType) {
+    query.eventType = req.query.eventType;
+  }
+
   // db.events.find({"schedule.appDateTime":  {$gte:new ISODate("")}}).sort({"schedule.appDateTime" : -1}).pretty();
   
   var projection = {};
@@ -31,10 +38,6 @@ function list(req, res) {
 function create(req, res){
   // TODO: validation
   
-  // parsing input values
-  if (req.body.repeat == "onetime") var repeatVal = false;
-  else var repeatVal = true;
-  
   // get it as date
   var d = new Date(req.body.time);
   
@@ -45,7 +48,7 @@ function create(req, res){
     name: req.body.name,
     desc: req.body.desc,
     schedule: {
-      repeat: repeatVal,
+      repeat: req.body.repeat,
       appDateTime: d,
       week: {
         year: d.getFullYear(),
@@ -63,7 +66,8 @@ function create(req, res){
     place: {
       name: req.body.place // TODO
     },
-    sport: req.body.sports,
+    sports: req.body.sports,
+    eventType: req.body.types,
     members: [req.user.id]
   });
 
