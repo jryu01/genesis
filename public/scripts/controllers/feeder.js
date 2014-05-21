@@ -6,25 +6,30 @@
  angular.module('genesisApp')
 .controller('FeederController', ['$scope', '$state', 'Posts', 'socket',
 function ($scope, $state, Posts, socket) {
+  init();
 
+  // when this controller destroyed remove all socket listeners
+  $scope.$on('$destroy', function (event) {
+    socket.removeAllListeners();
+  });
   /*
    * Filter related Event handler 
    */
   $scope.$on('select filter', function (e) {
     var item = $scope.$parent.filter.selected;
-    console.log(item);
 
     // set postform sport to selected item
     $scope.selectDropdown((item === 'All') ? null : item);
 
     var params = { 
-      limit: 5,
+      limits: 10,
       commentsLimit: 1
     }; 
     if (item !== 'All') {
       params.sport = item;
     }  
     $scope.postsBox.loading = true;
+    $scope.posts = null;
     Posts.list(
       { config : { params: params } },
       // Success
@@ -60,7 +65,8 @@ function ($scope, $state, Posts, socket) {
     }
     var newPost = {
       sport: $scope.postForm.type, // TODO: select sport
-      loc: [43.6525,-79.3816667], // TODO: get the location. 43,-79 for toronto
+      // loc: [43.6525,-79.3816667], // TODO: get the location. 43,-79 for toronto
+      loc: [0,0], // TODO: get the location. 43,-79 for toronto
       contents: $scope.postForm.postText
     };
     // Posts.create({data: newPost}, 
@@ -241,7 +247,7 @@ function ($scope, $state, Posts, socket) {
   $scope.loadMorePosts = function () {
     $scope.postsBox.loading = true;
     var params = {
-      limit: 5,
+      limits: 10,
       commentsLimit: 1,
       dateBefore: $scope.posts[$scope.posts.length -1].createdAt
     };
@@ -263,31 +269,18 @@ function ($scope, $state, Posts, socket) {
   };
   // initializing with data load when page start
   function init() {
-
-    // when this controller destroyed remove all socket listeners
-    $scope.$on('$destroy', function (event) {
-      socket.removeAllListeners();
-    });
-
     // register socket events
     registerSocketEvents();
 
-    // register init data
-
+    // set init data
     $scope.postForm = {};
-
-    // $scope.$parent.filter = {
-    //   items: ['All', 'General', 'Basketball', 'Badminton'],
-    //   selected: "All"
-    // };
-
     $scope.postsBox = {
       loading: true
     };
 
     // Get posts from server
     var params = { 
-      limit: 5,
+      limits: 10,
       commentsLimit: 1
     };
     Posts.list(
@@ -369,7 +362,4 @@ function ($scope, $state, Posts, socket) {
       // TODO: disable all features that uses socket
     });
   }
-
-  init();
-
 }]);

@@ -4,16 +4,19 @@
 html, body, .full-height { height: 100%; }
 body { 
 	font-size: 13px;
-	background-color: #F6F1DF;
 	font-family: Helvetica, Verdana, Arial, sans-serif;
 }
 
 .nav, .pagination, .carousel, .panel-title, a { cursor: pointer; }
-a {
-}
 a:hover {
 	text-decoration: none;
 }
+.absolute-center {
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+
 /* FrontPage STYLES
 -------------------------------------------------- */
 
@@ -56,15 +59,11 @@ a:hover {
 	-webkit-transform-style: preserve-3d;
 
 	/* Safari 4-5, Chrome 1-9 */
-	/* Can't specify a percentage size? Laaaaaame. */
 	background: -webkit-gradient(radial, center center, 0, center center, 460, from(orange), to(#FFCC6F));
-
 	/* Safari 5.1+, Chrome 10+ */
 	background: -webkit-radial-gradient(circle, orange, #FFCC6F);
-
 	/* Firefox 3.6+ */
 	background: -moz-radial-gradient(circle, orange, #FFCC6F);
-
 	/* IE 10 */
 	background: -ms-radial-gradient(circle, orange, #FFCC6F);
 
@@ -72,113 +71,80 @@ a:hover {
 }
 .login-screen .login-box {
 	text-align: center;
-	position: relative;
-  	top: 25%;
-  	transform: translateY(-30%);
+	height: 250px;
 }
 .login-screen h1 {
 	font-size: 51px;
 	font-weight: bold;
 }
 
-/* Main STYLES
+/* Main Application STYLES
 -------------------------------------------------- */
 
-/*** Top Bar ***/
-.menu-button {
-	/*float: left;*/
-	/*display: block;*/
-}
-.menu-button span {
-	background-color: #fff;
-}
+/*** layout ***/
 
+/* navbar styling */
 .navbar {
-	opacity: 0.9;
-	background-color: orange; /* MAIN COLOR */ 
-	color:#ffffff;
+	background-color: orange;
+	border-bottom-width: 0;
+	color: #FFF;
+}
+.navbar .btn {
+	color: #FFF;
+}
+.navbar .btn:hover {
+	color: lightgrey;
 }
 
-.navbar-brand {
-	color: #fff;
-	text-shadow: 0 1px 3px rgba(0,0,0,.5);
+/* main app styling */
+.app {
+	background-color: #F6F1DF;
 }
-
-.navbar-brand:hover{ 
-  color: lightgrey;
-}
-
-.nav>li>a {
-  color: white; 
-}
-
-.nav>li>a:hover {
-  color: lightgrey; 
-  background-color:transparent;
-}
-
-@media (max-width: 767px) {
-	.navbar-form {
-		width: auto;
-		border: 0;
-		margin-left: 0;
-		margin-right: 0;
-		padding-top: 0;
-		padding-bottom: 0;
-		-webkit-box-shadow: none;
-		box-shadow: none;
-	}
-}
-
-@media (min-width: 768px) {
-	.navbar-form .input-group {
-		max-width: 400px;
-	}
-}
-
-/*** Page Components ***/
-.page-container {
-	padding-top: 50px;
-}
-.page-container, .row {
-	margin-left: 0;
-	margin-right: 0;
-}
-
-/*** Main Content ***/
-.content {
+.app .app-content {
 	max-width: 1200px;
 	margin: auto;
 }
 
-/*** Side Menu ***/
-.sidebar {
-	padding: 0;
-	overflow: hidden;
+/*** layout end ***/
+
+/* home */
+.home > .rn-carousel-container {
 	height: 100%;
-	overflow-y: auto;
 }
-
-.sidebar ul li>a {
-	font-weight: bold;
-	color: #444444;
-	text-decoration: none;
-}
-
-.sideDivider{
-	color: lightgrey;
-  border-top: 1px solid;
-}
-
+/* on mobile */
 @media (max-width: 767px) {
-	.sidebar {
-		opacity: 0.9;
-		width: 100%;
-		transition: width 0.3s ease;
+	.visible-desktop {
+		display: none!important;
 	}
-	.sidebar.mobile-full-width {
-		width: 100%!important;
+}
+/* on desktop */
+@media (min-width: 768px) {
+	.home > .rn-carousel-container {
+		display: none;
 	}
+}
+
+/* filter */
+
+.filter-wrapper {
+	position: absolute;
+	z-index: 10;
+	width: 100%;
+}
+.filter-wrapper a {
+	color: inherit;
+}
+.filter-wrapper .filter-box {
+	padding-top: 15px;
+}
+.filter-wrapper .selected,
+.filter-wrapper li:hover {
+	border-bottom-color: orange; 
+	border-bottom-style: solid;
+}
+.filter-wrapper ul {
+	padding-left: 30px;
+	padding-right: 30px;
 }
 
 /*** Feeder ***/
@@ -203,28 +169,6 @@ a:hover {
     border-color: Transparent; 
     overflow: auto; 
     resize: vertical;
-}
-
-/* filter */
-
-.filter-wrapper a {
-	color: inherit;
-}
-.filter-wrapper .filter-border{
-	border-bottom: 1px solid #ccc;
-	width: 100%;
-}
-.filter-wrapper .filter-box {
-	padding-top: 15px;
-}
-.filter-wrapper .selected,
-.filter-wrapper li:hover {
-	border-bottom-color: orange; 
-	border-bottom-style: solid;
-}
-.filter-wrapper ul {
-	padding-left: 30px;
-	padding-right: 30px;
 }
 
 

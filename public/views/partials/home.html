@@ -1,7 +1,11 @@
-<!-- content div -->
-<div class="content row full-height">       
+<div class="home full-height">       
+
+  <!-- set title on navbar -->
+  <div content-for="title">
+    <span>Home</span>
+  </div>
+
   <div class="filter-wrapper">
-    <div class="filter-border"></div>
     <div class="filter-box">
       <a class="pull-left" ng-click="shiftFilter('prev')"> 
         <i class="fa fa-chevron-left"></i>
@@ -19,23 +23,18 @@
     </div>
   </div>
 
-  <!-- Side bar -->
-  <!-- <div class= "hidden-xs hidden-sm col-md-2">      -->
-    <!-- <div ui-view="sideMenu"></div> -->
-  <!-- </div> -->
-  <!-- /Side bar -->
-
-  <!-- Feeder -->
-  <div class="col-sm-6">
-    <div ui-view="feeder"></div>
+  <!-- for xs screen only -->
+  <div rn-carousel class="scrollable" style="padding-top: 50px">
+    <div ui-view="feeder" class="scrollable-content"></div>
+    <div ui-view="eventOrganizer" class="scrollable-content"></div>
   </div>
-  <!-- /Feeder -->
 
-  <!-- Events  -->
-  <div class= "col-sm-6">
-    <div ui-view="eventOrganizer"></div>
+  <!-- for larger screen -->
+  <div class="visible-desktop row scrollable" style="padding-top: 50px">
+    <div class="scrollable-content">
+      <div ui-view="feeder" class="col-sm-6"></div>
+      <div ui-view="eventOrganizer" class="col-sm-6"></div>
+    </div>
   </div>
-  <!-- /Events  -->
-  
+
 </div>  
-<!-- /content div -->

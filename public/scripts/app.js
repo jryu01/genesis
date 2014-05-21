@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('genesisApp', ['ui.router', 'ui.bootstrap'])
+angular.module('genesisApp', [
+  'ui.router', 'mobile-angular-ui', 'ui.bootstrap', 'angular-carousel'
+])
 .config(['$stateProvider','$urlRouterProvider', '$locationProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
   //================================================
