@@ -2,7 +2,20 @@
 
   <!-- set title on navbar -->
   <div content-for="title">
-    <span>Home</span>
+    <span>{{ data.titles[data.slideIndex] }}</span>
+    <div class="carousel-indicators" style="bottom:0px">
+      <i class="fa fa-circle dot" ng-class="{ active: !data.slideIndex }"></i>
+      <i class="fa fa-circle dot" ng-class="{ active: data.slideIndex }"></i>
+    </div>
+  </div>
+  <!-- set buttons on navbar -->
+  <div content-for="navbarAction">
+    <div class="btn btn-navbar newPost">
+      <i class="fa fa-pencil fa-lg"></i>
+    </div> 
+    <div class="btn btn-navbar newEvent hidden">
+      <i class="fa fa-pencil fa-lg"></i>
+    </div> 
   </div>
 
   <div class="filter-wrapper">
@@ -22,19 +35,10 @@
       </ul> 
     </div>
   </div>
-
-  <!-- for xs screen only -->
-  <div rn-carousel class="scrollable" style="padding-top: 50px">
+ 
+  <div rn-carousel rn-carousel-index="data.slideIndex" class="scrollable">
     <div ui-view="feeder" class="scrollable-content"></div>
     <div ui-view="eventOrganizer" class="scrollable-content"></div>
-  </div>
-
-  <!-- for larger screen -->
-  <div class="visible-desktop row scrollable" style="padding-top: 50px">
-    <div class="scrollable-content">
-      <div ui-view="feeder" class="col-sm-6"></div>
-      <div ui-view="eventOrganizer" class="col-sm-6"></div>
-    </div>
   </div>
 
 </div>  

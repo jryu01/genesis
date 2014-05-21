@@ -108,20 +108,19 @@ a:hover {
 /*** layout end ***/
 
 /* home */
+.carousel-indicators .dot {
+	color:#FFD58B;
+	margin: 0; 
+	width: 12px; 
+	height: 12px; 
+	font-size: 8px;
+	background-color: transparent;
+}
+.carousel-indicators .active{
+	color: #fff;
+}
 .home > .rn-carousel-container {
 	height: 100%;
-}
-/* on mobile */
-@media (max-width: 767px) {
-	.visible-desktop {
-		display: none!important;
-	}
-}
-/* on desktop */
-@media (min-width: 768px) {
-	.home > .rn-carousel-container {
-		display: none;
-	}
 }
 
 /* filter */
@@ -130,12 +129,18 @@ a:hover {
 	position: absolute;
 	z-index: 10;
 	width: 100%;
+	background-color: #fff;
+	opacity: 0.9;
+	border-bottom: 1px solid orange;
 }
 .filter-wrapper a {
 	color: inherit;
+	font-weight: bold;
 }
 .filter-wrapper .filter-box {
 	padding-top: 15px;
+	padding-left: 20px;
+	padding-right: 20px;
 }
 .filter-wrapper .selected,
 .filter-wrapper li:hover {
@@ -143,8 +148,9 @@ a:hover {
 	border-bottom-style: solid;
 }
 .filter-wrapper ul {
-	padding-left: 30px;
-	padding-right: 30px;
+	text-align: center;
+	padding-left: 20px;
+	padding-right: 20px;
 }
 
 /*** Feeder ***/
@@ -173,7 +179,10 @@ a:hover {
 
 
 /* post */
-
+.feeder {
+	padding-top: 50px;
+	background-color: #fff;
+}
 .feeder .post-body {
 	padding-top: 5px;
 }

@@ -6,6 +6,12 @@
 angular.module('genesisApp')
 .controller('HomeController', ['$scope', '$state', 'Auth', 'socket',
 function ($scope, $state, Auth, socket) {
+
+  $scope.data = {
+    titles: ['Home', 'Event'],
+    slideIndex: 0
+  };
+
   /*
   * Filter related functions
   */
@@ -27,4 +33,5 @@ function ($scope, $state, Auth, socket) {
     }
     $scope.selectFilter(filters[index]);
   };
+
 }]);

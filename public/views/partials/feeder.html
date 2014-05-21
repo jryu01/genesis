@@ -1,7 +1,6 @@
 <div class="feeder">
-
   <!-- input -->
-  <div class="panel panel-default">
+  <div class="panel panel-default" hidden>
     <form name="postForm" ng-submit="submitPost()">
       <div class="panel-body" style="padding: 0px">     
         <textarea ng-model="postForm.postText" class="post-textarea" placeholder="What is going on today?" required></textarea>
@@ -16,6 +15,12 @@
               {{ postForm.type || 'Sport' }} 
               <span class="caret"></span>
             </button>
+
+
+            <select ng-model="postForm.type">
+            </select>
+
+
             <ul class="dropdown-menu" role="menu" 
                 toggle="off" bubble target="sportDropdown">
               <li>
@@ -38,9 +43,9 @@
     </form>
   </div>
 
-  <div class="posts-wrapper">
+  <div class="list-group posts-wrapper">
     <!-- make this as a directive -->
-    <div ng-repeat="post in posts" class="panel panel-default">
+    <div ng-repeat="post in posts" class="list-group-item panel panel-default">
       <div class="panel-body">
         <div class="post-heading">
             <img class="pull-left img-rounded" 

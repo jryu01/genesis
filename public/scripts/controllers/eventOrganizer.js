@@ -4,7 +4,7 @@
 
  'use strict';
 
-var ONE_UNIT = 1000 * 60
+var ONE_UNIT = 1000 * 60;
 
  angular.module('genesisApp')
 .controller('EventOrganizerController', ['$scope', '$state', 'EventsFromService',
@@ -68,7 +68,7 @@ function ($scope, $state, EventsFromService) {
           
           var d = new Date(value.schedule.appDateTime);
           var diffTime = d.getTime() - $scope.todayDate.getTime();
-          var diffTime = Math.round(diffTime/ONE_UNIT); // difference in minutes
+          diffTime = Math.round(diffTime/ONE_UNIT); // difference in minutes
           
           // iff negative more than 60 minutes, ongoing
           // iff possitve, but within 60 x 24 today group
