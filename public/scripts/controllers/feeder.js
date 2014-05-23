@@ -237,10 +237,12 @@ function ($scope, $state, Posts, socket) {
     $scope.postsBox.loading = true;
     var params = {
       limits: 10,
-      commentsLimit: 1,
-      dateBefore: $scope.posts[$scope.posts.length -1].createdAt
+      commentsLimit: 1
     };
-    if ($scope.$parent.filter.selected !== 'All') {
+    if($scope.posts.length > 0) {
+      params.dateBefore = $scope.posts[$scope.posts.length -1].createdAt;
+    }
+    if ($scope.$parent.filter.selected) {
       params.sport = $scope.$parent.filter.selected;
     }  
     Posts.list(
