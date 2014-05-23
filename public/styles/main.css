@@ -85,8 +85,9 @@ a:hover {
 
 /* navbar styling */
 .navbar {
+	/* 50px + 1px border-bottom */
 	background-color: orange;
-	border-bottom-width: 0;
+	border-bottom: solid 1px orange;
 	color: #FFF;
 }
 .navbar .btn {
@@ -95,19 +96,84 @@ a:hover {
 .navbar .btn:hover {
 	color: lightgrey;
 }
+.navbar.reverse {
+	background-color: #fff;
+	color: orange;
+}
+.navbar.reverse .btn {
+	color: orange;
+}
+@media (min-width: 992px){
+	.navbar-brand-center {
+	 text-align: center; 
+	}
+}
 
 /* main app styling */
+.has-navbar-top .app-body {
+	padding-top: 51px;
+}
 .app {
 	background-color: #F6F1DF;
 }
 .app .app-content {
 	max-width: 1200px;
 	margin: auto;
+	overflow: visible;
+}
+/* popup screen */
+.app .app-content .popup-screen {
+	height: -moz-calc(100% + 51px);
+	height: -webkit-calc(100% + 51px);
+	height: -o-calc(100% + 51px);
+	height: calc(100% + 51px);
+	width: 100%;
+	position: absolute;
+	top: -51px;
+}
+.app .app-content .popup-screen .popup-screen-body {
+	z-index: 1001;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background-color: #fff;
+	top: 100%;
+	-moz-transition:top 0.5s;
+	-webkit-transition:top 0.5s; 
+	-o-transition:top 0.5s; 
+	transition:top 0.5s;
+}
+.app .app-content .popup-screen.active .popup-screen-body {
+	top: 0%;
 }
 
-/*** layout end ***/
+/*** layout End ***/
 
 /* home */
+.post-form .navbar .post-btn {
+	color: lightgrey;
+	cursor: default;
+
+}
+.post-form .navbar .post-btn.ready {
+	color: orange;
+	font-weight: bold;
+	cursor: pointer;
+}
+.post-form label {
+	text-align: center;
+}
+.post-form .textarea-wrapper {
+	border-top: 1px solid orange;
+}
+.post-form textarea {
+	resize: none;
+	border: none;
+	height: -moz-calc(100% - 54px);
+	height: -webkit-calc(100% - 54px);
+	height: -o-calc(100% - 54px);
+	height: calc(100% - 54px);
+}
 .carousel-indicators .dot {
 	color:#FFD58B;
 	margin: 0; 

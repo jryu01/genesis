@@ -1,47 +1,4 @@
 <div class="feeder">
-  <!-- input -->
-  <div class="panel panel-default" hidden>
-    <form name="postForm" ng-submit="submitPost()">
-      <div class="panel-body" style="padding: 0px">     
-        <textarea ng-model="postForm.postText" class="post-textarea" placeholder="What is going on today?" required></textarea>
-      </div>
-      <div class="panel-footer">
-        <div class="pull-left">
-          <div id="sportDropdown" class="btn-group" 
-              toggleable active-class="open">
-            <button type="button" 
-                    class="btn btn-default btn-sm"
-                    toggle target="sportDropdown">
-              {{ postForm.type || 'Sport' }} 
-              <span class="caret"></span>
-            </button>
-
-
-            <select ng-model="postForm.type">
-            </select>
-
-
-            <ul class="dropdown-menu" role="menu" 
-                toggle="off" bubble target="sportDropdown">
-              <li>
-                <a ng-click="selectDropdown('General')">General</a>
-              </li>
-              <li>
-                <a ng-click="selectDropdown('Basketball')">Basketball</a>
-              </li>
-              <li>
-                <a ng-click="selectDropdown('Badminton')">Badminton</a>
-              </li>
-            </ul>
-          </div> 
-        </div>
-        <div class="pull-right">
-            <input type="submit" class="btn btn-warning btn-sm" >
-        </div>
-        <div class="clearfix"></div>
-      </div>
-    </form>
-  </div>
 
   <div class="list-group posts-wrapper">
     <!-- make this as a directive -->

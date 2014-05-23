@@ -1,23 +1,81 @@
 <div class="home full-height">       
 
-  <!-- set title on navbar -->
-  <div content-for="title">
+  <!-- Navbar Contetns  -->
+
+  <div content-for="navbarTitle">
     <span>{{ data.titles[data.slideIndex] }}</span>
     <div class="carousel-indicators" style="bottom:0px">
-      <i class="fa fa-circle dot" ng-class="{ active: !data.slideIndex }"></i>
-      <i class="fa fa-circle dot" ng-class="{ active: data.slideIndex }"></i>
+      <i class="fa fa-circle dot" ng-class="{ active: !data.slideIndex }">
+      </i>
+      <i class="fa fa-circle dot" ng-class="{ active: data.slideIndex }">
+      </i>
     </div>
   </div>
-  <!-- set buttons on navbar -->
-  <div content-for="navbarAction">
-    <div class="btn btn-navbar newPost">
-      <i class="fa fa-pencil fa-lg"></i>
-    </div> 
-    <div class="btn btn-navbar newEvent hidden">
-      <i class="fa fa-pencil fa-lg"></i>
-    </div> 
+
+  <div content-for="navbarLeftAction">
+    <div ng-click="toggle('mainSidebar')" 
+        class="btn btn-lg btn-navbar sidebar-toggle">
+      <i class="fa fa-bars"></i>
+    </div>
   </div>
 
+  <div content-for="navbarRightAction">
+    <div>
+      <div class="btn btn-navbar newPost" ng-click="openPostForm()" ng-show="!data.slideIndex">
+        <i class="fa fa-pencil fa-lg"></i>
+      </div> 
+      <div class="btn btn-navbar newEvent" ng-show="data.slideIndex">
+        <i class="fa fa-pencil fa-lg"></i> New Event
+      </div> 
+    </div>
+  </div>
+
+  <!-- Post Form --> 
+  <div class="popup-screen post-form-popup" ng-class="{ active: data.postFormOpened }">
+    <div class="popup-screen-body" style="padding-top:51px">
+
+      <form name="postForm" ng-submit="submitPostForm()" 
+          class="post-form full-height">
+        <div class="navbar reverse navbar-app navbar-absolute-top">
+          <div class="navbar-brand navbar-brand-center">
+            New Post
+          </div>
+          <div class="btn-group pull-left">
+            <div class="btn btn-sm btn-navbar" ng-click="cancelPostForm()">
+              Cancel
+            </div>
+          </div>
+          <div class="btn-group pull-right">
+            <input type="submit" value="Post" 
+                class="btn btn-sm btn-navbar post-btn" 
+                ng-class="{ ready: postFormData.ready, 
+                    disabled: !postFormData.ready }">
+            </input>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="control-label col-xs-2">Sport:</label>
+          <div class="form-control-wrapper col-xs-10">
+            <select ng-model="postFormData.selected"
+                ng-options="sport.name for sport in sports" 
+                class="form-control">
+            </select>
+          </div>
+        </div>
+
+        <div class="textarea-wrapper form-group full-height">
+          <textarea ng-model="postFormData.text" 
+              class="form-control" 
+              placeholder="What is going on today?" 
+              style="height: calc(100% - 54px);">
+          </textarea>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Filter -->
   <div class="filter-wrapper">
     <div class="filter-box">
       <a class="pull-left" ng-click="shiftFilter('prev')"> 
@@ -30,12 +88,12 @@
         <li ng-class="{ selected: item === filter.selected }" 
             ng-repeat="item in filter.items" 
             ng-click="selectFilter(item)">
-          <a>{{ item }}</a>
+          <a>{{ item || 'All'}}</a>
         </li> 
       </ul> 
     </div>
   </div>
- 
+
   <div rn-carousel rn-carousel-index="data.slideIndex" class="scrollable">
     <div ui-view="feeder" class="scrollable-content"></div>
     <div ui-view="eventOrganizer" class="scrollable-content"></div>

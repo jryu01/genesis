@@ -55,9 +55,6 @@ angular.module('genesisApp', [
           templateUrl: 'views/partials/home.html',
           controller: 'HomeController'
         },
-        // 'sideMenu@app.user.home': {
-        //   templateUrl: 'views/partials/sideMenu.html'
-        // },
         'feeder@app.user.home': {
           templateUrl: 'views/partials/feeder.html',
           controller: 'FeederController'
@@ -67,6 +64,10 @@ angular.module('genesisApp', [
           controller: 'EventOrganizerController'
         }
       }
+    })
+    .state('app.user.post', {
+      url: 'post',
+      template: '<div>post</div>'
     })
     .state('app.user.profile', {
       url: 'profile', 
