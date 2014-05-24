@@ -1,4 +1,5 @@
 <div>
+<<<<<<< HEAD
   <!-- top tabletab -->
   <tabset>
     <tab select="publicUpdateLists()">
@@ -26,6 +27,18 @@
   <!-- collpased event input -->
   <div collapse="isCollapsed">
     <div class="panel panel-default">
+=======
+{{carouselIndex}}
+  <!-- create button -->
+  <button class="btn btn-default create_button" ng-click="isCollapsed = !isCollapsed">Create a new Event</button>
+
+  <!-- Hidden field -->
+	<div collapse="isCollapsed">
+    
+    <!-- create a new event - input -->
+    <div class="create_button_wrapper">
+      <!-- $scope.submitEventFromPublic = function() -->
+>>>>>>> aff838651d8f04cdef6b9282bd4068d42fef639c
       <form name="eventForm" ng-submit="submitEventFromPublic()">
         <div class="panel-body event_body">
           <div class="post-heading">

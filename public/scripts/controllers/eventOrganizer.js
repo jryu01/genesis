@@ -4,7 +4,7 @@
 
  'use strict';
 
-var ONE_UNIT = 1000 * 60
+var ONE_UNIT = 1000 * 60;
 
  angular.module('genesisApp')
 .controller('EventOrganizerController', ['$scope', '$state', 'EventsFromService',
@@ -54,6 +54,7 @@ function ($scope, $state, EventsFromService) {
       });
   };
   
+<<<<<<< HEAD
   // update list from frontend
   $scope.publicUpdateLists = function (inputParams) {
     $scope.isCollapsed = true;
@@ -65,6 +66,29 @@ function ($scope, $state, EventsFromService) {
     $scope.isCollapsed = false;
     updateLists();
   };
+=======
+    function updateGroups() {
+      
+        $scope.todayDate = new Date();
+        
+        $scope.onGoingGroup = {};
+        $scope.todayGroup = {};
+        $scope.normalGroup = {};
+        
+        angular.forEach($scope.eventGroup, function(value, key){
+          
+          var d = new Date(value.schedule.appDateTime);
+          var diffTime = d.getTime() - $scope.todayDate.getTime();
+          diffTime = Math.round(diffTime/ONE_UNIT); // difference in minutes
+          
+          // iff negative more than 60 minutes, ongoing
+          // iff possitve, but within 60 x 24 today group
+          // if else, normal group
+          
+          if (diffTime > -60 && diffTime <= 0) $scope.onGoingGroup[key] = value;
+          else if (diffTime > 0 && diffTime <= 1440) $scope.todayGroup[key] = value;
+          else if (diffTime > 1440) $scope.normalGroup[key] = value;
+>>>>>>> aff838651d8f04cdef6b9282bd4068d42fef639c
 
   // select dropdown for Sports
   $scope.selectDropdownSports = function (select) {
