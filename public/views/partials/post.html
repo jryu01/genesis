@@ -1,0 +1,70 @@
+
+<div class="post-wrapper scrollable">
+  <!-- Navbar Contetns  -->
+
+  <div content-for="navbarTitle">
+    <span>Post</span>
+  </div>
+  <div content-for="navbarLeftAction">
+    <div class="btn btn-lg btn-navbar sidebar-toggle"
+        ui-sref="app.user.home">
+      <i class="fa fa-angle-left fa-lg"></i>
+    </div>
+  </div>
+  <p ng-show="loading" class="text-center absolute-center"
+      style="color:orange;height: 25px">
+    <i class="fa fa-refresh fa-spin fa-2x"></i>
+  </p>
+  <div ng-show="!loading" class="panel scrollable-content">
+    <div class="panel-body">
+      <div class="post-heading">
+        <img class="pull-left img-rounded" 
+            src="{{ post.createdBy.profilePicture }}" 
+            style="margin-right: 7px">
+        <h5><a>{{ post.createdBy.name }}</a></h5>
+        <span class="date-text"> {{ post.createdAt | date:'MMM d' }} </span>
+        <div class="clearfix"></div>
+      </div>
+      <div class="post-body">
+        <p class="text-wrap">{{ post.contents }}</p>
+      </div>
+      <div class="pull-left">
+        <a ng-show="post.scorers.indexOf(currentUser.id) >= 0" class="btn btn-warning btn-sm" ng-click="removeScore(post.id)">
+          Score
+          <span ng-show="post.score > 0">{{ post.score }}</span> 
+        </a>
+        <a ng-show="post.scorers.indexOf(currentUser.id) < 0" class="btn btn-default btn-sm" ng-click="addScore(post.id)">
+          Score
+          <span ng-show="post.score > 0">{{ post.score }}</span> 
+        </a>
+      </div>
+      <div class="pull-right">
+        <span class="badge"> {{ post.sport }} </span>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="panel-footer">
+      <div class="comments-container">
+        <div ng-repeat="comment in post.comments">
+          <div class="comment-body">
+            <a><img class="img-rounded profile-img" 
+              src="{{comment.createdBy.profilePicture}}"></a>
+            <div>
+              <a class="profile-name pull-left">{{ comment.createdBy.name }}</a>
+              <span class="text-wrap"> {{ comment.text }} </span>
+              <div class="clearfix" style="height:0"></div>
+              <span class="date-text"> {{ comment.createdAt | date:'MMM d' }} </span>
+            </div>
+          </div>
+        </div> 
+      </div>
+      <div class="comment-form">
+        <img class="img-rounded profile-img" src="{{ currentUser.photos.profile }}">
+        <form name="commentForm" ng-submit="addComment(post.id)">
+          <input class="comment-input" ng-model="commentText" type="text" placeholder="Write a Comment" required>
+        </form>
+      </div>
+    </div>
+    
+  </div>
+</div>
