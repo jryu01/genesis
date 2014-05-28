@@ -81,7 +81,7 @@ a:hover {
 /* Main Application STYLES
 -------------------------------------------------- */
 
-/***---- layout ----***/
+/***---- Layout ----***/
 
 /* navbar styling */
 .navbar {
@@ -147,9 +147,9 @@ a:hover {
 	top: 0%;
 }
 
-/***---- layout end ----***/
+/***---- Layout end ----***/
 
-/***--- home ----***/
+/***--- Home ----***/
 .post-form .navbar .post-btn {
 	color: lightgrey;
 	cursor: default;
@@ -219,9 +219,9 @@ a:hover {
 	padding-right: 20px;
 }
 
-/***--- home end ----***/
+/***--- Home end ----***/
 
-/***--- Feeder ---***/
+/***--- Home.Feeder ---***/
 .feeder .date-text {
 	color: #898f9c;
 }
@@ -238,41 +238,19 @@ a:hover {
 	padding-top: 50px;
 	background-color: #fff;
 }
+.feeder .panel:hover {
+	background-color: #FFFAF0;
+	cursor: pointer;
+}
+.feeder .panel-body {
+	background-color: inherit;
+}
 .feeder .post-body {
 	padding-top: 5px;
 }
-.feeder .comments-toggle {
-	padding-bottom: 10px;
-}
-.feeder .comments-container {
-	overflow: auto;
-	max-height: 500px;
-}
-.feeder .comment-body {
-	padding: 0 0 5px 35px;
-}
-.feeder .comment-form {
-	padding-left: 35px;
-	padding-top: 10px;
-}
-.feeder .comment-body .profile-img,
-.feeder .comment-form .profile-img {
-	margin-left: -35px;
-	width: 30px;
-	height: 30px;
-	float: left;
-}
-.feeder .comment-body .profile-name {
-	padding-right: 5px;
-}
-.feeder .comment-input {
-	width: 100%;
-	padding-left: 5px;
-}
+/***--- Home.Feeder End---***/
 
-/***--- Feeder End---***/
-
-/*** Event ***/
+/***--- Home.Event ---***/
 .create_button_wrapper
 {
     width: 100%;
@@ -298,3 +276,34 @@ a:hover {
  margin-right: 1px;
  border-top: 1px solid;
 }
+/***--- Home.Event End---***/
+
+/***--- Post ---***/	
+.post-wrapper .comments-toggle {
+	padding-bottom: 10px;
+}
+.post-wrapper .comments-container {
+	overflow: auto;
+}
+.post-wrapper .comment-body {
+	padding: 0 0 5px 35px;
+}
+.post-wrapper .comment-form {
+	padding-left: 35px;
+	padding-top: 10px;
+}
+.post-wrapper .comment-body .profile-img,
+.post-wrapper .comment-form .profile-img {
+	margin-left: -35px;
+	width: 30px;
+	height: 30px;
+	float: left;
+}
+.post-wrapper .comment-body .profile-name {
+	padding-right: 5px;
+}
+.post-wrapper .comment-input {
+	width: 100%;
+	padding-left: 5px;
+}
+/***--- Post End ---***/

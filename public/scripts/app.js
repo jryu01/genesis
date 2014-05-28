@@ -66,8 +66,9 @@ angular.module('genesisApp', [
       }
     })
     .state('app.user.post', {
-      url: 'post',
-      template: '<div>post</div>'
+      url: 'post/:id?comment',
+      templateUrl: 'views/partials/post.html',
+      controller: 'PostController'
     })
     .state('app.user.profile', {
       url: 'profile', 
@@ -128,7 +129,7 @@ angular.module('genesisApp', [
           if (user) {
             $rootScope.currentUser = user;
             var to = (toState.name === 'app') ? 'app.user.home' : toState.name;
-            $state.go(to);
+            $state.go(to, toParams);
 
           // need to sign in           
           } else {

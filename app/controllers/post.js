@@ -44,14 +44,17 @@ function list(req, res) {
   };
 
   Post.find(query, projection, options, function (err, posts) {
-    if (err) return res.send(500);
+    if (err) return res.send(500, err);
     res.send(posts);
   }); 
 }
 
 function get(req, res) {
   Post.findById(req.params.id, function (err, post) {
-    if (err) { return res.send(500); }
+    if (err) { return res.send(500, err); }
+    if (!post) {
+      return res.send(404);
+    }
     res.send(post);
   });
 }

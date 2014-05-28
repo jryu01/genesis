@@ -47,7 +47,7 @@ function ($scope, $state, Auth, socket) {
 
   function selectSportForForm(item) {
     if (item === null) {
-      return ($scope.postFormData.selected = null); 
+      return ($scope.postFormData.selected = $scope.sports[0]); 
     }
     for (var i = 0; i < $scope.sports.length; i++) {
       if ($scope.sports[i].name === item) {
@@ -69,7 +69,7 @@ function ($scope, $state, Auth, socket) {
     $scope.sports = [
       {name: 'General', value: 'General'},
       {name: 'Basketball', value: 'Basketball'},
-      {name: 'Badminton', value: 'Badmintonl'}
+      {name: 'Badminton', value: 'Badminton'}
     ];
     $scope.postFormData = {
       selected: null,
