@@ -240,8 +240,10 @@ a:hover {
 	background-color: #fff;
 }
 .feeder .panel:hover {
-	background-color: #FFFAF0;
 	cursor: pointer;
+}
+.feeder .panel:active {
+	background-color: #FFFAF0;
 }
 .feeder .panel-body {
 	background-color: inherit;
