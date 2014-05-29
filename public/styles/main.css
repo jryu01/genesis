@@ -117,8 +117,6 @@ a:hover {
 	background-color: #F6F1DF;
 }
 .app .app-content {
-	max-width: 1200px;
-	margin: auto;
 	overflow: visible;
 }
 /* popup screen */
@@ -163,17 +161,21 @@ a:hover {
 .post-form label {
 	text-align: center;
 }
+.post-form .select-wrapper {
+	margin: 0;
+	border-bottom: 1px solid orange;
+}
 .post-form .textarea-wrapper {
-	border-top: 1px solid orange;
+	padding-top: 65px;
+	margin-top: -55px;
 }
 .post-form textarea {
 	resize: none;
 	border: none;
-	height: -moz-calc(100% - 54px);
-	height: -webkit-calc(100% - 54px);
-	height: -o-calc(100% - 54px);
-	height: calc(100% - 54px);
+	height: 100%
 }
+
+/* home and event view carousel */
 .carousel-indicators .dot {
 	color:#FFD58B;
 	margin: 0; 
@@ -190,7 +192,6 @@ a:hover {
 }
 
 /* filter */
-
 .filter-wrapper {
 	position: absolute;
 	z-index: 10;

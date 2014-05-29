@@ -29,7 +29,7 @@
       </div> 
     </div>
   </div>
-
+  
   <!-- Post Form --> 
   <div class="popup-screen post-form-popup" ng-class="{ active: data.postFormOpened }">
     <div class="popup-screen-body" style="padding-top:51px">
@@ -53,7 +53,7 @@
             </input>
           </div>
         </div>
-        <div class="form-group row">
+        <div class="select-wrapper form-group row">
           <label class="control-label col-xs-2">Sport:</label>
           <div class="form-control-wrapper col-xs-10">
             <select ng-model="postFormData.selected"
@@ -66,8 +66,7 @@
         <div class="textarea-wrapper form-group full-height">
           <textarea ng-model="postFormData.text" 
               class="form-control" 
-              placeholder="What is going on today?" 
-              style="height: calc(100% - 54px);">
+              placeholder="What is going on today?">
           </textarea>
         </div>
       </form>

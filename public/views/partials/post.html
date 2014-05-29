@@ -59,7 +59,6 @@
         </div> 
       </div>
       <div class="comment-form">
-        <img class="img-rounded profile-img" src="{{ currentUser.photos.profile }}">
         <form name="commentForm" ng-submit="addComment(post.id)">
           <input class="comment-input" ng-model="commentText" type="text" placeholder="Write a Comment" required>
         </form>
