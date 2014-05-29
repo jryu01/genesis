@@ -1,6 +1,7 @@
 angular.module('genesisApp')
-.controller('PostController', ['$scope', '$stateParams', 'socket', 'Posts',
-function ($scope, $stateParams, socket, Posts) {
+.controller('PostController', 
+  ['$scope', '$stateParams', '$timeout', 'socket', 'Posts',
+function ($scope, $stateParams, $timeout, socket, Posts) {
   init();  
 
   $scope.addScore = function (postId, $event) {
@@ -66,15 +67,19 @@ function ($scope, $stateParams, socket, Posts) {
   };
 
   function init() {     
-    console.log($stateParams);
     $scope.post = {};
     $scope.loading = true;
+    $scope.isCommentFocused = false;
 
     Posts.get({ postId: $stateParams.id },
       // Success
       function (data, status, headers, config) {
         $scope.post = data;
         $scope.loading = false;
+
+        $timeout(function() {
+          $scope.isCommentFocused = Boolean($stateParams.comment);
+        }, 500);
       }, 
       // Error
       function (data, status, headers, config) {

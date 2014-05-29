@@ -280,8 +280,9 @@ a:hover {
 /***--- Home.Event End---***/
 
 /***--- Post ---***/	
-.post-wrapper .comments-toggle {
-	padding-bottom: 10px;
+.post-wrapper .panel {
+	border: none;
+	margin: 0;
 }
 .post-wrapper .comments-container {
 	overflow: auto;
@@ -289,12 +290,7 @@ a:hover {
 .post-wrapper .comment-body {
 	padding: 0 0 5px 35px;
 }
-.post-wrapper .comment-form {
-	padding-left: 35px;
-	padding-top: 10px;
-}
-.post-wrapper .comment-body .profile-img,
-.post-wrapper .comment-form .profile-img {
+.post-wrapper .comment-body .profile-img {
 	margin-left: -35px;
 	width: 30px;
 	height: 30px;
@@ -303,8 +299,4 @@ a:hover {
 .post-wrapper .comment-body .profile-name {
 	padding-right: 5px;
 }
-.post-wrapper .comment-input {
-	width: 100%;
-	padding-left: 5px;
-}
-/***--- Post End ---***/
+/***--- Post End ---**
