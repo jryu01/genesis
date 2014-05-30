@@ -2,19 +2,104 @@
 -------------------------------------------------- */
 
 html, body, .full-height { height: 100%; }
+
 body { 
 	font-size: 13px;
 	font-family: Helvetica, Verdana, Arial, sans-serif;
 }
 
 .nav, .pagination, .carousel, .panel-title, a { cursor: pointer; }
+
+/* reset hover property and rewrite it only for no-touch device*/
+
 a, a:hover {
 	text-decoration: none;
 	color: #007AF2;
 }
-.no-touch a:hover {
-	text-decoration: underline;
+
+.btn-default:hover {
+  color: #333333;
+  background-color: #ffffff;
+  border-color: #cccccc;
 }
+
+.no-touch .btn-default:hover {
+  color: #333333;
+  background-color: #ebebeb;
+  border-color: #adadad;
+}
+
+.btn-primary:hover {
+  color: #ffffff;
+  background-color: #007aff;
+  border-color: #006ee6;
+}
+
+.no-touch .btn-primary:hover {
+  color: #ffffff;
+  background-color: #0066d6;
+  border-color: #0051a8;
+}
+
+.btn-success:hover {
+  color: #ffffff;
+  background-color: #4cd964;
+  border-color: #37d552;
+}
+
+.no-touch .btn-success:hover {
+  color: #ffffff;
+  background-color: #2cd048;
+  border-color: #24aa3b;
+}
+
+.btn-info:hover {
+  color: #ffffff;
+  background-color: #34aadc;
+  border-color: #249ed2;
+}
+
+.no-touch .btn-info:hover {
+  color: #ffffff;
+  background-color: #2295c5;
+  border-color: #1b779e;
+}
+
+.btn-warning:hover {
+  color: #ffffff;
+  background-color: #ffcc00;
+  border-color: #e6b800;
+}
+
+.no-touch .btn-warning:hover {
+  color: #ffffff;
+  background-color: #d6ab00;
+  border-color: #a88700;
+}
+
+.btn-danger:hover {
+  color: #ffffff;
+  background-color: #ff3b30;
+  border-color: #ff2317;
+}
+
+.no-touch .btn-danger:hover {
+  color: #ffffff;
+  background-color: #ff1407;
+  border-color: #d80b00;
+}
+
+.btn-link:hover {
+	color: #007aff;
+	text-decoration: none;
+}
+
+.no-touch .btn-link:hover {
+  color: #0055b3;
+  text-decoration: underline;
+  background-color: transparent;
+}
+/* util classes */
 .absolute-center {
   margin: auto;
   position: absolute;
@@ -247,12 +332,14 @@ a, a:hover {
 /***--- Home end ----***/
 
 /***--- Home.Feeder ---***/
+.feeder {
+	padding-top: 47px;
+}
 .feeder .date-text {
 	color: #898f9c;
 }
 /* post */
 .feeder .posts-wrapper {
-	padding-top: 47px;
 	margin: 0;
 	background-color: #fff;
 }
