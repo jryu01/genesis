@@ -20,14 +20,20 @@
 
     <link rel="stylesheet" href="styles/main.css">
     <script type="text/javascript">
-    // handle url change after facebook login 
-    if (window.location.href.indexOf('#_=_') > 0) {
-      window.location = window.location.href.replace(/#.*/, '');
-    }
-    // add no-touch class to the document if touch not supported
-    if (!("ontouchstart" in document.documentElement)) {
-      document.documentElement.className += " no-touch";
-    }
+      // handle url change after facebook login 
+      if (window.location.href.indexOf('#_=_') > 0) {
+        window.location = window.location.href.replace(/#.*/, '');
+      }
+      // add class that specify device type to document
+      if(isTouchDevice()) {
+        document.documentElement.className += " touch"; 
+      } else {
+        document.documentElement.className += " no-touch"; 
+      }
+      function isTouchDevice() {
+        return 'ontouchstart' in window  ||    // works on most browsers 
+            window.navigator.msMaxTouchPoints; // works on ie10
+      }
     </script>
   </head>
   <body ng-app="genesisApp">
