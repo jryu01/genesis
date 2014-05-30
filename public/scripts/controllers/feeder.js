@@ -25,12 +25,15 @@ function ($scope, $state, Posts, socket) {
     if (item) {
       params.sport = item;
     }  
+
+    $scope.postsBox.isInitialLoading = true;
     $scope.postsBox.loading = true;
     $scope.posts = null;
     Posts.list(
       { config : { params: params } },
       // Success
       function (data, status, headers, config) {
+        $scope.postsBox.isInitialLoading = false;
         $scope.postsBox.loading = false;
         $scope.posts = data;
       },
@@ -142,7 +145,8 @@ function ($scope, $state, Posts, socket) {
     registerSocketEvents();
 
     $scope.postsBox = {
-      loading: true
+      isInitialLoading: true,
+      isLoading: true
     };
 
     // Get posts from server
@@ -154,7 +158,8 @@ function ($scope, $state, Posts, socket) {
       { config : { params: params } },
       // Success
       function (data, status, headers, config) {
-        $scope.postsBox.loading = false;
+        $scope.postsBox.isInitialLoading = false;
+        $scope.postsBox.isLoading = false;
         $scope.posts = data;
       },
       // Failure

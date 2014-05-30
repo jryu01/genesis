@@ -8,13 +8,24 @@ body {
 }
 
 .nav, .pagination, .carousel, .panel-title, a { cursor: pointer; }
-a:hover {
+a, a:hover {
 	text-decoration: none;
+	color: #007AF2;
+}
+.no-touch a:hover {
+	text-decoration: underline;
 }
 .absolute-center {
   margin: auto;
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
+}
+.text-wrap {
+  word-wrap: break-word;     
+  overflow-wrap: break-word;
+  white-space: -moz-pre-wrap; 
+  white-space: pre-wrap;
+  word-break: break-all;
 }
 
 /* FrontPage STYLES
@@ -90,16 +101,26 @@ a:hover {
 	border-bottom: solid 1px orange;
 	color: #FFF;
 }
-.navbar .btn {
-	color: #FFF;
+.navbar .btn-icon-only .fa,
+.navbar .btn-icon-only .icon {
+  font-size: 22px;
+  vertical-align: middle;
 }
-.navbar .btn:hover {
-	color: lightgrey;
+.navbar .btn-navbar,
+.navbar .btn {
+  background: none;
+  border: none;
+  line-height: 50px;
+  padding-top: 0;
+  padding-bottom: 0;
+  color: #fff;
+  text-transform: uppercase;
 }
 .navbar.reverse {
 	background-color: #fff;
 	color: orange;
 }
+.navbar.reverse .btn-navbar,
 .navbar.reverse .btn {
 	color: orange;
 }
@@ -204,13 +225,16 @@ a:hover {
 	color: inherit;
 	font-weight: bold;
 }
+.no-touch .filter-wrapper a:hover {
+	text-decoration: none;
+}
 .filter-wrapper .filter-box {
 	padding-top: 15px;
 	padding-left: 20px;
 	padding-right: 20px;
 }
 .filter-wrapper .selected,
-.filter-wrapper li:hover {
+.no-touch .filter-wrapper li:hover {
 	border-bottom-color: orange; 
 	border-bottom-style: solid;
 }
@@ -226,20 +250,14 @@ a:hover {
 .feeder .date-text {
 	color: #898f9c;
 }
-.feeder .text-wrap {
-  word-wrap: break-word;      /* IE 5.5-7 */
-  overflow-wrap: break-word;
-  white-space: -moz-pre-wrap; /* Firefox 1.0-2.0 */
-  white-space: pre-wrap;
-  word-break: break-all;
-}
-
 /* post */
-.feeder {
-	padding-top: 50px;
+.feeder .posts-wrapper {
+	padding-top: 47px;
+	margin: 0;
 	background-color: #fff;
 }
-.feeder .panel:hover {
+.no-touch .feeder .panel:hover {
+	background-color: #FFFAF0;
 	cursor: pointer;
 }
 .feeder .panel:active {
@@ -286,6 +304,7 @@ a:hover {
 	border: none;
 	margin: 0;
 }
+
 .post-wrapper .comments-container {
 	overflow: auto;
 }
