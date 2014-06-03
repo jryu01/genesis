@@ -1,6 +1,7 @@
-<div class="feeder">
+<div class="feeder" style="height: 100%; overflow: auto;">
 
-  <div class="list-group posts-wrapper">
+
+  <div class="list-group posts-wrapper" infinite-scroll-parent infinite-scroll='loadMorePosts()' infinite-scroll-distance='3' infinite-scroll-disabled='!postsBox.isThereMoreData'>
     
     <div ng-repeat="post in posts" 
         class="list-group-item panel panel-default"
@@ -39,7 +40,6 @@
       </div>
     </div> 
   </div>
-  <button ng-show="!postsBox.isLoading" type="button" ng-click="loadMorePosts()" style="color: white; background-color:orange" class="btn  btn-sm btn-block">Load More</button>
   <div ng-show="postsBox.isLoading" class="text-center" 
       style="color:orange; height: 25px;"
       ng-class="{ 'absolute-center': postsBox.isInitialLoading }">

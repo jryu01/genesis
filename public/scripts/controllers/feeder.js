@@ -26,6 +26,7 @@ function ($scope, $state, Posts, socket) {
       params.sport = item;
     }  
 
+    $scope.postsBox.isThereMoreData = true;
     $scope.postsBox.isInitialLoading = true;
     $scope.postsBox.loading = true;
     $scope.posts = null;
@@ -120,6 +121,9 @@ function ($scope, $state, Posts, socket) {
       limits: 10,
       commentsLimit: 0
     };
+    if(!$scope.posts) {
+      return;
+    }
     if($scope.posts.length > 0) {
       params.dateBefore = $scope.posts[$scope.posts.length -1].createdAt;
     }
@@ -130,6 +134,11 @@ function ($scope, $state, Posts, socket) {
       { config: { params: params } },
       // Success
       function (data, status, headers, config) {
+        if (data.length === 0) {
+          $scope.postsBox.isThereMoreData = false;
+        }
+        console.log('success');
+        console.log(data);
         $scope.postsBox.loading = false;
         $scope.posts = $scope.posts.concat(data);
       },
@@ -146,7 +155,8 @@ function ($scope, $state, Posts, socket) {
 
     $scope.postsBox = {
       isInitialLoading: true,
-      isLoading: true
+      isLoading: true,
+      isThereMoreData: true
     };
 
     // Get posts from server

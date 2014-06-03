@@ -16,24 +16,26 @@
     <!-- mobile-angular-ui depends on bootstrap and font-awesome -->
     <link rel="stylesheet" href="bower_components/mobile-angular-ui/dist/css/mobile-angular-ui-base.min.css">
     <link rel="stylesheet" href="bower_components/mobile-angular-ui/dist/css/mobile-angular-ui-desktop.min.css">
-    <link rel="stylesheet" href="bower_components/angular-carousel/dist/angular-carousel.css" />
+    <link rel="stylesheet" href="bower_components/angular-carousel/dist/angular-carousel.min.css" />
 
     <link rel="stylesheet" href="styles/main.css">
     <script type="text/javascript">
-      // handle url change after facebook login 
-      if (window.location.href.indexOf('#_=_') > 0) {
-        window.location = window.location.href.replace(/#.*/, '');
-      }
-      // add class that specify device type to document
-      if(isTouchDevice()) {
-        document.documentElement.className += " touch"; 
-      } else {
-        document.documentElement.className += " no-touch"; 
-      }
-      function isTouchDevice() {
-        return 'ontouchstart' in window  ||    // works on most browsers 
-            window.navigator.msMaxTouchPoints; // works on ie10
-      }
+      (function() {
+        // handle url change after facebook login 
+        if (window.location.href.indexOf('#_=_') > 0) {
+          window.location = window.location.href.replace(/#.*/, '');
+        }
+        // add class that specify device type to document
+        if(isTouchDevice()) {
+          document.documentElement.className += " touch"; 
+        } else {
+          document.documentElement.className += " no-touch"; 
+        }
+        function isTouchDevice() {
+          return 'ontouchstart' in window  ||    // works on most browsers 
+              window.navigator.msMaxTouchPoints; // works on ie10
+        }
+      })();
     </script>
   </head>
   <body ng-app="genesisApp">
@@ -43,13 +45,14 @@
 
     <!-- Add your site or application content here -->
     <div ui-view class="full-height"></div>
-
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-touch/angular-touch.js"></script>
-    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src='bower_components/jquery/dist/jquery.min.js'></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.min.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.min.js"></script>
-    <script src="bower_components/angular-carousel/dist/angular-carousel.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-carousel/dist/angular-carousel.min.js"></script>
+    <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
 
     <script src="scripts/app.js"></script>
