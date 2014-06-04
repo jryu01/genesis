@@ -107,20 +107,20 @@ angular.module('genesisApp',
 
   $httpProvider.interceptors.push(['$q', '$injector', function($q, $injector) {
     return function (promise) {
-      return promise.then(
-        // Successs
-        function (response) {
-          return response;
-        },
-        // Error 
-        function (response) {
-          if (response.status === 401) {
-            var $state = $injector.get('$state');
-            $state.go('app.public.start');
-            return $q.reject(response);
-          }
-        }
-      );
+      // return promise.then(
+      //   // Successs
+      //   function (response) {
+      //     return response;
+      //   },
+      //   // Error 
+      //   function (response) {
+      //     if (response.status === 401) {
+      //       var $state = $injector.get('$state');
+      //       $state.go('app.public.start');
+      //       return $q.reject(response);
+      //     }
+      //   }
+      // );
     };
   }]);
 }])

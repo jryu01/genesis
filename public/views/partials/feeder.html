@@ -12,7 +12,7 @@
               src="{{ post.createdBy.profilePicture }}" 
               style="margin-right: 7px">
           <h5><a>{{ post.createdBy.name }}</a></h5>
-          <span class="date-text"> {{ post.createdAt | date:'MMM d' }} </span>
+          <span class="date-text"> {{ post.createdAt | myDate }} </span>
           <div class="clearfix"></div>
         </div>
         <div class="post-body">

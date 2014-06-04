@@ -4,8 +4,9 @@
  'use strict';
 
  angular.module('genesisApp')
-.controller('FeederController', ['$scope', '$state', 'Posts', 'socket',
-function ($scope, $state, Posts, socket) {
+.controller('FeederController', 
+  ['$scope', '$state', 'Posts', 'socket', 'geoloc',
+function ($scope, $state, Posts, socket, geoloc) {
   init();
 
   // when this controller destroyed remove all socket listeners
@@ -51,8 +52,7 @@ function ($scope, $state, Posts, socket) {
   $scope.$on('submit post', function (e) {
     var newPost = {
       sport: $scope.$parent.postFormData.selected.value,
-      // loc: [43.6525,-79.3816667], // TODO: get the location. 43,-79 for toronto
-      loc: [0,0], // TODO: get the location. 43,-79 for toronto
+      loc: [43.6525,-79.3816667], //TODO: get location 
       contents: $scope.$parent.postFormData.text
     };
     console.log(newPost);
@@ -137,8 +137,6 @@ function ($scope, $state, Posts, socket) {
         if (data.length === 0) {
           $scope.postsBox.isThereMoreData = false;
         }
-        console.log('success');
-        console.log(data);
         $scope.postsBox.loading = false;
         $scope.posts = $scope.posts.concat(data);
       },

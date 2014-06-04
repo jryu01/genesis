@@ -85,7 +85,7 @@ function create(req, res){
   }
   if (Object.prototype.toString.call(loc) !== '[object Array]' || 
       loc.length !== 2 ||
-      !(validator.isNumeric(loc[0]) && validator.isNumeric(loc[1]))) {
+      !(validator.isFloat(loc[0]) && validator.isFloat(loc[1]))) {
     message = "loc must be a form of Number Array with length 2.";
     return res.send(400, { message: message });
   }
@@ -239,7 +239,7 @@ function createNewPost(socket) {
     }
     if (Object.prototype.toString.call(loc) !== '[object Array]' || 
         loc.length !== 2 ||
-        !(validator.isNumeric(loc[0]) && validator.isNumeric(loc[1]))) {
+        !(validator.isFloat(loc[0]) && validator.isFloat(loc[1]))) {
       message = "loc must be a form of Number Array with length 2.";
       return callback({ name: errorName, message: message }, null);
     }
