@@ -35,7 +35,6 @@ function ($scope, $state, Auth, socket) {
     // clear postFormData
     $scope.postFormData.selected = null;
     $scope.postFormData.text = null;
-    $scope.postFormData.ready = false;
   };
   $scope.submitPostForm = function () {
     var isReady = !!$scope.postFormData.text && !!$scope.postFormData.selected;
@@ -73,17 +72,8 @@ function ($scope, $state, Auth, socket) {
     ];
     $scope.postFormData = {
       selected: null,
-      text: null,
-      ready: false
+      text: null
     };
-    $scope.$watch('postFormData.selected', function (newVal, oldVal) {
-      $scope.postFormData.ready = !!$scope.postFormData.text && 
-                                  !!$scope.postFormData.selected;
-    });
-    $scope.$watch('postFormData.text', function (newVal, oldVal) {
-      $scope.postFormData.ready = !!$scope.postFormData.text && 
-                                  !!$scope.postFormData.selected;
-    });
   }
 
 }]);

@@ -63,7 +63,6 @@ function ($scope, $state, Posts, socket, geoloc) {
       }
       $scope.$parent.postFormData.selected = null;
       $scope.$parent.postFormData.text = null;
-      $scope.$parent.postFormData.ready = false;
       $scope.$parent.data.postFormOpened = false;
 
       $scope.posts.unshift(data);
