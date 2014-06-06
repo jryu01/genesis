@@ -4,18 +4,22 @@
 
 'use strict';
 
-var LIMIT = 5;
+var LIMIT = 1;
 var EventModel = require('../models/event');
 
+////////
 /* list function */
+////////
 function list(req, res) {
 
-  console.log(req.query.eventType);
-  
   var query = {};
   // if eventtypes query exsists
   if (req.query.eventType) {
     query.eventType = req.query.eventType;
+  }
+  // if sporttype query exsists
+  if (req.query.sports) {
+    query.sports = req.query.sports;
   }
 
   // db.events.find({"schedule.appDateTime":  {$gte:new ISODate("")}}).sort({"schedule.appDateTime" : -1}).pretty();
@@ -28,6 +32,8 @@ function list(req, res) {
       "schedule.appDateTime": 1
     }
   };
+  
+  console.log(options.limit);
 
   EventModel.find(query, projection, options, function (err, eventsFromDB) {
     if (err) return res.send(500);
@@ -35,8 +41,11 @@ function list(req, res) {
   });
 }
 
+////////
+/* create function */
+////////
 function create(req, res){
-  // TODO: validation
+  // TODO: Basic validation against remote update
   
   // get it as date
   var d = new Date(req.body.time);

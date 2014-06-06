@@ -24,8 +24,8 @@
       <div class="btn btn-navbar newPost" ng-click="openPostForm()" ng-show="!data.slideIndex">
         <i class="fa fa-pencil fa-lg"></i>
       </div> 
-      <div class="btn btn-navbar newEvent" ng-show="data.slideIndex">
-        <i class="fa fa-pencil fa-lg"></i> New Event
+      <div class="btn btn-navbar newEvent" ng-click="openEventForm()"  ng-show="data.slideIndex">
+        <i class="fa fa-pencil fa-lg"></i> Event
       </div> 
     </div>
   </div>
@@ -72,6 +72,184 @@
         </div>
       </form>
 
+    </div>
+  </div>
+
+  <!-- Event Form --> 
+  <div class="popup-screen post-form-popup" ng-class="{ active: data.eventFormOpened }">
+    <div class="popup-screen-body" style="padding-top:50px; overflow-y:scroll;">
+        
+        <!-- $scope.submitEventFromPublic = function() -->
+        <form name="eventForm" ng-submit="submitEventForm()">
+          <!-- top portion -->
+          <div class="navbar reverse navbar-app navbar-absolute-top">
+            <div class="navbar-brand navbar-brand-center">
+              New Event
+            </div>
+            <div class="btn-group pull-left">
+              <div class="btn btn-sm btn-navbar" ng-click="cancelEventForm()">
+                Cancel
+              </div>
+            </div>
+            <div class="btn-group pull-right">
+              <input type="submit" value="Post" 
+                  class="btn btn-sm btn-navbar post-btn" 
+                  ng-class="{ ready: eventFormData.ready, 
+                      disabled: !eventFormData.ready }">
+              </input>
+            </div>
+          </div>
+          <div class="input_wrapper">
+            <!-- title -->
+            <div class="textarea-wrapper">
+              <input class="form-control" type="text" ng-model="eventFormData.inputName" placeholder="Event Name" required></input>
+            </div>
+
+            <!-- description -->
+            <div class="textarea-wrapper">
+              <textarea ng-model="eventFormData.inputDesc" 
+                  class="form-control" 
+                  placeholder="Description" 
+                  style="height: calc(100% - 54px);">
+              </textarea>
+            </div>
+
+            <hr/>
+
+            <div class="textarea-wrapper">
+              <input class="form-control" type="text" ng-model="eventFormData.inputPlace" placeholder="Location" required></input>
+            </div>
+            <div class="form-group row align_center">
+              
+            <alert ng-show="validDateMarker" type="danger">Invalid Date : Time and Date has to be later than today.</alert>
+              
+              <label class="control-label col-xs-2">Date:</label>
+              <div class="form-control-wrapper col-xs-10" style="line-height:34px;">
+              <select ng-model="eventFormData.tempinputMonth">
+                  <option value="0">January</option>
+                  <option value="1">Feburary</option>
+                  <option value="2">March</option>
+                  <option value="3">April</option>
+                  <option value="4">May</option>
+                  <option value="5">June</option>
+                  <option value="6">July</option>
+                  <option value="7">August</option>
+                  <option value="8">September</option>
+                  <option value="9">October</option>
+                  <option value="10">November</option>
+                  <option value="11">December</option>
+              </select>
+              <select ng-model="eventFormData.tempinputDay" class="">
+                  <option value="0">1</option>
+                  <option value="1">2</option>
+                  <option value="2">3</option>
+                  <option value="3">4</option>
+                  <option value="4">5</option>
+                  <option value="5">6</option>
+                  <option value="6">7</option>
+                  <option value="7">8</option>
+                  <option value="8">9</option>
+                  <option value="9">10</option>
+                  <option value="10">11</option>
+                  <option value="11">12</option>
+                  <option value="12">13</option>
+                  <option value="13">14</option>
+                  <option value="14">15</option>
+                  <option value="15">16</option>
+                  <option value="16">17</option>
+                  <option value="17">18</option>
+                  <option value="18">19</option>
+                  <option value="19">20</option>
+                  <option value="20">21</option>
+                  <option value="21">22</option>
+                  <option value="22">23</option>
+                  <option value="23">24</option>
+                  <option value="24">25</option>
+                  <option value="25">26</option>
+                  <option value="26">27</option>
+                  <option value="27">28</option>
+                  <option value="28">29</option>
+                  <option value="29">30</option>
+                  <option value="30">31</option>
+              </select>
+              <select ng-model="eventFormData.tempinputYear" class="">
+                  <option value="2014">2014</option>
+                  <option value="2015">2015</option>
+                  <option value="2016">2016</option>
+              </select>
+              </div>
+            </div>
+            <div class="form-group row align_center">
+              <label class="control-label col-xs-2">Time:</label>
+              <div class="form-control-wrapper col-xs-10" style="line-height:34px;">
+              <select ng-model="eventFormData.tempinputHour" class="">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+              </select>
+              <select ng-model="eventFormData.tempinputMinute" class="">
+                  <option value="0">0</option>
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                  <option value="25">25</option>
+                  <option value="30">30</option>
+                  <option value="35">35</option>
+                  <option value="40">40</option>
+                  <option value="45">45</option>
+                  <option value="50">50</option>
+                  <option value="55">55</option>
+              </select>
+              <select ng-model="eventFormData.tempinputAMPM" class="">
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+              </select>
+                {{eventFormData.tempinputTimezone}}
+              </div>
+            </div>
+ 
+            <div class="form-group row align_center">
+              <label class="control-label col-xs-2">Repeat:</label>
+              <div class="form-control-wrapper col-xs-10">
+                <select ng-model="eventFormData.inputRepeat" class="form-control">
+                  <option value="once">Once</option>
+                  <option value="daily">Daily</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="biweekly">biweekly</option>
+                  <option value="monthly">monthly</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row align_center">
+              <label class="control-label col-xs-2">Sports:</label>
+              <div class="form-control-wrapper col-xs-10">
+                <select ng-model="eventFormData.inputSports" ng-options="sport.name for sport in sports" class="form-control">
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row align_center">
+              <label class="control-label col-xs-2">Type:</label>
+              <div class="form-control-wrapper col-xs-10">
+                <select ng-model="eventFormData.inputTypes" class="form-control">
+                  <option value="Casual">Casual</option>
+                  <option value="Tournament">Tournament</option>
+                </select>
+              </div>
+            </div>
+        </div> <!-- end of wrapper -->
+        </form>
     </div>
   </div>
 

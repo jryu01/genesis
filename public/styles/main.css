@@ -269,68 +269,7 @@ a:hover {
 	width: 100%;
 	padding-left: 5px;
 }
-
-<<<<<<< HEAD
-/*** Event create event table ***/
-.create_event_table{
-  width: 550px;
-}
-
-.create_event_tbody{
-  display: table-row-group;
-  vertical-align: middle;
-}
-
-.create_event_tr{
-}
-
-.create_event_th{
-  text-align: right;
-  max-width: 150px;
-  width: 150px;
-  padding: 11px;
-}
-
-.create_event_td{
-  margin: 8px;
-  width: 480px;
-  
-}
-
-.create_event_td_half{
-  margin-left: 4px;
-  width: 240px;
-}
-
-.create_event_input{
-  width: 400px;
-}
-
-.create_event_input_sm{
-  width: 100px;
-  margin-right: 10px;
-}
-
-.event_body{
-  background-color:white;
-}
-
-.event_datepicker
-=======
 /***--- Feeder End---***/
-
-/*** Event ***/
-.create_button_wrapper
->>>>>>> aff838651d8f04cdef6b9282bd4068d42fef639c
-{
-  width: 170px;
-  padding-left: 10px;
-}
-
-.event_radio
-{
-  margin-left: 10px !important;
-}
 
 /*** Event Organizer ***/
 
@@ -345,4 +284,14 @@ a:hover {
   max-width:40px; 
   max-height:40px; 
   margin-right: 5px;
+}
+
+.align_center{
+  text-align: center;
+}
+
+.input_wrapper{
+  margin-top: 25px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
