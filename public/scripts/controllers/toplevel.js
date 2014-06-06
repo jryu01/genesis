@@ -1,11 +1,13 @@
 /**
+p
  * ToplevelController
  */
 'use strict';
 
 angular.module('genesisApp')
-.controller('ToplevelController', ['$scope', '$state', 'Auth', 'socket',
-function ($scope, $state, Auth, socket) {
+.controller('ToplevelController', 
+['$scope', '$state', 'Auth', 'socket', 'Posts',
+function ($scope, $state, Auth, socket, Posts) {
   console.log("user from ToplevelController");
   console.log($scope.currentUser);
 

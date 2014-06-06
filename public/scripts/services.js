@@ -54,6 +54,16 @@ angular.module('genesisApp')
     }
   };
 }])
+.factory('geoloc', ['$window', function ($window) {
+  if ("geolocation" in $window.navigator) {
+    /* geolocation is available */
+    $window.navigator.geolocation.getCurrentPosition(function (position) {
+      console.log(position.coords.latitude, position.coords.longitude);
+    });
+  } else {
+    /* geolocation IS NOT available */
+  }
+}])
 .factory('Posts', ['$http', function ($http) {
   return {
     list: function (options, success, error) {

@@ -36,7 +36,6 @@ function ($scope, $state, Auth, socket) {
     // clear postFormData
     $scope.postFormData.selected = null;
     $scope.postFormData.text = null;
-    $scope.postFormData.ready = false;
   };
   $scope.submitPostForm = function () {
     var isReady = !!$scope.postFormData.text && !!$scope.postFormData.selected;
@@ -47,9 +46,13 @@ function ($scope, $state, Auth, socket) {
   };
   function selectSportForForm(item) {
     if (item === null) {
+<<<<<<< HEAD
       $scope.postFormData.selected = null;
       $scope.eventFormData.inputSports = $scope.sports[0];
       return; 
+=======
+      return ($scope.postFormData.selected = $scope.sports[0]); 
+>>>>>>> 758019182ee893fe428871b1f91a6cddba859f25
     }
     for (var i = 0; i < $scope.sports.length; i++) {
       if ($scope.sports[i].name === item) {
@@ -121,9 +124,9 @@ function ($scope, $state, Auth, socket) {
     ];
     $scope.postFormData = {
       selected: null,
-      text: null,
-      ready: false
+      text: null
     };
+<<<<<<< HEAD
     $scope.$watch('postFormData.selected', function (newVal, oldVal) {
       $scope.postFormData.ready = !!$scope.postFormData.text && 
                                   !!$scope.postFormData.selected;
@@ -177,6 +180,8 @@ function ($scope, $state, Auth, socket) {
       tempinputTimezone: abbr,
     };
     
+=======
+>>>>>>> 758019182ee893fe428871b1f91a6cddba859f25
   }
 
 }]);

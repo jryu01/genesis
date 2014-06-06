@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('genesisApp', [
-  'ui.router', 'mobile-angular-ui', 'ui.bootstrap', 'angular-carousel'
-])
+angular.module('genesisApp', 
+  [ 'ui.router', 'mobile-angular-ui', 'ui.bootstrap', 'angular-carousel',
+    'infinite-scroll']
+)
 .config(['$stateProvider','$urlRouterProvider', '$locationProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
   //================================================
@@ -66,12 +67,24 @@ angular.module('genesisApp', [
       }
     })
     .state('app.user.post', {
-      url: 'post',
-      template: '<div>post</div>'
+      url: 'post/:id?comment',
+      templateUrl: 'views/partials/post.html',
+      controller: 'PostController'
     })
-    .state('app.user.profile', {
+    .state('app.profile', {
       url: 'profile', 
-      template: '<div>Profile</div>'
+      template: "<div style='height: 100%; overflow: auto';><div id='test' infinite-scroll-parent infinite-scroll='loadMore()' infinite-scroll-distance='1'><img ng-repeat='image in images' ng-src='http://placehold.it/225x250&text={{image}}'></div></div>",
+      controller: function ($scope) {
+        // infinite scroll test code
+        $scope.images = [1, 2, 3, 4, 5, 6, 7, 8];
+
+        $scope.loadMore = function() {
+          var last = $scope.images[$scope.images.length - 1];
+          for(var i = 1; i <= 8; i++) {
+            $scope.images.push(last + i);
+          }
+        };
+      }
     })
     .state('app.user.messages', {
       url: 'messages', 
@@ -94,20 +107,20 @@ angular.module('genesisApp', [
 
   $httpProvider.interceptors.push(['$q', '$injector', function($q, $injector) {
     return function (promise) {
-      return promise.then(
-        // Successs
-        function (response) {
-          return response;
-        },
-        // Error 
-        function (response) {
-          if (response.status === 401) {
-            var $state = $injector.get('$state');
-            $state.go('app.public.start');
-            return $q.reject(response);
-          }
-        }
-      );
+      // return promise.then(
+      //   // Successs
+      //   function (response) {
+      //     return response;
+      //   },
+      //   // Error 
+      //   function (response) {
+      //     if (response.status === 401) {
+      //       var $state = $injector.get('$state');
+      //       $state.go('app.public.start');
+      //       return $q.reject(response);
+      //     }
+      //   }
+      // );
     };
   }]);
 }])
@@ -128,7 +141,7 @@ angular.module('genesisApp', [
           if (user) {
             $rootScope.currentUser = user;
             var to = (toState.name === 'app') ? 'app.user.home' : toState.name;
-            $state.go(to);
+            $state.go(to, toParams);
 
           // need to sign in           
           } else {

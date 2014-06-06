@@ -29,14 +29,15 @@
       </div> 
     </div>
   </div>
-
+  
   <!-- Post Form --> 
   <div class="popup-screen post-form-popup" ng-class="{ active: data.postFormOpened }">
     <div class="popup-screen-body" style="padding-top:51px">
 
-      <form name="postForm" ng-submit="submitPostForm()" 
+      <form name="postForm" novalidate
+          ng-submit="submitPostForm()" 
           class="post-form full-height">
-        <div class="navbar reverse navbar-app navbar-absolute-top">
+        <div class="navbar reverse navbar-absolute-top">
           <div class="navbar-brand navbar-brand-center">
             New Post
           </div>
@@ -48,15 +49,15 @@
           <div class="btn-group pull-right">
             <input type="submit" value="Post" 
                 class="btn btn-sm btn-navbar post-btn" 
-                ng-class="{ ready: postFormData.ready, 
-                    disabled: !postFormData.ready }">
+                ng-class="{ ready: !postForm.$invalid, 
+                    disabled: postForm.$invalid }">
             </input>
           </div>
         </div>
-        <div class="form-group row">
+        <div class="select-wrapper form-group row">
           <label class="control-label col-xs-2">Sport:</label>
           <div class="form-control-wrapper col-xs-10">
-            <select ng-model="postFormData.selected"
+            <select name="sport" ng-model="postFormData.selected"
                 ng-options="sport.name for sport in sports" 
                 class="form-control">
             </select>
@@ -64,10 +65,9 @@
         </div>
 
         <div class="textarea-wrapper form-group full-height">
-          <textarea ng-model="postFormData.text" 
+          <textarea name="text" ng-model="postFormData.text" 
               class="form-control" 
-              placeholder="What is going on today?" 
-              style="height: calc(100% - 54px);">
+              placeholder="What is going on today?" required>
           </textarea>
         </div>
       </form>

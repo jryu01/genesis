@@ -1,73 +1,53 @@
-<div class="feeder">
+<div class="feeder" style="height: 100%; overflow: auto;">
 
-  <div class="list-group posts-wrapper">
-    <!-- make this as a directive -->
-    <div ng-repeat="post in posts" class="list-group-item panel panel-default">
+
+  <div class="list-group posts-wrapper" infinite-scroll-parent infinite-scroll='loadMorePosts()' infinite-scroll-distance='3' infinite-scroll-disabled='!postsBox.isThereMoreData'>
+    
+    <div ng-repeat="post in posts" 
+        class="list-group-item panel panel-default"
+        ui-sref="app.user.post({id: post.id})">
       <div class="panel-body">
         <div class="post-heading">
-            <img class="pull-left img-rounded" 
+          <img class="pull-left img-rounded" 
               src="{{ post.createdBy.profilePicture }}" 
               style="margin-right: 7px">
-            <h5><a>{{ post.createdBy.name }}</a></h5>
-            <span class="date-text"> {{ post.createdAt | date:'MMM d' }} </span>
+          <h5><a>{{ post.createdBy.name }}</a></h5>
+          <span class="date-text"> {{ post.createdAt | myDate }} </span>
           <div class="clearfix"></div>
         </div>
         <div class="post-body">
           <p class="text-wrap">{{ post.contents }}</p>
         </div>
         <div class="pull-left">
-          <!-- Toggle Score btn functionality -->
-          <button ng-show="post.scorers.indexOf(currentUser.id) >= 0" class="btn btn-warning btn-xs" ng-click="removeScore(post.id)">
-            <span ng-show="post.score > 0">{{ post.score }}</span> 
+          <a ng-show="post.scorers.indexOf(currentUser.id) >= 0" class="btn btn-warning btn-sm" ng-click="removeScore(post.id, $event)">
             Score
-          </button>
-          <button ng-show="post.scorers.indexOf(currentUser.id) < 0" class="btn btn-default btn-xs" ng-click="addScore(post.id)">
             <span ng-show="post.score > 0">{{ post.score }}</span> 
+          </a>
+          <a ng-show="post.scorers.indexOf(currentUser.id) < 0" class="btn btn-default btn-sm" ng-click="addScore(post.id, $event)">
             Score
-          </button>
+            <span ng-show="post.score > 0">{{ post.score }}</span> 
+          </a>
+          <a class="btn btn-default btn-sm"
+              ng-click="$event.stopPropagation();"
+              ui-sref="app.user.post({id: post.id, comment: true})">
+              Comment {{ post.numComments }}
+          </a>
         </div>
         <div class="pull-right">
           <span class="badge"> {{ post.sport }} </span>
         </div>
         <div class="clearfix"></div>
       </div>
-      <div class="panel-footer">
-        <div class="comments-toggle">
-          <span ng-show="!commentsExpand" ng-click="loadComments(post.id)">
-          <a>
-            {{ post.numComments }} Comments
-          </a> 
-          <span class="caret"></span>
-          <!-- <i class="fa fa-chevron-down fa-1x"></i> -->
-          </span>
-          <a ng-show="commentsExpand" ng-click="hideComments()">Hide Comments</a>
-        </div>
-        <div class="">
-          <div class="comments-container">
-            <div ng-repeat="comment in post.comments">
-              <div class="comment-body">
-                <a><img class="img-rounded profile-img" 
-                  src="{{comment.createdBy.profilePicture}}"></a>
-                <div>
-                  <a class="profile-name pull-left">{{ comment.createdBy.name }}</a>
-                  <span class="text-wrap"> {{ comment.text }} </span>
-                  <div class="clearfix" style="height:0"></div>
-                  <span class="date-text"> {{ comment.createdAt | date:'MMM d' }} </span>
-                  <!-- <a>Score</a> <span> {{ comment.score}}</span> -->
-                </div>
-              </div>
-            </div> 
-          </div>
-          <div class="comment-form">
-            <img class="img-rounded profile-img" src="{{ currentUser.photos.profile }}">
-            <form name="commentForm" ng-submit="addComment(post.id)">
-              <input class="comment-input" ng-model="commentText" type="text" placeholder="Write a Comment" required>
-            </form>
-          </div>
-        </div>
-      </div>
     </div> 
+<<<<<<< HEAD
     <button ng-show="!postsBox.loading" type="button" ng-click="loadMore()" style="color: white; background-color:orange" class="btn  btn-sm btn-block">Load More</button>
     <p ng-show="postsBox.loading" class="text-center" style="color:orange"><i class="fa fa-refresh fa-spin fa-2x"></i></p>
+=======
+  </div>
+  <div ng-show="postsBox.isLoading" class="text-center" 
+      style="color:orange; height: 25px;"
+      ng-class="{ 'absolute-center': postsBox.isInitialLoading }">
+    <i class="fa fa-refresh fa-spin fa-2x" ></i>
+>>>>>>> 758019182ee893fe428871b1f91a6cddba859f25
   </div>
 </div>
