@@ -15,4 +15,13 @@ angular.module('genesisApp')
       });
     }
   };
+}])
+.directive('myOverlay', [function () {
+  return {
+    restrict: 'AE',
+    transclude: true,
+    link: function (scope, element, attr) {
+      // apply css properties
+    }
+  };
 }]);

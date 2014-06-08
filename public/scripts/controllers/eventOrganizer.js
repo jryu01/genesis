@@ -88,7 +88,7 @@ function ($scope, $state, EventsFromService) {
       }
     );
   
-  };
+  }
   
   // update list when updated
   function updateGroups() {
@@ -119,12 +119,12 @@ function ($scope, $state, EventsFromService) {
         if (value.eventType == "Tournament") $scope.tournamentGroup[key] = value;
         else $scope.casualGroup[key] = value;
       });
-  };
+  }
   
   // load more Events
   $scope.loadMoreEvents = function () {
     $scope.loading = true;
-    globalLimit = globalLimit + 5
+    globalLimit = globalLimit + 5;
     var filterInput = {
       limit: globalLimit,
     };

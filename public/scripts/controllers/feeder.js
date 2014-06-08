@@ -20,7 +20,7 @@ function ($scope, $state, Posts, socket, geoloc) {
     var item = $scope.$parent.filter.selected;
 
     var params = { 
-      limits: 10,
+      limit: 10,
       commentsLimit: 0
     }; 
     if (item) {
@@ -51,7 +51,7 @@ function ($scope, $state, Posts, socket, geoloc) {
    */
   $scope.$on('submit post', function (e) {
     var newPost = {
-      sport: $scope.$parent.postFormData.selected.value,
+      sport: $scope.$parent.postFormData.selected.name,
       loc: [43.6525,-79.3816667], //TODO: get location 
       contents: $scope.$parent.postFormData.text
     };
@@ -117,7 +117,7 @@ function ($scope, $state, Posts, socket, geoloc) {
   $scope.loadMorePosts = function () {
     $scope.postsBox.loading = true;
     var params = {
-      limits: 10,
+      limit: 10,
       commentsLimit: 0
     };
     if(!$scope.posts) {
@@ -158,7 +158,7 @@ function ($scope, $state, Posts, socket, geoloc) {
 
     // Get posts from server
     var params = { 
-      limits: 10,
+      limit: 10,
       commentsLimit: 0
     };
     Posts.list(
