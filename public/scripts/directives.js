@@ -3,6 +3,7 @@
 angular.module('genesisApp')
 .directive('myFocus', ['$timeout', '$parse', function($timeout, $parse){
   return {
+    restrict: 'A',
     link: function (scope, element, attr) {
       var model = $parse(attr.myFocus);
       scope.$watch(model, function (newVal, oldVal) {
