@@ -1,13 +1,16 @@
 <div class="home full-height">       
 
   <!-- Navbar Contetns  -->
-
   <div content-for="navbarTitle">
     <span>{{ data.titles[data.slideIndex] }}</span>
     <div class="carousel-indicators" style="bottom:0px">
-      <i class="fa fa-circle dot" ng-class="{ active: !data.slideIndex }">
+      <i class="fa fa-circle dot" 
+         ng-class="{ active: !data.slideIndex }"
+         ng-click="data.slideIndex = 0">
       </i>
-      <i class="fa fa-circle dot" ng-class="{ active: data.slideIndex }">
+      <i class="fa fa-circle dot" 
+         ng-class="{ active: data.slideIndex }"
+         ng-click="data.slideIndex = 1">
       </i>
     </div>
   </div>
