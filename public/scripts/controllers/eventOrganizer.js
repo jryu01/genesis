@@ -24,7 +24,7 @@ function ($scope, $state, EventsFromService) {
       place: $scope.$parent.eventFormData.inputPlace,
       time: $scope.$parent.eventFormData.Completedate,
       repeat: $scope.$parent.eventFormData.inputRepeat,
-      sports: $scope.$parent.eventFormData.inputSports["value"],
+      sports: $scope.$parent.eventFormData.inputSports.name,
       types: $scope.$parent.eventFormData.inputTypes
     };
     
@@ -39,7 +39,7 @@ function ($scope, $state, EventsFromService) {
         $scope.$parent.eventFormData.inputPlace = "";
         $scope.$parent.eventFormData.inputTime = "";
         $scope.$parent.eventFormData.inputRepeat = "once";
-        $scope.$parent.eventFormData.inputSports = "General";
+        $scope.$parent.eventFormData.inputSports = null;
         $scope.$parent.eventFormData.inputTypes = "Casual";
         // TODO : add based on datetime
         $scope.eventGroup.unshift(data);

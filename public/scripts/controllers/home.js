@@ -154,7 +154,7 @@ function ($scope, $state, Auth, socket) {
       inputPlace: "",
       Completedate: new Date(),
       inputRepeat: "once",
-      inputSports: "General",
+      inputSports: null,
       inputTypes: "Casual",
       // temp time
       tempinputMonth: todayDate.getMonth(),
