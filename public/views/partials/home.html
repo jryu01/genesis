@@ -29,11 +29,11 @@
       </div> 
     </div>
   </div>
-  
-  <!-- Post Form --> 
-  <div class="popup-screen post-form-popup" ng-class="{ active: data.postFormOpened }">
-    <div class="popup-screen-body" style="padding-top:51px">
 
+  <!-- Post Form --> 
+  <my-overlay my-overlay-open="data.postFormOpened" 
+              my-overlay-open-style="bottom-up">
+    <div class="post-form-content full-height" style="padding-top:51px">
       <form name="postForm" novalidate
           ng-submit="submitPostForm()" 
           class="post-form full-height">
@@ -71,13 +71,13 @@
           </textarea>
         </div>
       </form>
-
     </div>
-  </div>
+  </my-overlay>  
 
   <!-- Event Form --> 
-  <div class="popup-screen post-form-popup" ng-class="{ active: data.eventFormOpened }">
-    <div class="popup-screen-body" style="padding-top:50px; overflow-y:scroll;">
+  <my-overlay my-overlay-open="data.eventFormOpened" 
+              my-overlay-open-style="bottom-up">
+    <div class="full-height" style="padding-top:50px; overflow-y:scroll;">
         
         <!-- $scope.submitEventFromPublic = function() -->
         <form name="eventForm" ng-submit="submitEventForm()">
@@ -251,7 +251,8 @@
         </div> <!-- end of wrapper -->
         </form>
     </div>
-  </div>
+  </my-overlay>
+  <!-- End of Event Form --> 
 
   <!-- Filter -->
   <div class="filter-wrapper">

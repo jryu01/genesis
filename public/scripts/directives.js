@@ -4,8 +4,8 @@ angular.module('genesisApp')
 .directive('myFocus', ['$timeout', '$parse', function($timeout, $parse){
   return {
     restrict: 'A',
-    link: function (scope, element, attr) {
-      var model = $parse(attr.myFocus);
+    link: function (scope, element, attrs) {
+      var model = $parse(attrs.myFocus);
       scope.$watch(model, function (newVal, oldVal) {
         if (newVal === true) {
           $timeout(function() {
@@ -18,10 +18,22 @@ angular.module('genesisApp')
 }])
 .directive('myOverlay', [function () {
   return {
-    restrict: 'AE',
+    restrict: 'E',
     transclude: true,
-    link: function (scope, element, attr) {
-      // apply css properties
+    replace: true,
+    template: '<div class="my-overlay">' +
+              '  <div class="my-overlay-body" ng-transclude></div>' +
+              '</div>',
+    link: function (scope, element, attrs) {
+      // myOverlayOpenStyle: bottom-up or right-left
+      element.addClass(attrs.myOverlayOpenStyle);
+      scope.$watch(attrs.myOverlayOpen, function (value) {
+        if (value) {
+          element.addClass('active');
+        } else {
+          element.removeClass('active');
+        }
+      });
     }
   };
 }]);
