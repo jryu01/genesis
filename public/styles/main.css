@@ -1,4 +1,4 @@
-/* RESET */
+ RESET */
 /* ------------------------------------------------*/
 
 .touch * {
@@ -161,6 +161,58 @@ a, a:hover {
 /* Main Application STYLES
 -------------------------------------------------- */
 
+/*** angular directives ***/
+
+/* popup screen */
+.my-overlay {
+	height: -webkit-calc(100% + 51px);
+	height: -moz-calc(100% + 51px);
+	height: -o-calc(100% + 51px);
+	height: calc(100% + 51px);
+	width: 100%;
+	position: absolute;
+	visibility: hidden; /* always hidden */
+	top: -51px;
+}
+.my-overlay .my-overlay-body {
+	z-index: 1001;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background-color: #fff;
+}
+.my-overlay.bottom-up .my-overlay-body {
+	/* teansitions */
+	visibility:hidden;
+	top: 100%;
+	-webkit-transition:visibility 0s linear 0.5s,top 0.2s linear;
+	-moz-transition:visibility 0s linear 0.5s,top 0.2s linear;
+	-o-transition:visibility 0s linear 0.5s,top 0.2s linear;
+	transition:visibility 0s linear 0.5s,top 0.2s linear;
+}
+.my-overlay.bottom-up.active .my-overlay-body {
+	visibility:visible;
+ 	transition-delay:0s;
+	top:0;
+}
+.my-overlay.right-left .my-overlay-body {
+	/* teansitions */
+	visibility:hidden;
+	top: 0;
+	left: 100%;
+	-webkit-transition:visibility 0s linear 0.5s,left 0.2s linear;
+	-moz-transition:visibility 0s linear 0.5s,left 0.2s linear;
+	-o-transition:visibility 0s linear 0.5s,left 0.2s linear;
+	transition:visibility 0s linear 0.5s,left 0.2s linear;
+}
+.my-overlay.right-left.active .my-overlay-body {
+	visibility:visible;
+ 	transition-delay:0s;
+	left:0%;
+}
+
+/*** angular directives end ***/
+
 /***---- Layout ----***/
 
 /* navbar styling */
@@ -209,32 +261,6 @@ a, a:hover {
 .app .app-content {
 	overflow: visible;
 }
-/* popup screen */
-.app .app-content .popup-screen {
-	height: -moz-calc(100% + 51px);
-	height: -webkit-calc(100% + 51px);
-	height: -o-calc(100% + 51px);
-	height: calc(100% + 51px);
-	width: 100%;
-	position: absolute;
-	top: -51px;
-}
-.app .app-content .popup-screen .popup-screen-body {
-	z-index: 1001;
-	position: absolute;
-	height: 100%;
-	width: 100%;
-	background-color: #fff;
-	top: 100%;
-	-moz-transition:top 0.5s;
-	-webkit-transition:top 0.5s; 
-	-o-transition:top 0.5s; 
-	transition:top 0.5s;
-}
-.app .app-content .popup-screen.active .popup-screen-body {
-	top: 0%;
-}
-
 /***---- Layout end ----***/
 
 /***--- Home ----***/
@@ -273,6 +299,9 @@ a, a:hover {
 	height: 12px; 
 	font-size: 8px;
 	background-color: transparent;
+}
+.no-touch .carousel-indicators .dot {
+	cursor: pointer;	
 }
 .carousel-indicators .active{
 	color: #fff;
@@ -395,4 +424,4 @@ a, a:hover {
  margin-right: 1px;
  border-top: 1px solid;
 }
-/***--- Home.Event End---***/
+/***--- Home.Event End---**

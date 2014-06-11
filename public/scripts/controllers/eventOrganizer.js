@@ -23,7 +23,7 @@ function ($scope, $state, EventsFromService) {
       place: $scope.$parent.eventFormData.inputPlace,
       time: $scope.$parent.eventFormData.Completedate,
       repeat: $scope.$parent.eventFormData.inputRepeat,
-      sports: $scope.$parent.eventFormData.inputSports["value"],
+      sports: $scope.$parent.eventFormData.inputSports.name,
       types: $scope.$parent.eventFormData.inputTypes
     };
     
@@ -40,7 +40,7 @@ function ($scope, $state, EventsFromService) {
         $scope.$parent.eventFormData.inputDesc = "";
         $scope.$parent.eventFormData.inputPlace = "";
         $scope.$parent.eventFormData.inputRepeat = "once";
-        $scope.$parent.eventFormData.inputSports = "General";
+        $scope.$parent.eventFormData.inputSports = null;
         $scope.$parent.eventFormData.inputTypes = "Casual";
         // TODO : add based on datetime
         $scope.eventGroup.unshift(data);
@@ -99,7 +99,7 @@ function ($scope, $state, EventsFromService) {
       }
     );
   
-  };
+  }
   
   // update list when updated
   function updateGroups() {
@@ -110,7 +110,7 @@ function ($scope, $state, EventsFromService) {
         if (value.eventType == "Tournament") $scope.tournamentGroup[key] = value;
         else $scope.casualGroup[key] = value;
       });
-  };
+  }
   
   // load more events
   $scope.loadMoreEvents = function () {
@@ -119,6 +119,7 @@ function ($scope, $state, EventsFromService) {
     var params = {
       limits: 10,
     };
+    
     if(!$scope.eventGroup) {
       return;
     }

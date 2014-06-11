@@ -22,7 +22,7 @@
       <div class="panel-body">
         <div class="post-heading">
           <img class="pull-left img-rounded" 
-              src="{{ post.createdBy.profilePicture }}" 
+              ng-src="{{ post.createdBy.profilePicture }}" 
               style="margin-right: 7px">
           <h5><a>{{ post.createdBy.name }}</a></h5>
           <span class="date-text"> {{ post.createdAt | myDate }} </span>
@@ -51,7 +51,7 @@
           <div ng-repeat="comment in post.comments">
             <div class="comment-body">
               <a><img class="img-rounded profile-img" 
-                src="{{comment.createdBy.profilePicture}}"></a>
+                ng-src="{{comment.createdBy.profilePicture}}"></a>
               <div>
                 <a class="profile-name pull-left">{{ comment.createdBy.name }}</a>
                 <span class="text-wrap"> {{ comment.text }} </span>

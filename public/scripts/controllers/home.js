@@ -9,8 +9,8 @@ function ($scope, $state, Auth, socket) {
   init();
 
   /*
-  * Filter related functions
-  */
+   * Filter related functions
+   */
   $scope.selectFilter = function (item) {
     $scope.filter.selected = item;
     $scope.$broadcast('select filter');
@@ -55,7 +55,7 @@ function ($scope, $state, Auth, socket) {
         $scope.eventFormData.inputSports = $scope.sports[i];
       }
     }
-  };
+  }
   
   // Event
   $scope.openEventForm = function () {
@@ -115,23 +115,14 @@ function ($scope, $state, Auth, socket) {
       selected: null
     };
     $scope.sports = [
-      {name: 'General', value: 'General'},
-      {name: 'Basketball', value: 'Basketball'},
-      {name: 'Badminton', value: 'Badminton'}
+      { name: 'General' },
+      { name: 'Basketball' },
+      { name: 'Badminton' }
     ];
     $scope.postFormData = {
       selected: null,
       text: null
     };
-    
-    $scope.$watch('postFormData.selected', function (newVal, oldVal) {
-      $scope.postFormData.ready = !!$scope.postFormData.text && 
-                                  !!$scope.postFormData.selected;
-    });
-    $scope.$watch('postFormData.text', function (newVal, oldVal) {
-      $scope.postFormData.ready = !!$scope.postFormData.text && 
-                                  !!$scope.postFormData.selected;
-    });
     
     ////////
     // EVENT INIT //
@@ -165,7 +156,7 @@ function ($scope, $state, Auth, socket) {
     // get abbr for timezone
     var str = aheadDate.toString();
     var s = str.split("(");
-    if (s.length == 2) var abbr = s[1].replace(")", "");
+    if (s.length === 2) var abbr = s[1].replace(")", "");
     
     $scope.eventFormData = {
       selected: null,
@@ -176,7 +167,7 @@ function ($scope, $state, Auth, socket) {
       inputPlace: "",
       Completedate: new Date().getTime(),
       inputRepeat: "once",
-      inputSports: "General",
+      inputSports: null,
       inputTypes: "Casual",
       // temp time
       tempinputMonth: todayDate.getMonth(),
