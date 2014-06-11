@@ -4,8 +4,9 @@
 
 'use strict';
 
-var LIMIT = 1;
+var LIMIT = 10;
 var EventModel = require('../models/event');
+var validator = require('validator');
 
 ////////
 /* list function */
@@ -13,6 +14,9 @@ var EventModel = require('../models/event');
 function list(req, res) {
 
   var query = {};
+  if (validator.isDate(req.query.dateBefore)) {
+    query.appDateTime = { $gt: req.query.dateBefore };
+  }
   // if eventtypes query exsists
   if (req.query.eventType) {
     query.eventType = req.query.eventType;
@@ -21,20 +25,18 @@ function list(req, res) {
   if (req.query.sports) {
     query.sports = req.query.sports;
   }
-
   // db.events.find({"schedule.appDateTime":  {$gte:new ISODate("")}}).sort({"schedule.appDateTime" : -1}).pretty();
   
   var projection = {};
   
   var options = {
-    limit: req.query.limit || LIMIT,
+    limit: req.query.limits || LIMIT,
     sort: {
       "schedule.appDateTime": 1
+      //createdAt: -1
     }
   };
   
-  console.log(options.limit);
-
   EventModel.find(query, projection, options, function (err, eventsFromDB) {
     if (err) return res.send(500);
     res.send(eventsFromDB); // return it to front end
@@ -59,14 +61,6 @@ function create(req, res){
     schedule: {
       repeat: req.body.repeat,
       appDateTime: d,
-      week: {
-        year: d.getFullYear(),
-        month: d.getMonth(),
-        date: d.getDate(),
-        weekDay: d.getDay(),
-        time: d.getHours() + ":" + d.getMinutes(),
-        eventDuration : "",
-      },
     },
     createdBy: {
       id: req.user.id,

@@ -5,7 +5,6 @@
  'use strict';
 
 var ONE_UNIT = 1000 * 60;
-var globalLimit = 5;
 
  angular.module('genesisApp')
 .controller('EventOrganizerController', ['$scope', '$state', 'EventsFromService',
@@ -34,10 +33,12 @@ function ($scope, $state, EventsFromService) {
       {data: newEventParams},
       // success
       function (data, status, headers, config) {
+        $scope.eventsBox.isThereMoreData = false;
+        $scope.eventsBox.isInitialLoading = false;
+        
         $scope.$parent.eventFormData.inputName = "";
         $scope.$parent.eventFormData.inputDesc = "";
         $scope.$parent.eventFormData.inputPlace = "";
-        $scope.$parent.eventFormData.inputTime = "";
         $scope.$parent.eventFormData.inputRepeat = "once";
         $scope.$parent.eventFormData.inputSports = "General";
         $scope.$parent.eventFormData.inputTypes = "Casual";
@@ -53,10 +54,15 @@ function ($scope, $state, EventsFromService) {
   
   // select on filter
   $scope.$on('select filter', function (e) {
+    // loading begins...
+    $scope.eventsBox.isThereMoreData = true;
+    $scope.eventsBox.isInitialLoading = true;
+    $scope.eventsBox.loading = true;
+    $scope.eventGroup = null;
+    
     var item = $scope.$parent.filter.selected;
     
     var filterInput = { 
-      limit: globalLimit,
       sports: item,
     }; 
     
@@ -67,7 +73,8 @@ function ($scope, $state, EventsFromService) {
   // update list when updated
   function updateLists(inputParams) {
     
-    $scope.loading = true;
+    $scope.eventsBox.isLoading = true;
+    $scope.eventsBox.isThereMoreData = true;
     
     // call all the event in return with eventGroup (array of events)
     EventsFromService.list(
@@ -78,8 +85,12 @@ function ($scope, $state, EventsFromService) {
       }, // options
       // Success
       function (data, status, headers, config) {
-        $scope.loading = false;
-        $scope.eventGroup = data;
+        if (data.length === 0) {
+          $scope.eventsBox.isThereMoreData = false;
+        }
+        $scope.eventsBox.isLoading = false;
+        if ($scope.eventGroup) $scope.eventGroup = $scope.eventGroup.concat(data);
+        else  $scope.eventGroup = data;
         updateGroups();
       },
       // Failure
@@ -92,59 +103,55 @@ function ($scope, $state, EventsFromService) {
   
   // update list when updated
   function updateGroups() {
-    
-      /*
-      $scope.todayDate = new Date();
-
-      $scope.onGoingGroup = {};
-      $scope.todayGroup = {};
-      $scope.normalGroup = {};
-      */
-
       $scope.casualGroup = {};
       $scope.tournamentGroup = {};
     
       angular.forEach($scope.eventGroup, function(value, key){
-
-        /*
-        // by Time
-        var d = new Date(value.schedule.appDateTime);
-        var diffTime = d.getTime() - $scope.todayDate.getTime();
-        var diffTime = Math.round(diffTime/ONE_UNIT); // difference in minutes
-
-        if (diffTime <= 0) $scope.onGoingGroup[key] = value;
-        else if (diffTime > 0 && diffTime <= 1440) $scope.todayGroup[key] = value;
-        else if (diffTime > 1440) $scope.normalGroup[key] = value;
-        */
         if (value.eventType == "Tournament") $scope.tournamentGroup[key] = value;
         else $scope.casualGroup[key] = value;
       });
   };
   
-  // load more Events
+  // load more events
   $scope.loadMoreEvents = function () {
-    $scope.loading = true;
-    globalLimit = globalLimit + 5
-    var filterInput = {
-      limit: globalLimit,
-    };
+    $scope.eventsBox.loading = true;
     
-    updateLists(filterInput);
+    var params = {
+      limits: 10,
+    };
+    if(!$scope.eventGroup) {
+      return;
+    }
+    if($scope.eventGroup.length > 0) {
+      params.dateBefore = $scope.eventGroup[$scope.eventGroup.length -1].schedule.appDateTime;
+    } 
+    if ($scope.$parent.filter.selected) {
+      params.sports = $scope.$parent.filter.selected;
+    } 
+    
+    // update posts........
+    updateLists(params);
     
   };
   
   // initializing with data load when page start
   function init() {
     
-    globalLimit = 5;
+    // not loaded yet;
+    $scope.eventsBox = {
+      isInitialLoading: true,
+      isLoading: true,
+      isThereMoreData: true
+    };
     
-    // param for listing
-    var tempInputParams = { 
-      limit: globalLimit,
-    }; 
+    $scope.eventGroup = null;
     
+    var params = {
+      limits: 10,
+    };
+  
     // update list
-    updateLists(tempInputParams);
+    updateLists(params);
     
   }
   

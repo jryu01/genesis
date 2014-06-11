@@ -1,10 +1,10 @@
-<div class="feeder">
+<div class="feeder" style="height: 100%; overflow: auto;">
   <!-- view -->
-  <div class="">
+  <div class="" infinite-scroll-parent infinite-scroll='loadMoreEvents()' infinite-scroll-distance='3' infinite-scroll-disabled='!eventsBox.isThereMoreData'>
     <div ng-repeat="event in tournamentGroup">
-      <a href="#" class="list-group-item list-group-item-danger">
+      <a ng-href="#" class="list-group-item list-group-item-danger">
         <div class="panel-footer">
-          <img class="pull-left img-rounded event_imgIcon" alt="{{event.sports}}" src="../../images/sportsIcon/{{event.sports}}.png">  
+          <img class="pull-left img-rounded event_imgIcon" alt="{{event.sports}}" ng-src="../../images/sportsIcon/{{event.sports}}.png">  
           <h4 class="event_title">[{{event.sports}} Tournament] {{event.name}}</h4> 
           at <b>{{event.place.name}} </b> on <b>{{event.schedule.appDateTime | date:'EEEE hh:mma, MMMM d yyyy Z'}}</b>.
           <div class="clearfix"></div>  
@@ -12,9 +12,9 @@
       </a>
     </div>
     <div ng-repeat="event in casualGroup">
-      <a href="#" class="list-group-item list-group-item-warning">
+      <a ng-href="#" class="list-group-item list-group-item-success">
         <div class="panel-footer">
-          <img class="pull-left img-rounded event_imgIcon" alt="{{event.sports}}" src="../../images/sportsIcon/{{event.sports}}.png">  
+          <img class="pull-left img-rounded event_imgIcon" alt="{{event.sports}}" ng-src="../../images/sportsIcon/{{event.sports}}.png">  
           <h4 class="event_title">[{{event.sports}}] {{event.name}}</h4> 
           at <b>{{event.place.name}} </b> on <b>{{event.schedule.appDateTime | date:'EEEE hh:mma, MMMM d yyyy Z'}}</b>.       
           <div class="clearfix"></div>  
@@ -22,9 +22,9 @@
       </a>
     </div>
     <div ng-repeat="event in normalGroup">
-      <a href="#" class="list-group-item list-group-item-success">
+      <a ng-href="#" class="list-group-item list-group-item-warning">
         <div class="panel-footer">
-          <img class="pull-left img-rounded event_imgIcon" alt="{{event.sports}}" src="../../images/sportsIcon/{{event.sports}}.png">  
+          <img class="pull-left img-rounded event_imgIcon" alt="{{event.sports}}" ng-src="../../images/sportsIcon/{{event.sports}}.png">  
           <h4 class="event_title">{{event.name}}</h4> 
           at <b>{{event.place.name}} </b> on <b>{{event.schedule.appDateTime | date:'EEEE hh:mma, MMMM d yyyy Z'}}</b>.
           <div class="clearfix"></div>  
@@ -33,6 +33,10 @@
     </div>
   </div> <!-- end of pannel -->
 
-  <button ng-show="!loading" type="button" ng-click="loadMoreEvents()" style="color: white; background-color:orange" class="btn  btn-sm btn-block">Load More</button>
-  <p ng-show="loading" class="text-center" style="color:orange"><i class="fa fa-refresh fa-spin fa-2x"></i></p>
+  <div ng-show="eventsBox.isLoading" class="text-center" 
+      style="color:orange; height: 25px;"
+      ng-class="{ 'absolute-center': eventsBox.isInitialLoading }">
+    <i class="fa fa-refresh fa-spin fa-2x" ></i>
+  </div>
+  
 </div>

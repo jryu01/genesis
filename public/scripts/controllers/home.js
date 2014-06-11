@@ -69,16 +69,18 @@ function ($scope, $state, Auth, socket) {
   $scope.submitEventForm = function () {
     
     var isReadyEvent = true;
+    $scope.validDateMarker = false;
+    $scope.validDateMarker2 = false;
     
     // process time
     var tempinputHour24 = 0;
     if ($scope.eventFormData.tempinputAMPM == "PM") tempinputHour24 = $scope.eventFormData.tempinputHour + 12;
     else tempinputHour24 = $scope.eventFormData.tempinputHour;
-    $scope.eventFormData.Completedate = new Date($scope.eventFormData.tempinputYear, $scope.eventFormData.tempinputMonth, $scope.eventFormData.tempinputDay + 1, tempinputHour24, $scope.eventFormData.tempinputMinute, 0, 0);
-   
-    // validation
+    
+    $scope.eventFormData.Completedate = new Date($scope.eventFormData.tempinputYear, $scope.eventFormData.tempinputMonth, $scope.eventFormData.tempinputDay, tempinputHour24, $scope.eventFormData.tempinputMinute, 0, 0);
+    
     var todayDate = new Date();
-    if ($scope.eventFormData.Completedate < todayDate)
+    if ($scope.eventFormData.Completedate < todayDate) // see if it is later than now
     {
       $scope.validDateMarker = true;
       isReadyEvent = false;
@@ -135,22 +137,33 @@ function ($scope, $state, Auth, socket) {
     // EVENT INIT //
     ////////
     
-    var todayDate = new Date();
-    var time12format = "1";
-    var time5format = "0";
+    // GET UTC Time
+    var todayDate = new Date(); 
+    
+    var aheadDate = new Date(todayDate.getTime() + (30 * 60 * 1000));
+    
+    var time12format = 1;
+    var time5format = 0;
     var tempAMPM = "AM";
-    if (todayDate.getHours() > 12) 
+    
+    if (aheadDate.getHours() > 12) 
     {
-      time12format = todayDate.getHours() - 12;
+      time12format = aheadDate.getHours() - 12;
       tempAMPM = "PM";
     }
-    var tempMod = todayDate.getMinutes() / 5;
-    tempMod = Math.ceil(tempMod);
+    else
+    {
+      time12format = aheadDate.getHours();
+      tempAMPM = "AM";
+    }
+    
+    var tempMod = aheadDate.getMinutes() / 5;
+    tempMod = Math.floor(tempMod);
     if (tempMod > 11) tempMod = 11;
     time5format = 5 * tempMod;
     
     // get abbr for timezone
-    var str = todayDate.toString();
+    var str = aheadDate.toString();
     var s = str.split("(");
     if (s.length == 2) var abbr = s[1].replace(")", "");
     
@@ -161,19 +174,20 @@ function ($scope, $state, Auth, socket) {
       inputName: "",
       inputDesc: "",
       inputPlace: "",
-      Completedate: new Date(),
+      Completedate: new Date().getTime(),
       inputRepeat: "once",
       inputSports: "General",
       inputTypes: "Casual",
       // temp time
       tempinputMonth: todayDate.getMonth(),
-      tempinputDay: todayDate.getDay(),
+      tempinputDay: todayDate.getDate(),
       tempinputYear: todayDate.getFullYear(),
       tempinputHour: time12format,
       tempinputMinute: time5format,
       tempinputAMPM: tempAMPM,
       tempinputTimezone: abbr,
     };
+    
   }
 
 }]);
