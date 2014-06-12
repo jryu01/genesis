@@ -35,7 +35,7 @@ function ($scope, $state, Auth, socket) {
     $scope.data.postFormOpened = false;
     // clear postFormData
     $scope.postFormData.selected = null;
-    $scope.postFormData.text = null;
+    $scope.postFormData.text = "";
   };
   $scope.submitPostForm = function () {
     var isReady = !!$scope.postFormData.text && !!$scope.postFormData.selected;
@@ -45,7 +45,7 @@ function ($scope, $state, Auth, socket) {
     }
   };
   function selectSportForForm(item) {
-    if (item === null) {
+    if (!item) {
       $scope.postFormData.selected = $scope.sports[0];
       $scope.eventFormData.inputSports = $scope.sports[0];
     }
@@ -111,7 +111,7 @@ function ($scope, $state, Auth, socket) {
     ////////
     // made of user's favorite sports
     $scope.filter = {
-      items: [null, 'General', 'Basketball', 'Badminton'],
+      items: ["", 'General', 'Basketball', 'Badminton'],
       selected: null
     };
     $scope.sports = [
@@ -121,7 +121,7 @@ function ($scope, $state, Auth, socket) {
     ];
     $scope.postFormData = {
       selected: null,
-      text: null
+      text: ""
     };
     
     ////////
@@ -159,7 +159,6 @@ function ($scope, $state, Auth, socket) {
     if (s.length === 2) var abbr = s[1].replace(")", "");
     
     $scope.eventFormData = {
-      selected: null,
       ready: true,
       // things to pass to eventOrganizer.js
       inputName: "",

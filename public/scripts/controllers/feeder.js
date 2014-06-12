@@ -31,19 +31,12 @@ function ($scope, $state, Posts, socket, geoloc) {
     $scope.postsBox.isInitialLoading = true;
     $scope.postsBox.loading = true;
     $scope.posts = null;
-    Posts.list(
-      { config : { params: params } },
-      // Success
-      function (data, status, headers, config) {
+    Posts.list({ config: { params: params }})
+      .success(function (data, status, headers, config) {
         $scope.postsBox.isInitialLoading = false;
         $scope.postsBox.loading = false;
         $scope.posts = data;
-      },
-      // Failure
-      function (data, status, headers, config) {
-        // handle this situation
-      }
-    );
+      });
   });
 
   /*
@@ -62,7 +55,7 @@ function ($scope, $state, Posts, socket, geoloc) {
         return console.log(err);
       }
       $scope.$parent.postFormData.selected = null;
-      $scope.$parent.postFormData.text = null;
+      $scope.$parent.postFormData.text = "";
       $scope.$parent.data.postFormOpened = false;
 
       $scope.posts.unshift(data);
@@ -129,21 +122,14 @@ function ($scope, $state, Posts, socket, geoloc) {
     if ($scope.$parent.filter.selected) {
       params.sport = $scope.$parent.filter.selected;
     }  
-    Posts.list(
-      { config: { params: params } },
-      // Success
-      function (data, status, headers, config) {
+    Posts.list({ config: { params: params }})
+      .success(function (data, status, headers, config) {
         if (data.length === 0) {
           $scope.postsBox.isThereMoreData = false;
         }
         $scope.postsBox.loading = false;
         $scope.posts = $scope.posts.concat(data);
-      },
-      // Failure
-      function (data, status, headers, config) {
-        // handle this situation
-      }
-    );
+      });
   };
   // initializing with data load when page start
   function init() {
@@ -161,25 +147,18 @@ function ($scope, $state, Posts, socket, geoloc) {
       limit: 10,
       commentsLimit: 0
     };
-    Posts.list(
-      { config : { params: params } },
-      // Success
-      function (data, status, headers, config) {
+    Posts.list({ config: { params: params }})
+      .success(function (data, status, headers, config) {
         $scope.postsBox.isInitialLoading = false;
         $scope.postsBox.isLoading = false;
         $scope.posts = data;
-      },
-      // Failure
-      function (data, status, headers, config) {
-        // handle this situation
-      }
-    );
+      });
   }
 
   function registerSocketEvents() {
 
     socket.on('newPost', function (post) {
-      var isViewing = ($scope.$parent.filter.selected === null) ||
+      var isViewing = ($scope.$parent.filter.selected === "") ||
                       $scope.$parent.filter.selected === post.sport;
       if (isViewing) {
         $scope.posts.unshift(post);

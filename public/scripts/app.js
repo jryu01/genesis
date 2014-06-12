@@ -124,6 +124,22 @@ angular.module('genesisApp',
     };
   }]);
 }])
+.config(function ($provide) {
+  $provide.decorator('Posts', function ($delegate, $log) {
+    var decorated = {};
+    var list = function (options) {
+      var startAt = new Date();
+      var list = $delegate.list(options);
+      list.finally(function () {
+        $log.info('Fetching posts took ' + (new Date() - startAt) + ' ms');
+      });     
+      return list;
+    };
+    
+    angular.extend(decorated, $delegate, { list: list });
+    return decorated;
+  });
+})
 .run(['$rootScope', '$state', 'Auth', function ($rootScope, $state, Auth) {
   $rootScope.$on('$stateChangeStart', 
   function(event, toState, toParams, fromState, fromParams){
