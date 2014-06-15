@@ -34,8 +34,8 @@
   </div>
 
   <!-- Post Form --> 
-  <my-overlay my-overlay-open="data.postFormOpened" 
-              my-overlay-open-style="bottom-up">
+  <my-modal my-modal-open="data.postFormOpened" 
+              my-modal-open-style="bottom-up">
     <div class="post-form-content full-height" style="padding-top:51px">
       <form name="postForm" novalidate
           ng-submit="submitPostForm()" 
@@ -75,11 +75,11 @@
         </div>
       </form>
     </div>
-  </my-overlay>  
+  </my-modal>  
 
   <!-- Event Form --> 
-  <my-overlay my-overlay-open="data.eventFormOpened" 
-              my-overlay-open-style="bottom-up">
+  <my-modal my-modal-open="data.eventFormOpened" 
+              my-modal-open-style="bottom-up">
     <div class="full-height" style="padding-top:50px; overflow-y:scroll;">
         
         <!-- $scope.submitEventFromPublic = function() -->
@@ -255,7 +255,7 @@
         </div> <!-- end of wrapper -->
         </form>
     </div>
-  </my-overlay>
+  </my-modal>
   <!-- End of Event Form --> 
 
   <!-- Filter -->

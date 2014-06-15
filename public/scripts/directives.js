@@ -16,7 +16,7 @@ angular.module('genesisApp')
     }
   };
 }])
-.directive('myOverlay', [function () {
+.directive('myModal', [function () {
   return {
     restrict: 'E',
     transclude: true,
@@ -25,9 +25,9 @@ angular.module('genesisApp')
               '  <div class="my-overlay-body" ng-transclude></div>' +
               '</div>',
     link: function (scope, element, attrs) {
-      // myOverlayOpenStyle: bottom-up or right-left
-      element.addClass(attrs.myOverlayOpenStyle);
-      scope.$watch(attrs.myOverlayOpen, function (value) {
+      // myModalOpenStyle: bottom-up or right-left
+      element.addClass(attrs.myModalOpenStyle);
+      scope.$watch(attrs.myModalOpen, function (value) {
         if (value) {
           element.addClass('active');
         } else {
