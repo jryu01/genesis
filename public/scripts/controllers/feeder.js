@@ -7,15 +7,8 @@
 .controller('FeederController', 
   ['$scope', '$state', 'Posts', 'socket', 'geoloc',
 function ($scope, $state, Posts, socket, geoloc) {
-
-  // parameters for Posts.list 
-  var params = { 
-    limit: 10,
-    commentsLimit: 0
-  }; 
-
   init();
-
+  
   /*
    * Socket event handlers
    */
@@ -26,6 +19,7 @@ function ($scope, $state, Posts, socket, geoloc) {
       $scope.posts.unshift(data);
     }
   });
+
   $scope.$on('socket updateScore', function (e, data) {
     // update score if user have the corressponding post in their view
     for (var i = 0; i < $scope.posts.length; i++) {
@@ -49,6 +43,7 @@ function ($scope, $state, Posts, socket, geoloc) {
       }
     }
   });
+
   $scope.$on('socket newComment', function (e, data) {
     //add comment if user have the coreesponding post in their view
     for (var i = 0; i < $scope.posts.length; i++) {
@@ -74,6 +69,10 @@ function ($scope, $state, Posts, socket, geoloc) {
    */
   $scope.$on('select filter', function (e) {
     var item = $scope.$parent.filter.selected;
+    var params = { 
+      limit: 10,
+      commentsLimit: 0
+    }; 
     if (item) {
       params.sport = item;
     }  
@@ -162,6 +161,10 @@ function ($scope, $state, Posts, socket, geoloc) {
     if(!$scope.posts) {
       return;
     }
+    var params = { 
+      limit: 10,
+      commentsLimit: 0
+    }; 
     if($scope.posts.length > 0) {
       params.dateBefore = $scope.posts[$scope.posts.length -1].createdAt;
     }
@@ -177,6 +180,7 @@ function ($scope, $state, Posts, socket, geoloc) {
         $scope.posts = $scope.posts.concat(data);
       });
   };
+
   // initializing with data load when page start
   function init() {
 
@@ -186,6 +190,10 @@ function ($scope, $state, Posts, socket, geoloc) {
       isThereMoreData: true
     };
 
+    var params = { 
+      limit: 10,
+      commentsLimit: 0
+    }; 
     Posts.list({ config: { params: params }})
       .success(function (data, status, headers, config) {
         $scope.postsBox.isInitialLoading = false;
