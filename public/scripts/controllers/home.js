@@ -112,7 +112,7 @@ function ($scope, $state, Auth, socket) {
     // made of user's favorite sports
     $scope.filter = {
       items: ["", 'General', 'Basketball', 'Badminton'],
-      selected: null
+      selected: ""
     };
     $scope.sports = [
       { name: 'General' },
@@ -156,7 +156,8 @@ function ($scope, $state, Auth, socket) {
     // get abbr for timezone
     var str = aheadDate.toString();
     var s = str.split("(");
-    if (s.length === 2) var abbr = s[1].replace(")", "");
+    var abbr = "";
+    if (s.length === 2) abbr = s[1].replace(")", "");
     
     $scope.eventFormData = {
       ready: true,

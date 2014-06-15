@@ -48,7 +48,7 @@ angular.module('genesisApp',
     .state('app.user', {
       abstract: true,
       templateUrl: '/views/partials/layout.html',
-      controller: 'ToplevelController'
+      controller: 'MainController'
     })
     .state('app.user.home', {
       views: {
@@ -135,7 +135,7 @@ angular.module('genesisApp',
       });     
       return list;
     };
-    
+
     angular.extend(decorated, $delegate, { list: list });
     return decorated;
   });

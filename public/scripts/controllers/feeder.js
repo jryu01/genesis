@@ -7,26 +7,76 @@
 .controller('FeederController', 
   ['$scope', '$state', 'Posts', 'socket', 'geoloc',
 function ($scope, $state, Posts, socket, geoloc) {
+
+  // parameters for Posts.list 
+  var params = { 
+    limit: 10,
+    commentsLimit: 0
+  }; 
+
   init();
 
-  // when this controller destroyed remove all socket listeners
-  $scope.$on('$destroy', function (event) {
-    socket.removeAllListeners();
+  /*
+   * Socket event handlers
+   */
+  $scope.$on('socket newPost', function (e, data) {
+    var isViewing = ($scope.$parent.filter.selected === "") ||
+                    $scope.$parent.filter.selected === data.sport;
+    if (isViewing) {
+      $scope.posts.unshift(data);
+    }
   });
+  $scope.$on('socket updateScore', function (e, data) {
+    // update score if user have the corressponding post in their view
+    for (var i = 0; i < $scope.posts.length; i++) {
+      if ($scope.posts[i].id === data.postId) {
+        // add score and scorer field if not already exists
+        if (!$scope.posts[i].score) {
+          $scope.posts[i].score = 0;
+          $scope.posts[i].scorers = [];
+        }
+        if (data.score === 1) {
+          $scope.posts[i].score +=1;
+          $scope.posts[i].scorers.push(data.scorerId);
+        } else if (data.score === -1) {
+          var index = $scope.posts[i].scorers.indexOf(data.scorerId);
+          if (index !== -1) {
+            $scope.posts[i].scorers.splice(index,1);
+            $scope.posts[i].score -= 1;
+          }
+        }
+        break;
+      }
+    }
+  });
+  $scope.$on('socket newComment', function (e, data) {
+    //add comment if user have the coreesponding post in their view
+    for (var i = 0; i < $scope.posts.length; i++) {
+      if ($scope.posts[i].id === data.postId) {
+
+        // $scope.posts[i].comments.push(data.comment);
+
+        // increment number of comments
+        if(!$scope.posts[i].numComments) {
+          console.log($scope.posts[i]);
+          $scope.posts[i].numComments = 1;
+        } else {
+          $scope.posts[i].numComments += 1;
+        } 
+
+        break;
+      }
+    }
+  });
+
   /*
    * Filter related Event handler 
    */
   $scope.$on('select filter', function (e) {
     var item = $scope.$parent.filter.selected;
-
-    var params = { 
-      limit: 10,
-      commentsLimit: 0
-    }; 
     if (item) {
       params.sport = item;
     }  
-
     $scope.postsBox.isThereMoreData = true;
     $scope.postsBox.isInitialLoading = true;
     $scope.postsBox.loading = true;
@@ -109,10 +159,6 @@ function ($scope, $state, Posts, socket, geoloc) {
 
   $scope.loadMorePosts = function () {
     $scope.postsBox.loading = true;
-    var params = {
-      limit: 10,
-      commentsLimit: 0
-    };
     if(!$scope.posts) {
       return;
     }
@@ -133,8 +179,6 @@ function ($scope, $state, Posts, socket, geoloc) {
   };
   // initializing with data load when page start
   function init() {
-    // register socket events
-    registerSocketEvents();
 
     $scope.postsBox = {
       isInitialLoading: true,
@@ -142,83 +186,11 @@ function ($scope, $state, Posts, socket, geoloc) {
       isThereMoreData: true
     };
 
-    // Get posts from server
-    var params = { 
-      limit: 10,
-      commentsLimit: 0
-    };
     Posts.list({ config: { params: params }})
       .success(function (data, status, headers, config) {
         $scope.postsBox.isInitialLoading = false;
         $scope.postsBox.isLoading = false;
         $scope.posts = data;
       });
-  }
-
-  function registerSocketEvents() {
-
-    socket.on('newPost', function (post) {
-      var isViewing = ($scope.$parent.filter.selected === "") ||
-                      $scope.$parent.filter.selected === post.sport;
-      if (isViewing) {
-        $scope.posts.unshift(post);
-      }
-    }); 
-
-    socket.on('updateScore', function (data) {
-      // update score if user have the corressponding post in their view
-      for (var i = 0; i < $scope.posts.length; i++) {
-        if ($scope.posts[i].id === data.postId) {
-          // add score and scorer field if not already exists
-          if (!$scope.posts[i].score) {
-            $scope.posts[i].score = 0;
-            $scope.posts[i].scorers = [];
-          }
-          if (data.score === 1) {
-            $scope.posts[i].score +=1;
-            $scope.posts[i].scorers.push(data.scorerId);
-          } else if (data.score === -1) {
-            var index = $scope.posts[i].scorers.indexOf(data.scorerId);
-            if (index !== -1) {
-              $scope.posts[i].scorers.splice(index,1);
-              $scope.posts[i].score -= 1;
-            }
-          }
-          break;
-        }
-      }
-    });
-
-    socket.on('newComment', function (data) {
-      //add comment if user have the coreesponding post in their view
-      for (var i = 0; i < $scope.posts.length; i++) {
-        if ($scope.posts[i].id === data.postId) {
-
-          // $scope.posts[i].comments.push(data.comment);
-
-          // increment number of comments
-          if(!$scope.posts[i].numComments) {
-            console.log($scope.posts[i]);
-            $scope.posts[i].numComments = 1;
-          } else {
-            $scope.posts[i].numComments += 1;
-          } 
-
-          break;
-        }
-      }
-    });
-
-    socket.on('error', function (data) {
-      console.log(data);
-    });
-
-    socket.on('connect', function (data) {
-      // TODO: enable all features that uses socket
-    });
-
-    socket.on('disconnect', function (data) {
-      // TODO: disable all features that uses socket
-    });
   }
 }]);

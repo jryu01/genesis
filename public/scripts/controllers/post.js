@@ -4,6 +4,39 @@ angular.module('genesisApp')
 function ($scope, $stateParams, $timeout, socket, Posts) {
   init();  
 
+  $scope.$on('socket updateScore', function (e, data) {
+    if ($scope.post.id === data.postId) {
+      // add score and scorer field if not already exists
+      if (!$scope.post.score) {
+        $scope.post.score = 0;
+        $scope.post.scorers = [];
+      }
+      if (data.score === 1) {
+        $scope.post.score +=1;
+        $scope.post.scorers.push(data.scorerId);
+      } else if (data.score === -1) {
+        var index = $scope.post.scorers.indexOf(data.scorerId);
+        if (index !== -1) {
+          $scope.post.scorers.splice(index,1);
+          $scope.post.score -= 1;
+        }
+      }
+    }
+  });
+  $scope.$on('socket newComment', function (e, data) {
+      if ($scope.post.id === data.postId) {
+
+        $scope.post.comments.push(data.comment);
+
+        // increment number of comments
+        if(!$scope.post.numComments) {
+          console.log($scope.post);
+          $scope.post.numComments = 1;
+        } else {
+          $scope.post.numComments += 1;
+        } 
+      }
+  });
   $scope.addScore = function (postId, $event) {
     var data = {
       postId: postId
