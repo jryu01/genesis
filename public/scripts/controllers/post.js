@@ -4,6 +4,39 @@ angular.module('genesisApp')
 function ($scope, $stateParams, $timeout, socket, Posts) {
   init();  
 
+  $scope.$on('socket updateScore', function (e, data) {
+    if ($scope.post.id === data.postId) {
+      // add score and scorer field if not already exists
+      if (!$scope.post.score) {
+        $scope.post.score = 0;
+        $scope.post.scorers = [];
+      }
+      if (data.score === 1) {
+        $scope.post.score +=1;
+        $scope.post.scorers.push(data.scorerId);
+      } else if (data.score === -1) {
+        var index = $scope.post.scorers.indexOf(data.scorerId);
+        if (index !== -1) {
+          $scope.post.scorers.splice(index,1);
+          $scope.post.score -= 1;
+        }
+      }
+    }
+  });
+  $scope.$on('socket newComment', function (e, data) {
+      if ($scope.post.id === data.postId) {
+
+        $scope.post.comments.push(data.comment);
+
+        // increment number of comments
+        if(!$scope.post.numComments) {
+          console.log($scope.post);
+          $scope.post.numComments = 1;
+        } else {
+          $scope.post.numComments += 1;
+        } 
+      }
+  });
   $scope.addScore = function (postId, $event) {
     var data = {
       postId: postId
@@ -54,7 +87,7 @@ function ($scope, $stateParams, $timeout, socket, Posts) {
       if (err) {
         return console.log(err);
       }
-      $scope.commentText = null;
+      $scope.commentText = "";
       $scope.post.comments.push(newComment);
 
       // increment number of comments
@@ -71,20 +104,14 @@ function ($scope, $stateParams, $timeout, socket, Posts) {
     $scope.loading = true;
     $scope.isCommentFocused = false;
 
-    Posts.get({ postId: $stateParams.id },
-      // Success
-      function (data, status, headers, config) {
+    Posts.get({ postId: $stateParams.id })
+      .success(function (data, status, headers, config) {
         $scope.post = data;
         $scope.loading = false;
 
         $timeout(function() {
           $scope.isCommentFocused = Boolean($stateParams.comment);
         }, 500);
-      }, 
-      // Error
-      function (data, status, headers, config) {
-        // TODO: handle error
-      }
-    ); 
+      });
   }
 }]);

@@ -5,6 +5,7 @@
 'use strict';
 
 var postCtrl = require('../controllers/post');
+var placeCtrl = require('../controllers/place');
 var authCtrl = require('../controllers/auth');
 var ioUtils = require('../../custom_modules/ioUtils');
 
@@ -13,16 +14,21 @@ module.exports = function (io) {
 
     // socket.on('updateActivePosts', function () {} );
     
+    // posts related events
     socket.on('createNewPost', postCtrl.createNewPost(socket));
     socket.on('addComment', postCtrl.addNewComment(socket));
     socket.on('addScore', postCtrl.toggleScore(socket, true));
     socket.on('removeScore', postCtrl.toggleScore(socket, false));
 
+    // places related events
+    socket.on('creatNewEvent', placeCtrl.createNewEvent(socket));
+
     socket.on('signout', function (data) {
       var sid = socket.handshake.sessionID;
 
-      // inform all clients with same sessionID as current session's id
-      // and force disconnect all connected sockets with same sessionId
+      /**
+       * disconnect all current user's connections with same sessionId 
+       */
       ioUtils
       .filterSocketsBySid(io, sid)
       .forEach(function (socket) {

@@ -173,6 +173,12 @@ a, a:hover {
 	position: absolute;
 	visibility: hidden; /* always hidden */
 	top: -51px;
+	left: 0;
+}
+/* style for nested overlay*/
+.my-overlay .my-overlay {
+	top: 0;
+	height: 100%;
 }
 .my-overlay .my-overlay-body {
 	z-index: 1001;
@@ -181,7 +187,7 @@ a, a:hover {
 	width: 100%;
 	background-color: #fff;
 }
-.my-overlay.bottom-up .my-overlay-body {
+.my-overlay.bottom-up > .my-overlay-body {
 	/* teansitions */
 	visibility:hidden;
 	top: 100%;
@@ -190,12 +196,12 @@ a, a:hover {
 	-o-transition:visibility 0s linear 0.5s,top 0.2s linear;
 	transition:visibility 0s linear 0.5s,top 0.2s linear;
 }
-.my-overlay.bottom-up.active .my-overlay-body {
+.my-overlay.bottom-up.active > .my-overlay-body {
 	visibility:visible;
  	transition-delay:0s;
 	top:0;
 }
-.my-overlay.right-left .my-overlay-body {
+.my-overlay.right-left > .my-overlay-body {
 	/* teansitions */
 	visibility:hidden;
 	top: 0;
@@ -205,10 +211,10 @@ a, a:hover {
 	-o-transition:visibility 0s linear 0.5s,left 0.2s linear;
 	transition:visibility 0s linear 0.5s,left 0.2s linear;
 }
-.my-overlay.right-left.active .my-overlay-body {
+.my-overlay.right-left.active > .my-overlay-body {
 	visibility:visible;
  	transition-delay:0s;
-	left:0%;
+	left:0;
 }
 
 /*** angular directives end ***/
@@ -425,3 +431,31 @@ a, a:hover {
  border-top: 1px solid;
 }
 /***--- Home.Event End---**
+
+/***---- Nearby ---***/
+
+.map-wrapper img {
+	max-width: none;
+}
+.map-wrapper .info-window {
+	border:2px solid black;
+    background:#333;
+    color:#FFF;
+    padding: .5em 1em;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    text-shadow:0 -1px #000000;
+    -webkit-box-shadow: 0 0  8px #000;
+    box-shadow: 0 0 8px #000;
+    cursor: pointer;
+    opacity: 0.9;
+}
+.map-wrapper .info-window:active {
+	opacity: 1;
+}
+.map-wrapper .info-window p {
+	margin: 0 0 0 0;
+}
+
+/***---- Nearby End---***/

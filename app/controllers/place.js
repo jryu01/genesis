@@ -5,6 +5,12 @@
 'use strict';
 
 var Place = require('../models/place');
+
+
+/**
+ * REST API ======================================================
+ */
+
 function list(req, res) {
   Place.find(req.query, function (err, places) {
     if (err) return res.send(500);
@@ -48,6 +54,20 @@ function create(req, res){
   
 // }
 
+/**
+ * Socket API ======================================================
+ */
+  function createNewEvent(socket) {
+    return function (data, callback) {
+      var err = null;
+      callback(err, data);
+    };
+  }
+
 // public functions
+// REST API
 exports.list = list;
 exports.create = create;
+
+// Socket API
+exports.createNewEvent = createNewEvent;

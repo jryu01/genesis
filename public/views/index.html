@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Passon - Find, Meet, Play</title>
     <meta name="description" content="">
+    <meta name="fragment" content="!" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0,
       maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -45,8 +46,15 @@
 
     <!-- Add your site or application content here -->
     <div ui-view class="full-height"></div>
+
+    <script   type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAW2_RQG0vXnwFpgbADoblbL4XK8fHMPu8">
+    </script>
+    <script type="text/javascript" src="vendor/infobox.js"></script>
+
     <script src='bower_components/jquery/dist/jquery.min.js'></script>
-    <script src="bower_components/angular/angular.min.js"></script>
+    <!-- <script src="bower_components/angular/angular.min.js"></script> -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.13/angular.min.js"></script>
     <script src="bower_components/angular-touch/angular-touch.min.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.min.js"></script>
@@ -60,10 +68,11 @@
     <script src="scripts/services.js"></script>
     <script src="scripts/directives.js"></script>
     <script src="scripts/controllers/login.js"></script>
-    <script src="scripts/controllers/toplevel.js"></script>
+    <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/home.js"></script>
     <script src="scripts/controllers/feeder.js"></script>
     <script src="scripts/controllers/post.js"></script>
+    <script src="scripts/controllers/nearby.js"></script>
     <script src="scripts/controllers/eventOrganizer.js"></script>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->

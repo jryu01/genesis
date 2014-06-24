@@ -54,51 +54,45 @@ angular.module('genesisApp')
     }
   };
 }])
-.factory('geoloc', ['$window', function ($window) {
-  if ("geolocation" in $window.navigator) {
-    /* geolocation is available */
-    $window.navigator.geolocation.getCurrentPosition(function (position) {
-      console.log(position.coords.latitude, position.coords.longitude);
-    });
-  } else {
-    /* geolocation IS NOT available */
-  }
+.factory('geolocation', ['$q', '$window', function ($q, $window) {
+
+  return {
+    getCurrentPosition: function (options) {
+      var deferred = $q.defer();
+      if ($window.navigator && $window.navigator.geolocation) {
+        $window.navigator.geolocation.getCurrentPosition(function (position) {
+          deferred.resolve(position);
+        });
+      } else {
+        deferred.reject();
+      }
+      return deferred.promise;
+    }
+  };
 }])
 .factory('Posts', ['$http', function ($http) {
   return {
-    list: function (options, success, error) {
-      $http.get('api/posts', options.config)
-      .success(success)
-      .error(error);
+    list: function (options) {
+      return $http.get('api/posts', options.config);
     },
-    get: function (options, success, error) {
+    get: function (options) {
       var url = 'api/posts/' + options.postId;
-      $http.get(url, options.config)
-      .success(success)
-      .error(error);
+      return $http.get(url, options.config);
     },
-    create: function (options, success, error) {
-      $http.post('api/posts', options.data)
-      .success(success)
-      .error(error); 
+    create: function (options) {
+      return $http.post('api/posts', options.data);
     },
-    addComment: function (options, success, error) {
+    addComment: function (options) {
       var url = 'api/posts/' + options.postId + '/comments' ;
-      $http.post(url, options.data)
-      .success(success)
-      .error(error);
+      return $http.post(url, options.data);
     },
-    addScore: function (options, success, error) {
+    addScore: function (options) {
       var url = 'api/posts/' + options.postId + '/score' ;
-      $http.post(url, options.data)
-      .success(success)
-      .error(error);
+      return $http.post(url, options.data);
     },
-    removeScore: function (options, success, error) {
+    removeScore: function (options) {
       var url = 'api/posts/' + options.postId + '/score' ;
-      $http.delete(url, options.data)
-      .success(success)
-      .error(error);
+      return $http.delete(url, options.data);
     },
   };
 }])

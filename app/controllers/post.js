@@ -10,7 +10,7 @@ var LIMIT = 5;
 var PROFILE_TYPE = ['User', 'Event'];
 
 /**
- * REST API Handlers ==========================================================
+ * REST API ==========================================================
  */
 
 function list(req, res) {
@@ -210,7 +210,7 @@ function removeScore(req, res) {
 }
 
 /**
- * Socket Event Handlers ======================================================
+ * Socket API ======================================================
  */
 
 function createNewPost(socket) {
@@ -374,7 +374,7 @@ function addNewComment(socket) {
 
 // public functions
 
-// RREST API handlers
+// RREST API
 exports.list = list;
 exports.get = get;
 exports.create = create;
@@ -382,7 +382,7 @@ exports.addComments = addComments;
 exports.addScore = addScore;
 exports.removeScore = removeScore;
 
-// sockets handlers
+// sockets API
 exports.createNewPost = createNewPost;
 exports.toggleScore = toggleScore;
 exports.addNewComment = addNewComment;

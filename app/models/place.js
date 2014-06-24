@@ -13,18 +13,19 @@ var Schema = mongoose.Schema;
  */
 var PlaceSchema = new Schema({
 
-
+  activated: { type: Boolean, default: true }, // disable when deleted
+  verified: { type: Boolean, default: false }, // verified or not yet
   createdAt: { type: Date, default: Date.now },
   createdBy: {
     name: String,
-    id: Schema.Types.ObjectId
+    userId: Schema.Types.ObjectId
   },
   name: String,
   desc: String,
   address: {
     country: String,
     city: String,
-    loc: {type: [Number], index: '2d'} // [longitude, latitude]
+    loc: {type: [Number, Number], index: '2d'} // [latitude, longitude]
   },
   type: String, // Community Center, Outside Court, Paid Facility, School, etc
   sports: [String],
@@ -34,16 +35,18 @@ var PlaceSchema = new Schema({
     openhour: String,
     closehour: String, 
   }],
-  comments: [{
-    activated: { type: Boolean, default: true },
+  
+  reviews: [{
     createdAt: { type: Date, default: Date.now },
     createdBy: {
       name: String,
-      id: Schema.Types.ObjectId
+      userId: Schema.Types.ObjectId
     },
+    rating: Number,
     text: String,
-    score: Number,
   }],
+  numReviews : Number,
+  rating: Number,
 }); 
 
 /**

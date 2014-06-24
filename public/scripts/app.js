@@ -48,7 +48,7 @@ angular.module('genesisApp',
     .state('app.user', {
       abstract: true,
       templateUrl: '/views/partials/layout.html',
-      controller: 'ToplevelController'
+      controller: 'MainController'
     })
     .state('app.user.home', {
       views: {
@@ -70,6 +70,20 @@ angular.module('genesisApp',
       url: 'post/:id?comment',
       templateUrl: 'views/partials/post.html',
       controller: 'PostController'
+    })
+    .state('app.user.nearby', {
+      abstract: true,
+      url: 'nearby',
+      template: '<div ui-view class="full-height"></div>',
+      controller: 'NearbyController'
+    })
+    .state('app.user.nearby.list', {
+      url: '',
+      templateUrl: 'views/partials/nearby.list.html',
+    })
+    .state('app.user.nearby.map', {
+      url: '/map',
+      templateUrl: 'views/partials/nearby.map.html',
     })
     .state('app.profile', {
       url: 'profile', 
@@ -124,6 +138,22 @@ angular.module('genesisApp',
     };
   }]);
 }])
+.config(function ($provide) {
+  $provide.decorator('Posts', function ($delegate, $log) {
+    var decorated = {};
+    var list = function (options) {
+      var startAt = new Date();
+      var list = $delegate.list(options);
+      list.finally(function () {
+        $log.info('Fetching posts took ' + (new Date() - startAt) + ' ms');
+      });     
+      return list;
+    };
+
+    angular.extend(decorated, $delegate, { list: list });
+    return decorated;
+  });
+})
 .run(['$rootScope', '$state', 'Auth', function ($rootScope, $state, Auth) {
   $rootScope.$on('$stateChangeStart', 
   function(event, toState, toParams, fromState, fromParams){
