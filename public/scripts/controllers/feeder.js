@@ -5,8 +5,8 @@
 
  angular.module('genesisApp')
 .controller('FeederController', 
-  ['$scope', '$state', 'Posts', 'socket', 'geoloc',
-function ($scope, $state, Posts, socket, geoloc) {
+  ['$scope', '$state', 'Posts', 'socket',
+function ($scope, $state, Posts, socket) {
   init();
   
   /*

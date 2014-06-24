@@ -54,15 +54,21 @@ angular.module('genesisApp')
     }
   };
 }])
-.factory('geoloc', ['$window', function ($window) {
-  if ("geolocation" in $window.navigator) {
-    /* geolocation is available */
-    $window.navigator.geolocation.getCurrentPosition(function (position) {
-      console.log(position.coords.latitude, position.coords.longitude);
-    });
-  } else {
-    /* geolocation IS NOT available */
-  }
+.factory('geolocation', ['$q', '$window', function ($q, $window) {
+
+  return {
+    getCurrentPosition: function (options) {
+      var deferred = $q.defer();
+      if ($window.navigator && $window.navigator.geolocation) {
+        $window.navigator.geolocation.getCurrentPosition(function (position) {
+          deferred.resolve(position);
+        });
+      } else {
+        deferred.reject();
+      }
+      return deferred.promise;
+    }
+  };
 }])
 .factory('Posts', ['$http', function ($http) {
   return {

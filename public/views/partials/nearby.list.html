@@ -1,0 +1,74 @@
+<!-- Navbar Contetns  -->
+<div content-for="navbarTitle">
+  <span>Nearby</span>
+</div>
+
+<div content-for="navbarLeftAction">
+  <div ng-click="toggle('mainSidebar')" 
+      class="btn btn-lg btn-navbar sidebar-toggle">
+    <i class="fa fa-bars"></i>
+  </div>
+</div>
+
+<div content-for="navbarRightAction">
+  <a class="btn btn-md" ui-sref="app.user.nearby.map">Map</a>
+</div>
+
+<!-- Tab Buttons -->
+<div class="list-btn-wrapper"
+    style="height:47px; border-bottom:1px solid orange;
+           position: absolute;">
+  <div class="list-group-item btn-group justified nav-tabs" 
+      style="padding: 12px;">
+    <a class="btn btn-xs btn-default active"> Places </a>
+    <a class="btn btn-xs btn-default"> Events </a>
+  </div>
+</div>
+
+<!-- Lists -->
+<div class="list-wrapper scrollable-content" 
+    style="padding-top:47px;">
+  <div class="full-height scrollable-content">
+    <div ng-repeat="marker in map.markers"
+        class="list-group-item">
+      <h6><strong>{{ marker.name }}</strong></h6>
+      <p>hello this is test {{ marker.name }} !</p>
+    </div>
+    <div class="btn btn-default btn-block"
+        ng-click="openPlaceFormModal()">
+      Add a Place
+    </div>
+  </div>
+</div>
+
+<!-- Add Place Form -->
+<my-modal my-modal-open="placeFormModal.open" 
+    my-modal-open-style="bottom-up">
+  <div class="place-form-content full-height" style="padding-top:51px">
+    <div class="navbar reverse navbar-absolute-top">
+      <div class="navbar-brand navbar-brand-center">
+        New Place
+      </div>
+      <div class="btn-group pull-left">
+        <div class="btn btn-sm btn-navbar" ng-click="cancelPlaceFormModal()">
+          Cancel
+        </div>
+      </div>
+      <div class="btn-group pull-right">
+        <div class="btn btn-sm btn-navbar"
+            ng-disabled="placeForm.$invalid">
+          Submit
+        </div>
+      </div>
+    </div>
+    <form name="placeForm" novalidate>
+      <div class="form-group">
+        <input class="form-control" ng-model="txt1" type="text">
+      </div>
+      <my-address-input address="placeFormData.address" reset="reset" c-up="reset"></my-address-input>
+      <button ng-click="reset = true;"> clean up</button>
+    </form>
+
+  </div>
+
+</my-modal>

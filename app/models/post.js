@@ -26,7 +26,7 @@ var PostSchema = new Schema({
   },
   sport: String, // type of sport
   contents: String,
-  loc: {type: [Number], index: '2d'}, // [longitude, latitude]
+  loc: {type: [Number], index: '2d'}, // [latitude, longitude]
 
   comments: [{
     activated: { type: Boolean, default: true },

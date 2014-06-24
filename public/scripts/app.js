@@ -71,6 +71,20 @@ angular.module('genesisApp',
       templateUrl: 'views/partials/post.html',
       controller: 'PostController'
     })
+    .state('app.user.nearby', {
+      abstract: true,
+      url: 'nearby',
+      template: '<div ui-view class="full-height"></div>',
+      controller: 'NearbyController'
+    })
+    .state('app.user.nearby.list', {
+      url: '',
+      templateUrl: 'views/partials/nearby.list.html',
+    })
+    .state('app.user.nearby.map', {
+      url: '/map',
+      templateUrl: 'views/partials/nearby.map.html',
+    })
     .state('app.profile', {
       url: 'profile', 
       template: "<div style='height: 100%; overflow: auto';><div id='test' infinite-scroll-parent infinite-scroll='loadMore()' infinite-scroll-distance='1'><img ng-repeat='image in images' ng-src='http://placehold.it/225x250&text={{image}}'></div></div>",
