@@ -103,13 +103,13 @@ function ($scope, $state, EventsFromService) {
   
   // update list when updated
   function updateGroups() {
-      $scope.casualGroup = {};
-      $scope.tournamentGroup = {};
-    
-      angular.forEach($scope.eventGroup, function(value, key){
-        if (value.eventType == "Tournament") $scope.tournamentGroup[key] = value;
-        else $scope.casualGroup[key] = value;
-      });
+    $scope.casualGroup = {};
+    $scope.tournamentGroup = {};
+
+    angular.forEach($scope.eventGroup, function(value, key){
+      if (value.eventType == "Tournament") $scope.tournamentGroup[key] = value;
+      else $scope.casualGroup[key] = value;
+    });
   }
   
   // load more events
