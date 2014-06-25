@@ -108,17 +108,30 @@ function list(req, res) {
       return new Date(new Date(a.schedule.appDateTime - b.schedule.appDateTime));
     });
     
-    console.log(returnEvents);
-    /*
     // only return after this day ...
     if (validator.isDate(req.query.dateBefore)) {
+      
+      var beforedates = returnEvents.filter(function(d) {
+          return d - req.query.dateBefore < 0;
+      }),
+          afterdates = returnEvents.filter(function(d) {
+          return d - req.query.dateBefore > 0;
+      });
+      
       //in dictionary, look for date after ***
-      query.appDateTime = { $gt: req.query.dateBefore };
+      //query.appDateTime = { $gt: req.query.dateBefore };
+      
     }
     
+    console.log(req.query.dateBefore);
+    console.log(beforedates);
+    console.log(afterdates);
+    
+    /*
     // for limit of input
     eventsFromDB get next (req.query.limits || LIMIT)?
     */
+    //console.log(returnEvents);
     res.send(returnEvents); // return it to front end
   });
 }
