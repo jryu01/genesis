@@ -14,20 +14,34 @@ var Schema = mongoose.Schema;
 var PlaceSchema = new Schema({
 
   activated: { type: Boolean, default: true }, // disable when deleted
-  verified: { type: Boolean, default: false }, // verified or not yet
+  verified: { type: Boolean, default: false }, // verified or not
   createdAt: { type: Date, default: Date.now },
   createdBy: {
-    name: String,
-    userId: Schema.Types.ObjectId
+    name: { type: String, required: true },
+    userId: { type: Schema.Types.ObjectId, required: true }
   },
-  name: String,
-  desc: String,
-  address: {
-    country: String,
-    city: String,
-    loc: {type: [Number, Number], index: '2d'} // [latitude, longitude]
+
+  /**
+   * From User Input
+   */
+  // mandatory input
+  name: { type: String, required: true },
+  address: {  
+    street: { type: String, required: false },
+    city: { type: String, required: true },
+    province: { type: String, required: true },
+    country: { type: String, required: true },
   },
-  type: String, // Community Center, Outside Court, Paid Facility, School, etc
+  loc: {
+    type: [Number, Number], // [latitude, longitude]
+    index: '2d',
+    required: true
+  },
+  
+  // optional input
+  description: String,
+  phone: String,
+  type: String, //Community Center, Outside Court, Paid Facility, School, etc
   sports: [String],
 
   openHour: [{
@@ -36,7 +50,7 @@ var PlaceSchema = new Schema({
     closehour: String, 
   }],
   
-  reviews: [{
+  reviews: [{ 
     createdAt: { type: Date, default: Date.now },
     createdBy: {
       name: String,
@@ -45,8 +59,8 @@ var PlaceSchema = new Schema({
     rating: Number,
     text: String,
   }],
-  numReviews : Number,
-  rating: Number,
+  numReviews : Number, // User Input
+  rating: Number, //User Input
 }); 
 
 /**
@@ -62,5 +76,12 @@ PlaceSchema.options.toJSON = {
     delete ret.__v;
   }
 };
+
+/**
+ * Validators
+ */
+function isTest(val) {
+  return val === "test";
+}
 
 module.exports = mongoose.model('Place', PlaceSchema);

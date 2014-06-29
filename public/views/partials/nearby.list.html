@@ -31,8 +31,9 @@
   <div class="full-height scrollable-content">
     <div ng-repeat="marker in map.markers"
         class="list-group-item">
-      <h6><strong>{{ marker.name }}</strong></h6>
-      <p>hello this is test {{ marker.name }} !</p>
+      <h6><strong>{{ marker.data.name }}</strong></h6>
+      <p>{{ marker.data.address.city }}</p>
+
     </div>
     <div class="btn btn-default btn-block"
         ng-click="openPlaceFormModal()">
@@ -44,7 +45,7 @@
 <!-- Add Place Form -->
 <my-modal my-modal-open="placeFormModal.open" 
     my-modal-open-style="bottom-up">
-  <div class="place-form-content full-height" style="padding-top:51px">
+  <div class="place-form-content full-height" style="padding-top:51px; overflow:auto">
     <div class="navbar reverse navbar-absolute-top">
       <div class="navbar-brand navbar-brand-center">
         New Place
@@ -56,17 +57,81 @@
       </div>
       <div class="btn-group pull-right">
         <div class="btn btn-sm btn-navbar"
-            ng-disabled="placeForm.$invalid">
+            ng-disabled="placeForm.$invalid"
+            ng-click="submitPlaceForm()">
           Submit
         </div>
       </div>
     </div>
-    <form name="placeForm" novalidate>
-      <div class="form-group">
-        <input class="form-control" ng-model="txt1" type="text">
+    <form name="placeForm" style="margin-left: 15px; margin-right: 15px;"
+        novalidate>
+      <div class="form-group row">
+        <label class="control-label col-xs-3">*Name:</label>
+        <div class="col-xs-9">
+          <input name="name" ng-model="placeFormData.name"
+              class="form-control" required/>
+        </div>
       </div>
-      <my-address-input address="placeFormData.address" reset="reset" c-up="reset"></my-address-input>
-      <button ng-click="reset = true;"> clean up</button>
+      <div class="form-group row">
+        <label class="control-label col-xs-3"
+            style="margin-right: 15px;">
+          *Map:
+        </label>
+        <my-address-input address="placeFormData.address" reset="placeFormModal.resetAddress"></my-address-input>
+      </div>
+      <div class="form-group row">
+        <label class="control-label col-xs-3">Description: </label>
+        <div class="col-xs-9">
+          <textarea ng-model="placeFormData.description" 
+            class="form-control" 
+            placeholder="Write about the place">
+        </textarea>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="control-label col-xs-3">Phone:</label>
+        <div class="col-xs-9">
+          <input name="phone" ng-model="placeFormData.phone"
+              class="form-control"/>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="control-label col-xs-3">Type: </label>
+        <div class="col-xs-9">
+          <select ng-model="placeFormData.type" class="form-control">
+            <option value="" selected>--</option>
+            <option value="Community Center">Community Center</option>
+            <option value="Outside Court">Outside Court</option>
+            <option value="Paid Facility">Paid Facility</option>
+            <option value="School">School</option>
+            <option value="Park">Park</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="control-label col-xs-3">Sports: </label>
+        <div class="col-xs-9">
+          <select ng-model="placeFormData.sport1" class="form-control">
+            <option value="" selected>--</option>
+            <option ng-repeat="sport in sports" value="{{sport}}">
+              {{sport}}
+            </option>
+          </select>
+          <select ng-model="placeFormData.sport2" class="form-control">
+            <option value="" selected>--</option>
+            <option ng-repeat="sport in sports" value="{{sport}}">
+              {{sport}}
+            </option>
+          </select>
+<!--           <select ng-model="placeFormData.sport3" class="form-control">
+            <option value="" selected>--</option>
+            <option ng-repeat="sport in sports" value="{{sport}}">
+              {{sport}}
+            </option>
+          </select> -->
+        </div>
+      </div>
+      <button ng-click="placeFormModal.resetAddress = true;"> clean up</button>
     </form>
 
   </div>

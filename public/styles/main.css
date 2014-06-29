@@ -217,6 +217,11 @@ a, a:hover {
 	left:0;
 }
 
+/* my-address-input */
+.my-address-input button.invalid {
+	border-color: #fc0;
+}
+
 /*** angular directives end ***/
 
 /***---- Layout ----***/

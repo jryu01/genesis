@@ -4,6 +4,10 @@ angular.module('genesisApp',
   [ 'ui.router', 'mobile-angular-ui', 'ui.bootstrap', 'angular-carousel',
     'infinite-scroll']
 )
+.constant('sportsList', [
+  'Basketball',
+  'Badminton'
+])
 .config(['$stateProvider','$urlRouterProvider', '$locationProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
   //================================================

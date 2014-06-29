@@ -22,7 +22,7 @@ var PostSchema = new Schema({
   },
   from: {
     profileType: String, //User, Event, Team etc
-    profileId: Schema.Types.ObjectId,
+    profileId: Schema.Types.ObjectId, //UserId, EventPageId, TeamPageId, etc
   },
   sport: String, // type of sport
   contents: String,

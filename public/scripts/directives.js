@@ -146,7 +146,6 @@ angular.module('genesisApp')
     scope: {
       coords: '=',
       options: '=',
-      marker: '=',
       infoWindow: '=',
       infoWindowOpen: '&',
       infoWindowData: '='

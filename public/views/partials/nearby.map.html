@@ -24,7 +24,7 @@
     <my-map-marker 
       ng-repeat="marker in map.markers" 
       info-window="true"
-      info-window-data="{ name: marker.name }"
+      info-window-data="marker.data"
       info-window-open="showInfoWindow(marker, infoWindowData)"
       coords="marker.coords"> 
     </my-map-marker>
@@ -43,8 +43,11 @@
     zoom="15"
     center-pin="true"></my-map>
  -->  
-    <div class="mapController" style="position: absolute; bottom: 0">
-    <button ng-click="removeMarkers()">Remove Markers</button>
-    <button ng-click="redoSearch()">Redo Search</button>
+    <div class="mapController" 
+        style="position: absolute; bottom: 15px; right: 1px">
+    <button class= "btn btn-default"
+        ng-click="redoSearch()">
+      Redo Search In this Area
+    </button>
   </div>
 </div>

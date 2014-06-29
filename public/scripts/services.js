@@ -96,6 +96,18 @@ angular.module('genesisApp')
     },
   };
 }])
+.factory('Places', ['$http', function ($http) {
+  return {
+    list: function (options) {
+      var params = {};
+      angular.extend(params, options);
+      return $http.get('api/places', { params: params });
+    },
+    create: function (data) {
+      return $http.post('api/places', data);
+    }
+  };
+}])
 .factory('EventsFromService', ['$http', function ($http) {
   return {
     list: function (options, success, error) {
