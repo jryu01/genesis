@@ -90,6 +90,8 @@ function listPlaces(params, callback) {
       projection = {}, 
       options = {};
 
+  query.verified = false; // in production change it to true
+
   if (params.center) {
     query.loc = {
       $geoWithin: {
