@@ -15,25 +15,42 @@
 </div>
 
 <!-- Tab Buttons -->
-<!-- <div class="list-btn-wrapper"
+<div class="list-btn-wrapper"
     style="height:47px; border-bottom:1px solid orange;
-           position: absolute;">
+           position: absolute;
+           width:100%;">
   <div class="list-group-item btn-group justified nav-tabs" 
       style="padding: 12px;">
     <a class="btn btn-xs btn-default active"> Places </a>
     <a class="btn btn-xs btn-default"> Events </a>
   </div>
 </div>
- -->
+
 <!-- Lists -->
 <div class="list-wrapper scrollable-content" 
-    style="">
+    style="padding-top:47px;">
   <div class="full-height scrollable-content">
     <div ng-repeat="marker in map.markers"
         class="list-group-item">
       <h6><strong>{{ marker.data.name }}</strong></h6>
-      <p>{{ marker.data.address.city }}</p>
-
+      <p>
+        {{ marker.data.address.street 
+            ? marker.data.address.street + ', ' 
+            : ''
+        }} {{ marker.data.address.city }}
+        · {{ marker.coords | myDistance: map.currentLocation }} km
+      </p>
+      <p>
+        <span ng-show="marker.data.sports[0]"> 
+          {{ marker.data.sports[0] }} 
+        </span>
+        <span ng-show="marker.data.sports[1]"> 
+          {{ marker.data.sports[1] }} 
+        </span>
+        <span ng-show="marker.data.sports[2]"> 
+          {{ marker.data.sports[2] }} 
+        </span>
+      </p>
     </div>
     <div class="btn btn-default btn-block"
         ng-click="openPlaceFormModal()">
@@ -123,12 +140,12 @@
               {{sport}}
             </option>
           </select>
-<!--           <select ng-model="placeFormData.sport3" class="form-control">
+          <select ng-model="placeFormData.sport3" class="form-control">
             <option value="" selected>--</option>
             <option ng-repeat="sport in sports" value="{{sport}}">
               {{sport}}
             </option>
-          </select> -->
+          </select>
         </div>
       </div>
     </form>

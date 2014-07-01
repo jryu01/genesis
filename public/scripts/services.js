@@ -55,18 +55,35 @@ angular.module('genesisApp')
   };
 }])
 .factory('geolocation', ['$q', '$window', function ($q, $window) {
-
+  var defaultLocation = { lat: 43.653, lng: -79.383 }; //Toronto
+  var latestCurrentLocation = null;
   return {
-    getCurrentPosition: function (options) {
+    getDefaultLocation: function () {
+      return angular.copy(defaultLocation);
+    },
+    getLatestCurrentLocation: function () {
+      return angular.copy(latestCurrentLocation);
+    },
+    getCurrentLocation: function () {
       var deferred = $q.defer();
       if ($window.navigator && $window.navigator.geolocation) {
         $window.navigator.geolocation.getCurrentPosition(function (position) {
-          deferred.resolve(position);
+          if (!latestCurrentLocation) latestCurrentLocation = {};
+          latestCurrentLocation.lat = position.coords.latitude;
+          latestCurrentLocation.lng = position.coords.longitude;
+
+          deferred.resolve(angular.copy(latestCurrentLocation));
         });
       } else {
+        latestCurrentLocation = null;
         deferred.reject();
       }
       return deferred.promise;
+    },
+    setDefaultLocation: function (lat, lng) {
+      defaultLocation.lat = lat;
+      defaultLocation.lng = lng;
+      return angular.copy(defaultLocation);
     }
   };
 }])

@@ -5,6 +5,7 @@ angular.module('genesisApp',
     'infinite-scroll']
 )
 .constant('sportsList', [
+  'General',
   'Basketball',
   'Badminton'
 ])
@@ -88,6 +89,10 @@ angular.module('genesisApp',
     .state('app.user.nearby.map', {
       url: '/map',
       templateUrl: 'views/partials/nearby.map.html',
+    })
+    .state('app.user.place', {
+      url: 'place/:id',
+      template: '<p>test</p>'
     })
     .state('app.profile', {
       url: 'profile', 

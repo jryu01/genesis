@@ -6,10 +6,15 @@ p
 
 angular.module('genesisApp')
 .controller('MainController', 
-['$scope', '$state', 'Auth', 'socket', 'Posts',
-function ($scope, $state, Auth, socket, Posts) {
+['$scope', '$state', 'Auth', 'socket', 'Posts', 'geolocation',
+function ($scope, $state, Auth, socket, Posts, geolocation) {
   console.log("user from MainController");
   console.log($scope.currentUser);
+
+  // get current location of the user
+  geolocation.getCurrentLocation().then(function(location) {
+    $scope.currentUser.currentLocation = location;
+  });
 
   registerSocketListeners();
 

@@ -11,7 +11,7 @@
 </div>
 
 <div content-for="navbarRightAction">
-  <a class="btn btn-default btn-md" ui-sref="app.user.nearby.list">List</a>
+  <a class="btn btn-md" ui-sref="app.user.nearby.list">List</a>
 </div>
 
 <div class="map-wrapper"  style="height: 100%; width: 100%;">
@@ -24,14 +24,25 @@
     <my-map-marker 
       ng-repeat="marker in map.markers" 
       info-window="true"
-      info-window-data="marker.data"
+      info-window-data="marker"
       info-window-open="showInfoWindow(marker, infoWindowData)"
       coords="marker.coords"> 
     </my-map-marker>
     <my-map-info-window>
       <div class="info-window" ng-click="test(infoWindowData.name)">
-        <h6><strong>{{infoWindowData.name}}</strong></h6>
-        <p> km</p>
+        <h6><strong>{{ infoWindowData.data.name }}</strong></h6>
+        {{ infoWindowData.coords | myDistance: map.currentLocation }} km
+        <p>
+          <span ng-show="infoWindowData.data.sports[0]"> 
+            {{ infoWindowData.data.sports[0] }} 
+          </span>
+          <span ng-show="infoWindowData.data.sports[1]"> 
+            {{ infoWindowData.data.sports[1] }} 
+          </span>
+          <span ng-show="infoWindowData.data.sports[2]"> 
+            {{ infoWindowData.data.sports[2] }} 
+          </span>
+        </p>
       </div>
     </my-map-info-window>
   </my-map>

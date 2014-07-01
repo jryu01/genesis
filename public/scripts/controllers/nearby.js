@@ -4,11 +4,10 @@
 'use strict';
 
 angular.module('genesisApp')
-.controller('NearbyController', ['$scope', '$state', '$window', 'socket', 'sportsList', 'Places',
-function ($scope, $state, $window, socket, sportsList, Places) {
+.controller('NearbyController', ['$scope', '$state', '$window', 'socket', 'sportsList', 'Places', 'geolocation',
+function ($scope, $state, $window, socket, sportsList, Places, geolocation) {
 
   init();
-
   $scope.redoSearch = function () {
     var query = {
       center: [$scope.map.center.lat, $scope.map.center.lng],
@@ -70,18 +69,26 @@ function ($scope, $state, $window, socket, sportsList, Places) {
   function init() {
     $scope.sports = sportsList;
     $scope.map = {
-      center: { lat: 43.653, lng: -79.383 }, //default center (Toronto)
+      center: geolocation.getLatestCurrentLocation() ||
+              geolocation.getDefaultLocation(),
       zoom: 12,
       centerPin: false,
       options: {},
-      markers: []
+      markers: [],
+      currentLocation: geolocation.getLatestCurrentLocation() ||
+              geolocation.getDefaultLocation(),
     };
+    // set center asynchronously with current location
+    geolocation.getCurrentLocation().then(function (location) {
+      $scope.map.center = angular.copy(location); 
+      $scope.map.currentLocation = angular.copy(location); 
+    });
+
     $scope.placeFormModal = {
       open: false,
       resetAddress: false // reset address picker when set to true
     };
     $scope.placeFormData = {};
-
 
     fetchPlaceMarkers({
       center: [$scope.map.center.lat, $scope.map.center.lng], 

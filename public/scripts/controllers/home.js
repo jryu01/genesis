@@ -4,8 +4,8 @@
 'use strict';
 
 angular.module('genesisApp')
-.controller('HomeController', ['$scope', '$state', 'Auth', 'socket',
-function ($scope, $state, Auth, socket) {
+.controller('HomeController', ['$scope', '$state', 'Auth', 'socket', 'sportsList',
+function ($scope, $state, Auth, socket, sportsList) {
   init();
 
   /*
@@ -111,14 +111,12 @@ function ($scope, $state, Auth, socket) {
     ////////
     // made of user's favorite sports
     $scope.filter = {
-      items: ["", 'General', 'Basketball', 'Badminton'],
+      items: [""].concat(sportsList), // ["", "General", "Basketball", ...]
       selected: ""
     };
-    $scope.sports = [
-      { name: 'General' },
-      { name: 'Basketball' },
-      { name: 'Badminton' }
-    ];
+    $scope.sports = sportsList.map(function (sport) {
+      return { name: sport };
+    });
     $scope.postFormData = {
       selected: null,
       text: ""
