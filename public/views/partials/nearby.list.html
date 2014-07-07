@@ -15,7 +15,7 @@
 </div>
 
 <!-- Tab Buttons -->
-<!-- <div class="list-btn-wrapper"
+<div class="list-btn-wrapper"
     style="height:47px; border-bottom:1px solid orange;
            position: absolute;
            width:100%;">
@@ -25,13 +25,15 @@
     <a class="btn btn-xs btn-default"> Events </a>
   </div>
 </div>
- -->
+
 <!-- Lists -->
 <div class="list-wrapper scrollable-content" 
-    style="">
+    style="padding-top:47px;">
   <div class="full-height scrollable-content">
-    <div ng-repeat="marker in map.markers"
-        class="list-group-item">
+    <a ng-repeat="marker in map.markers"
+        class="list-group-item"
+        ng-click="goToPlacePage(marker.data.id)">
+      <i class="fa fa-chevron-right pull-right"></i>
       <h6><strong>{{ marker.data.name }}</strong></h6>
       <p>
         {{ marker.data.address.street 
@@ -51,7 +53,7 @@
           {{ marker.data.sports[2] }} 
         </span>
       </p>
-    </div>
+    </a>
     <div class="btn btn-default btn-block"
         ng-click="openPlaceFormModal()">
       Add a Place

@@ -8,6 +8,9 @@ angular.module('genesisApp')
 function ($scope, $state, $window, socket, sportsList, Places, geolocation) {
 
   init();
+  $scope.goToPlacePage = function (placeId) {
+    $state.go('app.user.place', { id: placeId });
+  };
   $scope.redoSearch = function () {
     var query = {
       center: [$scope.map.center.lat, $scope.map.center.lng],

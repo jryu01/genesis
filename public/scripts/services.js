@@ -120,8 +120,15 @@ angular.module('genesisApp')
       angular.extend(params, options);
       return $http.get('api/places', { params: params });
     },
+    get: function (placeId) {
+      return $http.get('api/places/' + placeId);
+    },
     create: function (data) {
       return $http.post('api/places', data);
+    },
+    addComment: function (placeId, data) {
+      var url = 'api/places/' + placeId + '/comments';
+      return $http.post(url, data);
     }
   };
 }])

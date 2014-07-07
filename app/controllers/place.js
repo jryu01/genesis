@@ -13,19 +13,31 @@ var _ = require('underscore');
 
 function list(req, res) {
   listPlaces(req.query, function (err, data) {
-    if (err) return res.send(err);
+    if (err) return res.send(500, err);
     return res.send(data);
   });
 }
 
-// function get(req, res){:w
+function get(req, res) {
+  getPlaceById(req.params.id, function (err, data) {
+    if (err) return res.send(500, err);  
+    if (!data) return res.send(404);
+    return res.send(data);
+  });
+}
 
-// }
-
-function create(req, res){
+function create(req, res) {
   var user = req.user;
   createPlace(req.body, user, function (err, data) {
-    if (err) return res.send(err);
+    if (err) return res.send(500, err);
+    return res.send(data);
+  });
+}
+
+function addComment(req, res) {
+  var user = req.user;
+  addCommentToPlace(req.params.id, req.body, user, function (err, data) {
+    if (err) return res.send(500, err);
     return res.send(data);
   });
 }
@@ -73,6 +85,7 @@ function createPlace(data, user, callback) {
   var place = new Place({
     createdBy: {
       userId: user.id,
+      profilePicture: user.photos.profile,
       name: user.name.displayName
     }
   });
@@ -106,9 +119,46 @@ function listPlaces(params, callback) {
   }); 
 }
 
+function getPlaceById(id, callback) { 
+  Place.findById(id, function (err, place) {
+    if (err) return callback(err, null); 
+    if (!place) return callback(null, null);
+    callback(null, place);
+  });
+}
+
+function addCommentToPlace(placeId, data, user, callback) {
+  var pid = placeId;
+  var text = data.text;
+  var createdBy = {
+    userId: user.id,
+    profilePicture: user.photos.profile,
+    name: user.name.displayName
+  };
+  var newComment = {
+    createdBy: createdBy,
+    text: text
+  };
+
+  var operator = {
+    $push: { comments: newComment },
+    $inc: { numComments: 1 }
+  };
+  var options = {};
+
+  Place.findByIdAndUpdate(pid, operator, options, function (err, place) {
+    if (err) return callback(err, null);
+    place = place.toJSON();
+    newComment = place.comments[place.comments.length -1];
+    return callback(null, newComment);
+  });
+}
+
 // public functions
 // REST API
 exports.list = list;
 exports.create = create;
+exports.get = get;
+exports.addComment = addComment;
 // Socket API
 exports.sCreateNewPlace = sCreateNewPlace;

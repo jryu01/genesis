@@ -18,6 +18,7 @@ var PlaceSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
   createdBy: {
     name: { type: String, required: true },
+    profilePicture: { type: String },
     userId: { type: Schema.Types.ObjectId, required: true }
   },
 
@@ -50,17 +51,17 @@ var PlaceSchema = new Schema({
     closehour: String, 
   }],
   
-  reviews: [{ 
+  comments: [{ 
+    activated: { type: Boolean, default: true },
     createdAt: { type: Date, default: Date.now },
     createdBy: {
-      name: String,
-      userId: Schema.Types.ObjectId
+      name: { type: String, required: true },
+      profilePicture: { type: String },
+      userId: { type: Schema.Types.ObjectId, required: true }
     },
-    rating: Number,
-    text: String,
+    text: { type: String, required: true }
   }],
-  numReviews : Number, // User Input
-  rating: Number, //User Input
+  numComments: Number,
 }); 
 
 /**

@@ -29,7 +29,8 @@
       coords="marker.coords"> 
     </my-map-marker>
     <my-map-info-window>
-      <div class="info-window" ng-click="test(infoWindowData.name)">
+      <div class="info-window" 
+          ng-click="goToPlacePage(infoWindowData.data.id)">
         <h6><strong>{{ infoWindowData.data.name }}</strong></h6>
         {{ infoWindowData.coords | myDistance: map.currentLocation }} km
         <p>

@@ -70,6 +70,7 @@ function create(req, res){
   var loc = req.body.loc;
   var createdBy = {
     userId: req.user.id,
+    profilePicture: req.user.photos.profile,
     name: req.user.name.displayName
   };
   var from =  {
@@ -125,6 +126,7 @@ function addComments(req, res) {
   var text = req.body.text;
   var createdBy = {
     userId: req.user.id,
+    profilePicture: req.user.photos.profile,
     name: req.user.name.displayName
   };
   if (!text) {

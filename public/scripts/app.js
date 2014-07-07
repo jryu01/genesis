@@ -92,7 +92,8 @@ angular.module('genesisApp',
     })
     .state('app.user.place', {
       url: 'place/:id',
-      template: '<p>test</p>'
+      templateUrl: 'views/partials/place.html',
+      controller: 'PlaceController'
     })
     .state('app.profile', {
       url: 'profile', 
@@ -164,8 +165,9 @@ angular.module('genesisApp',
   });
 })
 .run(['$rootScope', '$state', 'Auth', function ($rootScope, $state, Auth) {
+  // Authentication on stateChnageStart
   $rootScope.$on('$stateChangeStart', 
-  function(event, toState, toParams, fromState, fromParams){
+  function (event, toState, toParams, fromState, fromParams){
 
     // if to state needs authentication
     if (toState.data.authenticate) {
@@ -195,5 +197,12 @@ angular.module('genesisApp',
         }
       }
     }
+  });
+
+  // Save states to rootscope on statChangeSuccess
+  $rootScope.$on('$stateChangeSuccess', 
+  function (event, toState, toParams, fromState, fromParams) {
+    $rootScope.previousState = fromState.name;
+    $rootScope.currentState = toState.name;
   });
 }]);
