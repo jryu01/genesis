@@ -81,6 +81,9 @@ function ($scope, $state, $window, socket, sportsList, Places, geolocation) {
       currentLocation: geolocation.getLatestCurrentLocation() ||
               geolocation.getDefaultLocation(),
     };
+    $scope.listTabs = {
+      selected: 'places'
+    };
     // set center asynchronously with current location
     geolocation.getCurrentLocation().then(function (location) {
       $scope.map.center = angular.copy(location); 
@@ -93,6 +96,7 @@ function ($scope, $state, $window, socket, sportsList, Places, geolocation) {
     };
     $scope.placeFormData = {};
 
+    // fetch markers for the map
     fetchPlaceMarkers({
       center: [$scope.map.center.lat, $scope.map.center.lng], 
       radius: 0.1
