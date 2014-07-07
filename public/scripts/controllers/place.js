@@ -27,6 +27,11 @@ function ($scope, $stateParams, Places, geolocation) {
       currentUserLocation: geolocation.getLatestCurrentLocation() ||
               geolocation.getDefaultLocation()
     };
+    $scope.map = {
+      center: null,
+      zoom: 15,
+      isDataReady: false
+    };
     if (!$scope.previousState) {
       $scope.previousState = 'app.user.nearby.list';
     }
@@ -38,6 +43,9 @@ function ($scope, $stateParams, Places, geolocation) {
         data.coords = {lat: data.loc[0], lng: data.loc[1]};
         $scope.placeBox.place = data;
         $scope.placeBox.loading = false;
+
+        $scope.map.center = data.coords;
+        $scope.map.isDataReady = true;
       });
   }
 }]);
