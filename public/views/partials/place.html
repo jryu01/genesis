@@ -1,0 +1,103 @@
+<div class="place-wrapper scrollable">
+  <div content-for="navbarTitle">
+    <span>Place</span>
+  </div>
+  <div content-for="navbarLeftAction">
+    <div class="btn btn-lg btn-navbar"
+        ui-sref="{{previousState}}">
+      <i class="fa fa-angle-left fa-lg"></i>
+    </div>
+  </div>
+  <div content-for="navbarRightAction"></div>
+  
+  <p ng-show="placeBox.loading" class="text-center absolute-center"
+      style="color:orange;height: 25px">
+    <i class="fa fa-refresh fa-spin fa-2x"></i>
+  </p>
+
+  <div class="scrollable-content"
+      ng-show"!placeBox.loading">
+    <div class="panel">
+      <div class="panel-body">
+        <h4>{{ placeBox.place.name }}</h4>
+        <p>
+          {{ placeBox.place.address.street 
+              ? placeBox.place.address.street + ', ' 
+              : ''
+          }} {{ placeBox.place.address.city }}
+          · {{ placeBox.place.coords | 
+                myDistance: placeBox.currentUserLocation }} km
+        </p>
+        <div class="map-wrapper" 
+            ng-if="map.isDataReady"
+            style="height: 200px; width: 100%">
+          <my-map
+              class="full-height"
+              center="map.center"
+              zoom="map.zoom">
+            <my-map-marker
+                coords="map.center">
+            </my-map-marker>  
+          </my-map> 
+        </div>
+        <br>
+        <div ng-show="placeBox.place.type">
+          <h5>Type </h5>
+          <p>{{ placeBox.place.type }}</p>
+        </div>
+        <div ng-show="placeBox.place.phone">
+          <h5>Phone </h5>         
+          <p>{{ placeBox.place.phone }}</p>
+        </div>
+        <div ng-show="placeBox.place.sports">
+          <h5>Sports </h5>
+          <p>
+            <span ng-show="placeBox.place.sports[0]"> 
+              {{ placeBox.place.sports[0] }}
+            </span>
+            <span ng-show="placeBox.place.sports[1]">
+              , {{ placeBox.place.sports[1] }} 
+            </span>
+            <span ng-show="placeBox.place.sports[2]"> 
+              , {{ placeBox.place.sports[2] }} 
+            </span>
+          </p>
+        </div>
+        <div ng-show="placeBox.place.description">
+          <h5>Description </h5>
+          <p>{{ placeBox.place.description }}</p>
+        </div>
+      </div> 
+      <div class="panel-footer">
+        <h5>{{ placeBox.place.numComments }} Comments</h5>
+        <div class="comments-container">
+          <div ng-repeat="comment in placeBox.place.comments">
+            <div class="comment-body">
+              <a><img class="img-rounded profile-img" 
+                ng-src="{{comment.createdBy.profilePicture}}"></a>
+              <div>
+                <a class="profile-name pull-left">{{ comment.createdBy.name }}</a>
+                <span class="text-wrap"> {{ comment.text }} </span>
+                <div class="clearfix" style="height:0"></div>
+                <span class="date-text"> {{ comment.createdAt | myDate }} </span>
+              </div>
+            </div>
+          </div> 
+        </div>
+        <form name="commentForm" role="form" class="comment-form" 
+            ng-submit="addComment(placeBox.place.id)">
+
+          <div class="input-group">
+            <input id="test" type="text" class="form-control" ng-model="commentText"
+                placeholder="Write a Comment..."/>
+            <span class="input-group-btn">
+              <input type="submit" value="Send" 
+                  class="btn btn-default"/>
+            </span>
+          </div>
+        </form>
+      </div> <!-- panel-footer end  -->
+    </div>  <!-- panel end -->
+  </div>
+
+</div>

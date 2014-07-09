@@ -75,6 +75,7 @@ function create(req, res){
   var loc = req.body.loc;
   var createdBy = {
     userId: req.user.id,
+    profilePicture: req.user.photos.profile,
     name: req.user.name.displayName
   };
   var from =  {
@@ -94,9 +95,6 @@ function create(req, res){
     message = "loc must be a form of Number Array with length 2.";
     return res.send(400, { message: message });
   }
-
-  // Sanitize inputs
-  contents = validator.escape(contents);
 
   // Create a new post
   var post = new Post({
@@ -132,15 +130,15 @@ function addComments(req, res) {
   var postId = req.params.id;
   var text = req.body.text;
   var createdBy = {
-    id: req.user.id,
+    userId: req.user.id,
+    profilePicture: req.user.photos.profile,
     name: req.user.name.displayName
   };
   if (!text) {
     var message = "string value for text must be provided.";
     return res.send(400, { message: message });
   }
-  // sanitize
-  text = validator.escape(text);
+
   var newComment = {
     createdBy: createdBy,
     text: text
@@ -249,9 +247,6 @@ function createNewPost(socket) {
       return callback({ name: errorName, message: message }, null);
     }
 
-    // Sanitize inputs
-    contents = validator.escape(contents);
-
     // Create a new post
     var post = new Post({
       sport: sport,
@@ -336,7 +331,7 @@ function addNewComment(socket) {
     var postId = data.postId;
     var text = data.comment.text;
     var createdBy = {
-      id: user.id,
+      userId: user.id,
       name: user.name.displayName,
       profilePicture: user.photos.profile
     };
@@ -345,12 +340,12 @@ function addNewComment(socket) {
       var message = "string value for comment.text must be provided.";
       return callback({ name: "ValidationError", message: message }, null);
     }
-    // sanitize
-    text = validator.escape(text);
+
     var newComment = {
       createdBy: createdBy,
       text: text
     };
+    console.log(newComment);
     var operator = {
       $push: { comments: newComment },
       $inc: { numComments: 1 }

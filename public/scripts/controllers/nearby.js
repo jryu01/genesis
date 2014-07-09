@@ -4,76 +4,127 @@
 'use strict';
 
 angular.module('genesisApp')
-.controller('NearbyController', ['$scope', '$state', '$window', 'socket',
-function ($scope, $state, $window, socket) {
-  $scope.test = function (name) {
-    $window.alert("test hello " + name);
-  };
-  $scope.addMarkers = function () {
-    $scope.markers = [
-      {
-        name: "first",
-        coords: { lat: 43.654, lng: -79.381 }
-      },
-      {
-        name: "second",
-        coords: { lat: 43.655, lng: -79.382 }
-      },
-      {
-        name: "third",
-        coords: { lat: 43.656, lng: -79.384 }
-      },
-      {
-        name: "fourth",
-        coords: { lat: 43.658, lng: -79.386 }
-      },
-      {
-        name: "sixth",
-        coords: { lat: 43.653, lng: -79.381 }
-      },
-    ];
-    $scope.map.markers = $scope.markers;
-  };
+.controller('NearbyController', ['$scope', '$state', '$window', 'socket', 'sportsList', 'Places', 'geolocation',
+function ($scope, $state, $window, socket, sportsList, Places, geolocation) {
 
-  $scope.removeMarkers = function () {
-    $scope.map.markers = [];
+  init();
+  $scope.goToPlacePage = function (placeId) {
+    $state.go('app.user.place', { id: placeId });
   };
-
   $scope.redoSearch = function () {
-    $scope.map.markers = [];
-    for (var i = 0; i < 20; i++) {
-      var coords = {lat: 43.653 + Math.random()/100 , lng: -79.383 + Math.random()/100};
-      $scope.map.markers.push({coords: coords, name: "test " + i});
-    }
+    var query = {
+      center: [$scope.map.center.lat, $scope.map.center.lng],
+      radius: 0.1
+    };
+    fetchPlaceMarkers(query, function (err, markers) {
+      $scope.map.markers = markers;
+    });
   };
-  $scope.addPlace = function () {
-    socket.emit('creatNewEvent', { name: "hello"} ,function (err, data) {
+  $scope.submitPlaceForm = function () {
+    // push sports to the array
+    var sports = [];
+    for ( var i = 1; i < 3; i++) {
+      if ($scope.placeFormData['sport' + i]) {
+        if (!sports) {
+        } 
+        sports.push($scope.placeFormData['sport' + i]);
+      }
+    }
+    var placeData = {
+      name: $scope.placeFormData.name,
+      address: {
+        street: $scope.placeFormData.address.address,
+        city: $scope.placeFormData.address.city,
+        province: $scope.placeFormData.address.province,
+        country: $scope.placeFormData.address.country,
+      },
+      loc: [
+        $scope.placeFormData.address.loc.lat, 
+        $scope.placeFormData.address.loc.lng
+      ],
+      description: $scope.placeFormData.description,
+      phone: $scope.placeFormData.phone,
+      type: $scope.placeFormData.type,
+      sports: sports,
+      openHour: null
+    };
+
+    socket.emit('creatNewPlace', placeData ,function (err, data) {
       if (err) {
         return console.log(err);
       }
-      console.log("hello from server: " + data.name );
+      $scope.cancelPlaceFormModal();        
     });
   };
   $scope.openPlaceFormModal = function () {
     $scope.placeFormModal.open = true;
   };
   $scope.cancelPlaceFormModal = function () {
+    // clear the form and close the modal
+    $scope.placeformData = {};
+    for (var key in $scope.placeFormData) {
+      delete $scope.placeFormData[key];
+    }
+    $scope.placeFormModal.resetAddress = true;
     $scope.placeFormModal.open = false;
   };
-  init();
+
   function init() {
+    $scope.sports = sportsList;
     $scope.map = {
-      center: { lat: 43.653, lng: -79.383 },
-      zoom: 15,
+      center: geolocation.getLatestCurrentLocation() ||
+              geolocation.getDefaultLocation(),
+      zoom: 12,
       centerPin: false,
       options: {},
-      markers: []
+      markers: [],
+      currentLocation: geolocation.getLatestCurrentLocation() ||
+              geolocation.getDefaultLocation(),
     };
-    $scope.addMarkers();
+    $scope.listTabs = {
+      selected: 'places'
+    };
+    // set center asynchronously with current location
+    geolocation.getCurrentLocation().then(function (location) {
+      $scope.map.center = angular.copy(location); 
+      $scope.map.currentLocation = angular.copy(location); 
+    });
+
     $scope.placeFormModal = {
-      open: false
+      open: false,
+      resetAddress: false // reset address picker when set to true
     };
     $scope.placeFormData = {};
-    $scope.placeFormData.address = null;
+
+    // fetch markers for the map
+    fetchPlaceMarkers({
+      center: [$scope.map.center.lat, $scope.map.center.lng], 
+      radius: 0.1
+    }, function (err, markers) {
+      $scope.map.markers = markers;
+    });
+
+  }
+  function fetchPlaceMarkers (query, callback) {
+    var markers = [];
+    // Fetch places from server
+    Places.list(query)
+      .success(function (data, status, headers, config) {
+        // create a marker for each place and push it to the map.markers 
+        data.forEach(function (place, index, array) {
+          var marker = {};
+          marker.data = place;
+          if (place.loc) {
+            marker.coords = {
+              lat: place.loc[0],
+              lng: place.loc[1]
+            };
+          }
+          markers.push(marker);
+          if (index === (array.length-1)) {
+            callback(null, markers);
+          }
+        });
+      });
   }
 }]);

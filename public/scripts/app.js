@@ -4,6 +4,11 @@ angular.module('genesisApp',
   [ 'ui.router', 'mobile-angular-ui', 'ui.bootstrap', 'angular-carousel',
     'infinite-scroll']
 )
+.constant('sportsList', [
+  'General',
+  'Basketball',
+  'Badminton'
+])
 .config(['$stateProvider','$urlRouterProvider', '$locationProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
   //================================================
@@ -90,6 +95,11 @@ angular.module('genesisApp',
       url: '/map',
       templateUrl: 'views/partials/nearby.map.html',
     })
+    .state('app.user.place', {
+      url: 'place/:id',
+      templateUrl: 'views/partials/place.html',
+      controller: 'PlaceController'
+    })
     .state('app.profile', {
       url: 'profile', 
       template: "<div style='height: 100%; overflow: auto';><div id='test' infinite-scroll-parent infinite-scroll='loadMore()' infinite-scroll-distance='1'><img ng-repeat='image in images' ng-src='http://placehold.it/225x250&text={{image}}'></div></div>",
@@ -160,8 +170,9 @@ angular.module('genesisApp',
   });
 })
 .run(['$rootScope', '$state', 'Auth', function ($rootScope, $state, Auth) {
+  // Authentication on stateChnageStart
   $rootScope.$on('$stateChangeStart', 
-  function(event, toState, toParams, fromState, fromParams){
+  function (event, toState, toParams, fromState, fromParams){
 
     // if to state needs authentication
     if (toState.data.authenticate) {
@@ -191,5 +202,12 @@ angular.module('genesisApp',
         }
       }
     }
+  });
+
+  // Save states to rootscope on statChangeSuccess
+  $rootScope.$on('$stateChangeSuccess', 
+  function (event, toState, toParams, fromState, fromParams) {
+    $rootScope.previousState = fromState.name;
+    $rootScope.currentState = toState.name;
   });
 }]);

@@ -11,7 +11,6 @@ var ioUtils = require('../../custom_modules/ioUtils');
 
 module.exports = function (io) {
   io.sockets.on('connection', function (socket) {
-
     // socket.on('updateActivePosts', function () {} );
     
     // posts related events
@@ -21,7 +20,7 @@ module.exports = function (io) {
     socket.on('removeScore', postCtrl.toggleScore(socket, false));
 
     // places related events
-    socket.on('creatNewEvent', placeCtrl.createNewEvent(socket));
+    socket.on('creatNewPlace', placeCtrl.sCreateNewPlace(socket));
 
     socket.on('signout', function (data) {
       var sid = socket.handshake.sessionID;

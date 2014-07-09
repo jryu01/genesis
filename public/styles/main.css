@@ -41,6 +41,14 @@ a, a:hover {
 	text-decoration: none;
 	color: #007AF2;
 }
+a.list-group-item:focus, a.list-group-item:hover {
+	color: inherit;
+	background-color: #fff;
+}
+a.list-group-item:active {
+	background-color: #f5f5f5;	
+	opacity: 1;
+}
 
 .touch .btn-default:hover {
   color: #333333;
@@ -217,6 +225,11 @@ a, a:hover {
 	left:0;
 }
 
+/* my-address-input */
+.my-address-input button.invalid {
+	border-color: #fc0;
+}
+
 /*** angular directives end ***/
 
 /***---- Layout ----***/
@@ -360,11 +373,11 @@ a, a:hover {
 	background-color: #fff;
 }
 .no-touch .feeder .panel:hover {
-	background-color: #FFFAF0;
+	background-color: #f5f5f5;
 	cursor: pointer;
 }
 .feeder .panel:active {
-	background-color: #FFFAF0;
+	background-color: #f5f5f5;
 }
 .feeder .panel-body {
 	background-color: inherit;
@@ -474,3 +487,27 @@ a, a:hover {
 }
 
 /***---- Nearby End---***/
+
+/***--- Place ---***/	
+.place-wrapper .panel {
+	border: none;
+	margin: 0;
+}
+
+.place-wrapper .comments-container {
+	overflow: auto;
+}
+.place-wrapper .comment-body {
+	padding: 0 0 5px 35px;
+}
+.place-wrapper .comment-body .profile-img {
+	margin-left: -35px;
+	width: 30px;
+	height: 30px;
+	float: left;
+}
+.place-wrapper .comment-body .profile-name {
+	padding-right: 5px;
+}
+/***--- Place End ---**
+

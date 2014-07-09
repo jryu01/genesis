@@ -1,90 +1,95 @@
-<button class="btn btn-default" ng-click="openInputModal()">
-  <h4 ng-if="!addressFormData">Input Address</h4>
-  <div ng-if="addressFormData">
-    <p> {{ addressFormData.address }}</p>
-    <p> {{ addressFormData.city }} {{ addressFormData.province }}, {{ addressFormData.country }}</p>
-  </div>
-</button> 
+<div class="my-address-input">
+  <button class="btn btn-default" 
+      ng-class="{'invalid': !(addressFormTmpData.city && 
+                              addressFormTmpData.province)}"
+      ng-click="openInputModal()">
+    <p ng-if="!addressFormData">Input Address</p>
+    <div ng-if="addressFormData">
+      <p> {{ addressFormData.address }}</p>
+      <p> {{ addressFormData.city }} {{ addressFormData.province }}, {{ addressFormData.country }}</p>
+    </div>
+  </button> 
 
-<my-modal my-modal-open="modal.open" 
-    my-modal-open-style="right-left">
-  <div style="padding-top:51px"
-      class="full-height">
-    <div class="navbar reverse navbar-absolute-top">
-      <div class="navbar-brand navbar-brand-center">
-        <div ng-show="modal.currentPage === 'address'">Edit Address</div>
-        <div ng-show="modal.currentPage === 'map'">Adjust Location</div>
-      </div>
-      <div class="btn-group pull-left">
-        <div class="btn btn-sm btn-navbar" 
-            ng-show="modal.currentPage === 'address'"
-            ng-click="cancelInputModal()">
-          Cancel
+  <my-modal my-modal-open="modal.open" 
+      my-modal-open-style="right-left">
+    <div style="padding-top:51px"
+        class="full-height">
+      <div class="navbar reverse navbar-absolute-top">
+        <div class="navbar-brand navbar-brand-center">
+          <div ng-show="modal.currentPage === 'address'">Edit Address</div>
+          <div ng-show="modal.currentPage === 'map'">Adjust Location</div>
+        </div>
+        <div class="btn-group pull-left">
+          <div class="btn btn-sm btn-navbar" 
+              ng-show="modal.currentPage === 'address'"
+              ng-click="cancelInputModal()">
+            Cancel
+          </div>
+        </div>
+        <div class="btn-group pull-right">
+          <div class="btn btn-sm btn-navbar" 
+              ng-show="modal.currentPage === 'address'"
+              ng-click="goTo('map')"
+              ng-disabled="!(addressFormTmpData.city && addressFormTmpData.province)">
+            Next
+          </div>
+          <div class="btn btn-sm btn-navbar" 
+              ng-show="modal.currentPage === 'map'"
+              ng-click="finishInputModal()">
+            Done
+          </div>
         </div>
       </div>
-      <div class="btn-group pull-right">
-        <div class="btn btn-sm btn-navbar" 
-            ng-show="modal.currentPage === 'address'"
-            ng-click="goTo('map')"
-            ng-disabled="!(addressFormTmpData.city && addressFormTmpData.province)">
-          Next
+      <div ng-if="modal.currentPage === 'address'" style="padding: 10px">
+        <div class="form-group">
+          <input class="form-control" 
+              type="text" 
+              placeholder="Address" 
+              ng-model="addressFormTmpData.address">
         </div>
-        <div class="btn btn-sm btn-navbar" 
-            ng-show="modal.currentPage === 'map'"
-            ng-click="finishInputModal()">
-          Done
+        <div class="form-group">
+          <input class="form-control" 
+              type="text" 
+              placeholder="City" 
+              ng-model="addressFormTmpData.city"
+              required>
+        </div>
+        <div class="form-group">
+          <input class="form-control" 
+              type="text" 
+              placeholder="Province" 
+              ng-model="addressFormTmpData.province"
+              required>
+        </div>
+        <div class="form-group">
+          <select ng-model="addressFormTmpData.country" class="form-control">
+            <option value="Canada">Canada</option>
+            <option value="United States">United States</option>
+          </select>
+        </div>
+      </div>
+      <div ng-if="modal.currentPage === 'map'" 
+          class="full-height" 
+          style="padding-bottom:50px">
+        <div ng-if="!modal.loadingMap" class="map-wrapper full-height">
+          <my-map center="addressFormTmpData.loc" 
+              zoom="15"
+              center-pin="true">
+          </my-map>
+        </div>
+        <div ng-if="modal.loadingMap">
+          <br>
+          <br>
+          <h4 class="text-center"><strong>Loading ...</strong></h4>
+        </div>
+        <div style="height: 50px"> 
+          <p class="text-center" style="margin-top: 5px">
+            <strong>
+              Drage your map to locate your place to the center of the map
+            </strong>
+          </p>
         </div>
       </div>
     </div>
-    <div ng-if="modal.currentPage === 'address'" style="padding: 10px">
-      <div class="form-group">
-        <input class="form-control" 
-            type="text" 
-            placeholder="Address" 
-            ng-model="addressFormTmpData.address">
-      </div>
-      <div class="form-group">
-        <input class="form-control" 
-            type="text" 
-            placeholder="City" 
-            ng-model="addressFormTmpData.city"
-            required>
-      </div>
-      <div class="form-group">
-        <input class="form-control" 
-            type="text" 
-            placeholder="Province" 
-            ng-model="addressFormTmpData.province"
-            required>
-      </div>
-      <div class="form-group">
-        <select ng-model="addressFormTmpData.country" class="form-control">
-          <option value="Canada">Canada</option>
-          <option value="United States">United States</option>
-        </select>
-      </div>
-    </div>
-    <div ng-if="modal.currentPage === 'map'" 
-        class="full-height" 
-        style="padding-bottom:50px">
-      <div ng-if="!modal.loadingMap" class="map-wrapper full-height">
-        <my-map center="addressFormTmpData.loc" 
-            zoom="15"
-            center-pin="true">
-        </my-map>
-      </div>
-      <div ng-if="modal.loadingMap">
-        <br>
-        <br>
-        <h4 class="text-center"><strong>Loading ...</strong></h4>
-      </div>
-      <div style="height: 50px"> 
-        <p class="text-center" style="margin-top: 5px">
-          <strong>
-            Drage your map to locate your place to the center of the map
-          </strong>
-        </p>
-      </div>
-    </div>
-  </div>
-</my-modal>
+  </my-modal>
+</div>
