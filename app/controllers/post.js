@@ -29,6 +29,11 @@ function list(req, res) {
   if (req.query.sport) {
     query.sport = req.query.sport;
   }
+  
+  if (req.query.profileType) {
+    query.profileType = req.query.profileType;
+  }
+
 
   var projection = {};
   if (validator.isNumeric(req.query.commentsLimit) && 

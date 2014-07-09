@@ -5,29 +5,19 @@
       <a ng-href="#" class="list-group-item list-group-item-danger">
         <div class="panel-footer">
           <img class="pull-left img-rounded event_imgIcon" alt="{{event.sports}}" ng-src="../../images/sportsIcon/{{event.sports}}.png">  
-          <h4 class="event_title">[{{event.sports}} Tournament] {{event.name}}</h4> 
+          <h4 class="event_title"><span class="badge"> {{ event.sports }} </span> {{event.name}}</h4> 
           at <b>{{event.place.name}} </b> on <b>{{event.schedule.appDateTime | date:'EEEE hh:mma, MMMM d yyyy Z'}}</b>.
           <div class="clearfix"></div>  
         </div>                    
       </a>
     </div>
     
-    <div ng-repeat="event in casualGroup">
+    <div ng-repeat="event in casualGroup" ui-sref="app.user.event({id: event.id})">
       <a ng-href="#" class="list-group-item list-group-item-success">
         <div class="panel-footer">
           <img class="pull-left img-rounded event_imgIcon" alt="{{event.sports}}" ng-src="../../images/sportsIcon/{{event.sports}}.png">  
-          <h4 class="event_title">[{{event.sports}}] {{event.name}}</h4> 
+          <h4 class="event_title"><span class="badge"> {{ event.sports }} </span> {{event.name}}</h4> 
           at <b>{{event.place.name}} </b> on <b>{{event.schedule.appDateTime | date:'EEEE hh:mma, MMMM d yyyy Z'}}</b>.       
-          <div class="clearfix"></div>  
-        </div>                    
-      </a>
-    </div>
-    <div ng-repeat="event in normalGroup">
-      <a ng-href="#" class="list-group-item list-group-item-warning">
-        <div class="panel-footer">
-          <img class="pull-left img-rounded event_imgIcon" alt="{{event.sports}}" ng-src="../../images/sportsIcon/{{event.sports}}.png">  
-          <h4 class="event_title">{{event.name}}</h4> 
-          at <b>{{event.place.name}} </b> on <b>{{event.schedule.appDateTime | date:'EEEE hh:mma, MMMM d yyyy Z'}}</b>.
           <div class="clearfix"></div>  
         </div>                    
       </a>

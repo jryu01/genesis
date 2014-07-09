@@ -71,6 +71,11 @@ angular.module('genesisApp',
       templateUrl: 'views/partials/post.html',
       controller: 'PostController'
     })
+    .state('app.user.event', {
+      url: 'event/:id?comment',
+      templateUrl: 'views/partials/event.html',
+      controller: 'EventController'
+    })
     .state('app.user.nearby', {
       abstract: true,
       url: 'nearby',

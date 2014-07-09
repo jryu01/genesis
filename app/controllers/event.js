@@ -8,6 +8,38 @@ var LIMIT = 10;
 var EventModel = require('../models/event');
 var validator = require('validator');
 
+function addEventComment(req, res) {
+  
+  var eventId = req.body.id;
+  var text = req.body.text;
+  
+  var createdBy = {
+    id: req.user.id,
+    name: req.user.name.displayName
+  };
+  
+  // sanitize
+  text = validator.escape(text);
+  
+  var newComment = {
+    createdBy: createdBy,
+    text: text
+  };
+  
+  var operator = {
+    $push: { comments: newComment },
+  };
+  
+  var options = {};
+
+  EventModel.findByIdAndUpdate(eventId, operator, options, function(err, event) {
+    if (err) { return res.send(500); }
+    event = event.toJSON();
+    res.send(event.comments);
+  });
+  
+}
+
 /* list function */
 function list(req, res) {
   
@@ -38,6 +70,7 @@ function list(req, res) {
     var returnEvents = [];
     var todayDate = new Date();
     todayDate.setHours(0,0,0,0);
+    var localLimit = 10;
     
     for (var key in eventsFromDB) {
       /// ADD repeat events
@@ -108,30 +141,28 @@ function list(req, res) {
       return new Date(new Date(a.schedule.appDateTime - b.schedule.appDateTime));
     });
     
+    // fix bug
+    var cutter = returnEvents.length;
+    
     // only return after this day ...
     if (validator.isDate(req.query.dateBefore)) {
-      
-      var beforedates = returnEvents.filter(function(d) {
-          return d - req.query.dateBefore < 0;
-      }),
-          afterdates = returnEvents.filter(function(d) {
-          return d - req.query.dateBefore > 0;
-      });
-      
-      //in dictionary, look for date after ***
-      //query.appDateTime = { $gt: req.query.dateBefore };
-      
+      for (var key in returnEvents) {
+        if (returnEvents[key].schedule.appDateTime > new Date(req.query.dateBefore)) 
+        { 
+          cutter = parseInt(key);
+          break;
+        }
+      }
+      returnEvents = returnEvents.slice(cutter, returnEvents.length);
     }
     
-    console.log(req.query.dateBefore);
-    console.log(beforedates);
-    console.log(afterdates);
-    
-    /*
     // for limit of input
-    eventsFromDB get next (req.query.limits || LIMIT)?
-    */
-    //console.log(returnEvents);
+    if (returnEvents.length > localLimit)
+    {
+      returnEvents = returnEvents.slice(1, parseInt(localLimit) + parseInt(1));
+    }
+    
+    console.log(returnEvents);
     res.send(returnEvents); // return it to front end
   });
 }
@@ -173,9 +204,15 @@ function create(req, res){
   });
 }
 
-// function update(req, res){
-  
-// }
+function get(req, res){
+  EventModel.findById(req.params.id, function (err, event) {
+    if (err) { return res.send(500, err); }
+    if (!event) {
+      return res.send(404);
+    }
+    res.send(event);
+  });
+}
 
 // function remove(req, res){
   
@@ -184,3 +221,5 @@ function create(req, res){
 // public functions
 exports.list = list;
 exports.create = create;
+exports.get = get;
+exports.addEventComment = addEventComment;

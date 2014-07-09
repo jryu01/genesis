@@ -20,6 +20,8 @@ module.exports = function (app) {
   
   app.get('/api/events', auth.requiresSignin, eventCtrl.list);
   app.post('/api/events', auth.requiresSignin, eventCtrl.create);
+  app.get('/api/events/:id', auth.requiresSignin, eventCtrl.get);
+  app.post('/api/events/:id/comments', auth.requiresSignin, eventCtrl.addEventComment);
 
   app.get('/api/places', auth.requiresSignin, placeCtrl.list);
   app.post('/api/places', auth.requiresSignin, placeCtrl.create);

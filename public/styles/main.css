@@ -423,6 +423,21 @@ a, a:hover {
   margin-right: 10px;
 }
 
+.box_wrapper{
+  margin-bottom: 10px;
+}
+
+.event_big{
+  font-weight: bold;
+  font-size: 1.4em;
+  line-height: 18px;
+}
+
+.event_small{
+  color:#898989;
+  margin-bottom: 3px;
+}
+
 .event_border{
  margin-top: 8px;
  margin-bottom: 5px;

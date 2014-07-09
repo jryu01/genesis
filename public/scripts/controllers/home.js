@@ -74,10 +74,24 @@ function ($scope, $state, Auth, socket) {
     
     // process time
     var tempinputHour24 = 0;
-    if ($scope.eventFormData.tempinputAMPM == "PM") tempinputHour24 = $scope.eventFormData.tempinputHour + 12;
+    if ($scope.eventFormData.tempinputAMPM == "PM") tempinputHour24 = parseInt($scope.eventFormData.tempinputHour) + parseInt(12);
     else tempinputHour24 = $scope.eventFormData.tempinputHour;
     
-    $scope.eventFormData.Completedate = new Date($scope.eventFormData.tempinputYear, $scope.eventFormData.tempinputMonth, $scope.eventFormData.tempinputDay, tempinputHour24, $scope.eventFormData.tempinputMinute, 0, 0);
+    console.log($scope.eventFormData.tempinputYear,
+                                                 $scope.eventFormData.tempinputMonth, 
+                                                 $scope.eventFormData.tempinputDay, 
+                                                 tempinputHour24, 
+                                                 $scope.eventFormData.tempinputMinute, 
+                                                 0, 
+                                                 0);
+    
+    $scope.eventFormData.Completedate = new Date($scope.eventFormData.tempinputYear, 
+                                                 $scope.eventFormData.tempinputMonth, 
+                                                 $scope.eventFormData.tempinputDay, 
+                                                 tempinputHour24, 
+                                                 $scope.eventFormData.tempinputMinute, 
+                                                 0, 
+                                                 0);
     
     /*
     // validation 1 - see if it is later than today
@@ -96,6 +110,7 @@ function ($scope, $state, Auth, socket) {
       return;
     }
     */
+    
     
     // validation complete
     $scope.validDateMarker = false;
