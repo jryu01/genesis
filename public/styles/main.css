@@ -199,10 +199,10 @@ a.list-group-item:active {
 	/* teansitions */
 	visibility:hidden;
 	top: 100%;
-	-webkit-transition:visibility 0s linear 0.5s,top 0.2s linear;
-	-moz-transition:visibility 0s linear 0.5s,top 0.2s linear;
-	-o-transition:visibility 0s linear 0.5s,top 0.2s linear;
-	transition:visibility 0s linear 0.5s,top 0.2s linear;
+	-webkit-transition:visibility 0s linear 0.5s,top 0.3s linear;
+	-moz-transition:visibility 0s linear 0.5s,top 0.3s linear;
+	-o-transition:visibility 0s linear 0.5s,top 0.3s linear;
+	transition:visibility 0s linear 0.5s,top 0.3s linear;
 }
 .my-overlay.bottom-up.active > .my-overlay-body {
 	visibility:visible;
@@ -214,15 +214,30 @@ a.list-group-item:active {
 	visibility:hidden;
 	top: 0;
 	left: 100%;
-	-webkit-transition:visibility 0s linear 0.5s,left 0.2s linear;
-	-moz-transition:visibility 0s linear 0.5s,left 0.2s linear;
-	-o-transition:visibility 0s linear 0.5s,left 0.2s linear;
-	transition:visibility 0s linear 0.5s,left 0.2s linear;
+	-webkit-transition:visibility 0s linear 0.5s,left 0.3s linear;
+	-moz-transition:visibility 0s linear 0.5s,left 0.3s linear;
+	-o-transition:visibility 0s linear 0.5s,left 0.3s linear;
+	transition:visibility 0s linear 0.5s,left 0.3s linear;
 }
 .my-overlay.right-left.active > .my-overlay-body {
 	visibility:visible;
  	transition-delay:0s;
 	left:0;
+}
+.my-overlay.center .my-overlay-body {
+	/* teansitions */
+	visibility:hidden;
+	top: 0;
+	opacity: 0;
+	-webkit-transition:visibility 0s linear 0.5s,opacity 0.3s linear;
+	-moz-transition:visibility 0s linear 0.5s,opacity 0.3s linear;
+	-o-transition:visibility 0s linear 0.5s,opacity 0.3s linear;
+	transition:visibility 0s linear 0.5s,opacity 0.3s linear;
+}
+.my-overlay.center.active > .my-overlay-body {
+	visibility:visible;
+ 	transition-delay:0s;
+	opacity:1;
 }
 
 /* my-address-input */

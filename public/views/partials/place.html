@@ -28,18 +28,43 @@
           · {{ placeBox.place.coords | 
                 myDistance: placeBox.currentUserLocation }} km
         </p>
-        <div class="map-wrapper" 
-            ng-if="map.isDataReady"
-            style="height: 200px; width: 100%">
-          <my-map
-              class="full-height"
-              center="map.center"
-              zoom="map.zoom">
-            <my-map-marker
-                coords="map.center">
-            </my-map-marker>  
-          </my-map> 
+        
+        <div class="static-map-wrapper" 
+            style="cursor:pointer;"
+            ng-click="map.fullscreen = true">
+          <img src="{{map.staticUrl}}">
         </div>
+        <my-modal my-modal-open="map.fullscreen" 
+              my-modal-open-style="center">
+          <div class="full-height" style="padding-top:50px">
+            <div class="navbar reverse navbar-app navbar-absolute-top">
+              <div class="navbar-brand navbar-brand-center"
+                  style="padding-right:60px; padding-left:60px;">
+                  {{ placeBox.place.name }}
+              </div>
+              <div class="btn-group pull-left">
+                <div class="btn btn-sm btn-navbar" 
+                    ng-click="map.fullscreen = false">
+                  Close
+                </div>
+              </div>
+              <div class="btn-group pull-right"></div>
+            </div>
+            <div class="map-wrapper" 
+                ng-if="map.isDataReady"
+                style="height: 100%; width: 100%">
+              <my-map
+                  class="full-height"
+                  center="map.center"
+                  zoom="map.zoom">
+                <my-map-marker
+                    coords="map.center">
+                </my-map-marker>  
+              </my-map> 
+            </div>
+          </div>
+        </my-modal>
+
         <br>
         <div ng-show="placeBox.place.type">
           <h5>Type </h5>
