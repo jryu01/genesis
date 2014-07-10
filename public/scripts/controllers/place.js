@@ -1,7 +1,7 @@
 angular.module('genesisApp')
 .controller('PlaceController',
-  ['$scope', '$stateParams', 'Places', 'geolocation',
-function ($scope, $stateParams, Places, geolocation) {
+  ['$scope', '$stateParams', 'Places', 'geolocation', '$window',
+function ($scope, $stateParams, Places, geolocation, $window) {
   init();
   $scope.addComment = function (placeId) {
     var $scope = this;
@@ -30,6 +30,7 @@ function ($scope, $stateParams, Places, geolocation) {
     $scope.map = {
       center: null,
       zoom: 15,
+      staticUrl: "", 
       isDataReady: false
     };
     if (!$scope.previousState) {
@@ -43,8 +44,15 @@ function ($scope, $stateParams, Places, geolocation) {
         data.coords = {lat: data.loc[0], lng: data.loc[1]};
         $scope.placeBox.place = data;
         $scope.placeBox.loading = false;
-
+        
         $scope.map.center = data.coords;
+        $scope.map.staticUrl = 
+            'http://maps.googleapis.com/maps/api/staticmap?' + 
+            'center=' + data.coords.lat + ',' + data.coords.lng + '&' + 
+            'zoom=15&' + 
+            'size=' + $window.innerWidth + 'x200&maptype=roadmap&' + 
+            'markers=color:red%7Clabel:P%7C' + data.coords.lat + ',' + 
+            data.coords.lng;
         $scope.map.isDataReady = true;
       });
   }
