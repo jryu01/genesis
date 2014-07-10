@@ -276,8 +276,10 @@
   </div>
 
   <div rn-carousel rn-carousel-index="data.slideIndex" class="scrollable">
-    <div ui-view="feeder" class="scrollable-content"></div>
-    <div ui-view="eventOrganizer" class="scrollable-content"></div>
+    <div ng-repeat="view in data.views" 
+        ui-view="{{ view }}" 
+        class="scrollable-content">
+    </div>
   </div>
 
 </div>  

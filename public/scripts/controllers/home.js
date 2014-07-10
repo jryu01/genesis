@@ -127,11 +127,15 @@ function ($scope, $state, Auth, socket, sportsList) {
   function init() {
     $scope.data = {
       titles: ['Home', 'Event'],
+      views: ['feeder', 'eventOrganizer'],
       slideIndex: 0,
       postFormOpened: false,
       eventFormOpened: false
     };
-    
+    if ($scope.previousState === 'app.user.event') {
+      $scope.data.slideIndex = 1;
+    }
+
     ////////
     // post INIT //
     ////////
@@ -202,7 +206,6 @@ function ($scope, $state, Auth, socket, sportsList) {
       tempinputAMPM: tempAMPM,
       tempinputTimezone: abbr,
     };
-    
   }
 
 }]);
