@@ -34,7 +34,6 @@ function ($scope, $location, $state, EventsFromService) {
       // success
       function (data, status, headers, config) {
         $scope.eventsBox.isThereMoreData = false;
-        $scope.eventsBox.isInitialLoading = false;
         
         $scope.$parent.eventFormData.inputName = "";
         $scope.$parent.eventFormData.inputDesc = "";
@@ -55,11 +54,8 @@ function ($scope, $location, $state, EventsFromService) {
   
   // select on filter
   $scope.$on('select filter', function (e) {
-    // loading begins...
-    $scope.eventsBox.isThereMoreData = true;
-    $scope.eventsBox.isInitialLoading = true;
-    $scope.eventsBox.loading = true;
     $scope.eventGroup = null;
+    updateGroups();
     
     var item = $scope.$parent.filter.selected;
     
@@ -87,6 +83,7 @@ function ($scope, $location, $state, EventsFromService) {
       function (data, status, headers, config) {
         if (data.length === 0) {
           $scope.eventsBox.isThereMoreData = false;
+          $scope.eventsBox.isLoading = false;
           return;
         }
         $scope.eventsBox.isLoading = false;
@@ -106,20 +103,21 @@ function ($scope, $location, $state, EventsFromService) {
   
   // update list when updated
   function updateGroups() {
-    $scope.casualGroup = {};
-    $scope.tournamentGroup = {};
+    $scope.casualGroup = [];
+    $scope.tournamentGroup = [];
     
-    angular.forEach($scope.eventGroup, function(value, key){
-      if (value.eventType == "Tournament") $scope.tournamentGroup[key] = value;
-      else $scope.casualGroup[key] = value;
+    angular.forEach($scope.eventGroup, function(value, index){
+      if (value.eventType == "Tournament") {
+        $scope.tournamentGroup.push(value);
+      } else {
+        $scope.casualGroup.push(value);
+      }
     });
-    
-    //console.log($scope.casualGroup);
-  };
+  }
   
   // load more events
   $scope.loadMoreEvents = function () {
-    $scope.eventsBox.loading = true;
+    $scope.eventsBox.isLoading = true;
     
     var params = {
       limits: 10,
@@ -145,7 +143,6 @@ function ($scope, $location, $state, EventsFromService) {
     
     // not loaded yet;
     $scope.eventsBox = {
-      isInitialLoading: true,
       isLoading: true,
       isThereMoreData: true
     };

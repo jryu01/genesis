@@ -1,5 +1,5 @@
 
-<div class="post-wrapper scrollable-content">
+<div class="event-wrapper scrollable-content">
   <!-- Navbar Contetns  {{event}} -->
   <div content-for="navbarTitle">
     <span>Event</span>
@@ -11,121 +11,81 @@
     </div>
   </div>
   <div content-for="navbarRightAction"></div>
-  
-  <!-- top portion -->
-  <div class="input_wrapper">
-    <!-- title -->
-    <div class="">
-      <img class="pull-left img-rounded event_imgIcon" alt="{{event.sports}}" ng-src="../../images/sportsIcon/{{event.sports}}.png">  
-      <h4 class="event_title"><span class="badge"> {{ event.sports }} </span> {{event.name}}</h4> 
-      <h4 class="event_title">{{event.schedule.appDateTime | date:'EEEE hh:mma, MMMM d yyyy'}}</h4>       
 
-      <div class="clearfix"></div>
-    </div>
-    
-    <div style="margin-top: 14px;">
-      <p class="event_small" style="font-weight: bold;">{{ event.schedule.repeat }} {{event.eventType}} Game</p>
-      <p class="event_small">Created by: {{ event.createdBy.name }}</p>
-      <p class="event_small">Created at: {{ event.createdAt | date:'EEEE hh:mma, MMMM d yyyy'}}</p>
-    </div>
-    
-    <hr style="color:orange; border-top: 0px solid;"/>
-    
-    <div class="box_wrapper">
-      <h4 class="event_big">Location</h4>
-      <p class="event_small">{{ event.place.name }}</p>
+  <div class="scrollable-content"
+      ng-show"true">
+    <div class="panel">
+      <div class="panel-body">
+        <div class="">
+          <img class="pull-left img-rounded event_imgIcon" alt="{{event.sports}}" ng-src="../../images/sportsIcon/{{event.sports}}.png">  
+          <h4 class="event_title"><span class="badge"> {{ event.sports }} </span> {{event.name}}</h4> 
+          <h4 class="event_title">{{event.schedule.appDateTime | date:'EEEE hh:mma, MMMM d yyyy'}}</h4>       
 
-      {{ event.place.id }}
-      
-      <div class="map-wrapper" 
-            ng-if="map.isDataReady"
-            style="height: 200px; width: 100%">
-          <my-map
-              class="full-height"
-              center="map.center"
-              zoom="map.zoom">
-            <my-map-marker
-                coords="map.center">
-            </my-map-marker>  
-          </my-map> 
+          <div class="clearfix"></div>
         </div>
-      
-    </div>
-    
-    <div class="box_wrapper">
-      <h4 class="event_big">Description</h4>
-      <p class="event_small">{{ event.desc }}</p>
-    </div>
-    
-    <hr style="color:orange; border-top: 0px solid;"/>
-     
-    <div class="panel-footer" style="border: 0px solid orange">
-      
-      <!--   
-      <div class="list-group posts-wrapper" infinite-scroll-parent infinite-scroll='loadMorePosts()' infinite-scroll-distance='3' infinite-scroll-disabled='!postsBox.isThereMoreData'>
-
-        <div ng-repeat="post in posts" 
-            class="list-group-item panel panel-default"
-            ui-sref="app.user.post({id: post.id})">
-          {{ post.from.profileType }}
-        </div> 
         
-        <div class="pull-left">
-          <a ng-show="post.scorers.indexOf(currentUser.id) >= 0" class="btn btn-warning btn-sm" ng-click="removeScore(post.id, $event)">
-            Score
-            <span ng-show="post.score > 0">{{ post.score }}</span> 
-          </a>
-          <a ng-show="post.scorers.indexOf(currentUser.id) < 0" class="btn btn-default btn-sm" ng-click="addScore(post.id, $event)">
-            Score
-            <span ng-show="post.score > 0">{{ post.score }}</span> 
-          </a>
-          <a class="btn btn-default btn-sm"
-              ng-click="$event.stopPropagation();"
-              ui-sref="app.user.post({id: post.id, comment: true})">
-              Comment {{ post.numComments }}
-          </a>
+        <div style="margin-top: 14px;">
+          <p class="event_small" style="font-weight: bold;">{{ event.schedule.repeat }} {{event.eventType}} Game</p>
+          <p class="event_small">Created by: {{ event.createdBy.name }}</p>
+          <p class="event_small">Created at: {{ event.createdAt | date:'EEEE hh:mma, MMMM d yyyy'}}</p>
         </div>
-      </div>
-    </div>
-    
-    <form name="postForm" novalidate ng-submit="submitPostForm()"  class="">
-      <div class="textarea-wrapper">
-          <textarea name="text" ng-model="postFormData.text" 
-              class="form-control" 
-              placeholder="What is going on today?" required>
-          </textarea>
-        </div>
-    </form>
+        
+        <hr style="color:orange; border-top: 0px solid;"/>
+        
+        <div class="box_wrapper">
+          <h4 class="event_big">Location</h4>
+          <p class="event_small">{{ event.place.name }}</p>
 
-    <input type="submit" value="Post" class="btn btn-sm btn-navbar post-btn" ng-class="{ ready: !postForm.$invalid, disabled: postForm.$invalid }"/>
-
-      
-      -->
-      <div class="comments-container">
-        <div ng-repeat="comment in event.comments">
-          <div class="comment-body">
-            <a><img class="img-rounded profile-img" 
-              ng-src="{{comment.createdBy.profilePicture}}"></a>
-            <div>
-              <a class="profile-name pull-left">{{ comment.createdBy.name }}</a>
-              <span class="text-wrap"> {{ comment.text }} </span>
-              <div class="clearfix" style="height:0"></div>
-              <span class="date-text"> {{ comment.createdAt | myDate }} </span>
+          {{ event.place.id }}
+          
+          <div class="map-wrapper" 
+                ng-if="map.isDataReady"
+                style="height: 200px; width: 100%">
+              <my-map
+                  class="full-height"
+                  center="map.center"
+                  zoom="map.zoom">
+                <my-map-marker
+                    coords="map.center">
+                </my-map-marker>  
+              </my-map> 
             </div>
-          </div>
-        </div> 
-      </div>
-      <form name="commentForm" role="form" class="comment-form" 
-          ng-submit="addComment(event.id)">
-        <div class="input-group">
-          <input id="test" type="text" class="form-control" ng-model="commentText"
-              placeholder="Write a Comment..." my-focus="isCommentFocused">
-          <span class="input-group-btn">
-            <input type="submit" value="Send" 
-                class="btn btn-default">Send</input>
-          </span>
+          
         </div>
-      </form>
-  
-  </div> <!-- end of wrapper -->
+        
+        <div class="box_wrapper">
+          <h4 class="event_big">Description</h4>
+          <p class="event_small">{{ event.desc }}</p>
+        </div>
+      </div> 
+
+      <div class="panel-footer">
+        <div class="comments-container">
+          <div ng-repeat="comment in event.comments">
+            <div class="comment-body">
+              <a><img class="img-rounded profile-img" 
+                ng-src="{{comment.createdBy.profilePicture}}"></a>
+              <div>
+                <a class="profile-name pull-left">{{ comment.createdBy.name }}</a>
+                <span class="text-wrap"> {{ comment.text }} </span>
+                <div class="clearfix" style="height:0"></div>
+                <span class="date-text"> {{ comment.createdAt | myDate }} </span>
+              </div>
+            </div>
+          </div> 
+        </div>
+        <form name="commentForm" role="form" class="comment-form" 
+            ng-submit="addComment(event.id)">
+          <div class="input-group">
+            <input id="test" type="text" class="form-control" ng-model="commentText"
+                placeholder="Write a Comment..." my-focus="isCommentFocused">
+            <span class="input-group-btn">
+              <input type="submit" value="Send" 
+                  class="btn btn-default"/>
+            </span>
+          </div>
+        </form>
+      </div> <!-- panel-footer end  -->
+    </div>  <!-- panel end -->
+  </div>
 </div>

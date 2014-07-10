@@ -53,7 +53,6 @@ function ($scope, $state, Posts, socket) {
 
         // increment number of comments
         if(!$scope.posts[i].numComments) {
-          console.log($scope.posts[i]);
           $scope.posts[i].numComments = 1;
         } else {
           $scope.posts[i].numComments += 1;
@@ -78,12 +77,12 @@ function ($scope, $state, Posts, socket) {
     }  
     $scope.postsBox.isThereMoreData = true;
     $scope.postsBox.isInitialLoading = true;
-    $scope.postsBox.loading = true;
+    $scope.postsBox.isLoading = true;
     $scope.posts = null;
     Posts.list({ config: { params: params }})
       .success(function (data, status, headers, config) {
         $scope.postsBox.isInitialLoading = false;
-        $scope.postsBox.loading = false;
+        $scope.postsBox.isLoading = false;
         $scope.posts = data;
       });
   });
@@ -97,7 +96,6 @@ function ($scope, $state, Posts, socket) {
       loc: [43.6525,-79.3816667], //TODO: get location 
       contents: $scope.$parent.postFormData.text
     };
-    console.log(newPost);
     socket.emit('createNewPost', newPost, function (err, data) {
       if (err) {
         // handle error   
@@ -157,7 +155,7 @@ function ($scope, $state, Posts, socket) {
   };
 
   $scope.loadMorePosts = function () {
-    $scope.postsBox.loading = true;
+    $scope.postsBox.isLoading = true;
     if(!$scope.posts) {
       return;
     }
@@ -176,7 +174,7 @@ function ($scope, $state, Posts, socket) {
         if (data.length === 0) {
           $scope.postsBox.isThereMoreData = false;
         }
-        $scope.postsBox.loading = false;
+        $scope.postsBox.isLoading = false;
         $scope.posts = $scope.posts.concat(data);
       });
   };

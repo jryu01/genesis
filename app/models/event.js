@@ -17,7 +17,8 @@ var EventSchema = new Schema({
   createdAt: { type: Date, default: Date.now }, // auto by server
   createdBy: {
     name: String, // auto by server
-    id: Schema.Types.ObjectId // auto by server
+    profilePicture: String,
+    userId: Schema.Types.ObjectId // auto by server
   },
   name: String, // INPUT
   desc: String, // INPUT
@@ -34,7 +35,7 @@ var EventSchema = new Schema({
     }, // find all events where its scheduledDates.startDate contains date greater than currentDate
   },
   place: { // INPUT
-    id: Schema.Types.ObjectId,
+    placeId: Schema.Types.ObjectId,
     name: String,
     loc: {type: [Number], index: '2d'}, //address of the place
   },

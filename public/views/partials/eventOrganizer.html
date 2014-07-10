@@ -1,7 +1,7 @@
 <div class="feeder" style="height: 100%; overflow: auto;">
   <!-- view -->
   <div class="" infinite-scroll-parent infinite-scroll='loadMoreEvents()' infinite-scroll-distance='3' infinite-scroll-disabled='!eventsBox.isThereMoreData'>
-    <div ng-repeat="event in tournamentGroup">
+    <div ng-repeat="event in tournamentGroup" ui-sref="app.user.event({id: event.id})">
       <a ng-href="#" class="list-group-item list-group-item-danger">
         <div class="panel-footer">
           <img class="pull-left img-rounded event_imgIcon" alt="{{event.sports}}" ng-src="../../images/sportsIcon/{{event.sports}}.png">  
@@ -22,12 +22,10 @@
         </div>                    
       </a>
     </div>
-    
   </div> <!-- end of pannel -->
 
   <div ng-show="eventsBox.isLoading" class="text-center" 
-      style="color:orange; height: 25px;"
-      ng-class="{ 'absolute-center': eventsBox.isInitialLoading }">
+      style="color:orange; height: 25px; padding-top: 20px">
     <i class="fa fa-refresh fa-spin fa-2x" ></i>
   </div>
   

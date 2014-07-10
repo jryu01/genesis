@@ -15,7 +15,8 @@ function addEventComment(req, res) {
   var text = req.body.text;
   
   var createdBy = {
-    id: req.user.id,
+    userId: req.user.id,
+    profilePicture: req.user.photos.profile,
     name: req.user.name.displayName
   };
   
@@ -72,7 +73,7 @@ function list(req, res) {
     var todayDate = new Date();
     todayDate.setHours(0,0,0,0);
     var localLimit = 10;
-    
+
     for (var key in eventsFromDB) {
       /// ADD repeat events
       if (eventsFromDB[key].schedule.appDateTime < todayDate) // if date is yesterday or older
@@ -183,16 +184,7 @@ function create(req, res){
       projection = {}, 
       options = {};
   
-  var mapId = "";
-  var mapLoc = "";
-  
-  Place.findOne(query, projection, options, function (err, places) {
-    if (places)
-    {
-      mapId = places.id;
-      mapLoc = places.loc;
-    }
-    
+  Place.findOne(query, projection, options, function (err, place) {
     // following is sample code
     var eventInstance = new EventModel({
       activated: true,
@@ -204,21 +196,24 @@ function create(req, res){
         appDateTime: d,
       },
       createdBy: {
-        id: req.user.id,
+        userId: req.user.id,
+        profilePicture: req.user.photos.profile,
         name: req.user.name.displayName
       },
       place: {
-        name: req.body.place,
-        id : mapId,
-        loc : mapLoc
+        name: req.body.place
       },
       sports: req.body.sports,
       eventType: req.body.types,
       members: [req.user.id]
     });
+    if (place) {
+      eventInstance.place.placeId = place.id;
+      eventInstance.place.loc = place.loc;
+    }
 
     eventInstance.save(function (err, eventsFromDB) {
-      if (err) { return res.send(500); }
+      if (err) { return res.send(500, err); }
       res.send(eventsFromDB); // return it to front end
     });
   }); 

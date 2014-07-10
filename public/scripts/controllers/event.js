@@ -32,8 +32,8 @@ function ($scope, $state, EventsFromService, Posts, socket) {
     EventsFromService.addEventComment({data: newEventParams})
     .success(function (data, status, headers, config) {
         $scope.event.comments = data;
-      }); 
-  }
+      });
+  };
     
 }]);
     /**
