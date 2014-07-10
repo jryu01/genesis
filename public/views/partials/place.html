@@ -28,11 +28,11 @@
           · {{ placeBox.place.coords | 
                 myDistance: placeBox.currentUserLocation }} km
         </p>
-        
+
         <div class="static-map-wrapper" 
             style="cursor:pointer;"
             ng-click="map.fullscreen = true">
-          <img src="{{map.staticUrl}}">
+          <img ng-src="{{map.staticUrl}}">
         </div>
         <my-modal my-modal-open="map.fullscreen" 
               my-modal-open-style="center">
