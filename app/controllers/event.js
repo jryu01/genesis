@@ -6,6 +6,7 @@
 
 var LIMIT = 10;
 var EventModel = require('../models/event');
+var Place = require('../models/place');
 var validator = require('validator');
 
 function addEventComment(req, res) {
@@ -162,7 +163,6 @@ function list(req, res) {
       returnEvents = returnEvents.slice(1, parseInt(localLimit) + parseInt(1));
     }
     
-    console.log(returnEvents);
     res.send(returnEvents); // return it to front end
   });
 }
@@ -171,37 +171,57 @@ function list(req, res) {
 /* create function */
 ////////
 function create(req, res){
-  // TODO: Basic validation against remote update
-  
+ 
   // get it as date
   var d = new Date(req.body.time);
-  
-  // following is sample code
-  var eventInstance = new EventModel({
-    activated: true,
-    showPublic: true, // TODO
-    name: req.body.name,
-    desc: req.body.desc,
-    schedule: {
-      repeat: req.body.repeat,
-      appDateTime: d,
-    },
-    createdBy: {
-      id: req.user.id,
-      name: req.user.name.displayName
-    },
-    place: {
-      name: req.body.place // TODO
-    },
-    sports: req.body.sports,
-    eventType: req.body.types,
-    members: [req.user.id]
-  });
 
-  eventInstance.save(function (err, eventsFromDB) {
-    if (err) { return res.send(500); }
-    res.send(eventsFromDB); // return it to front end
-  });
+  // get the place if possible
+  
+    
+  // Place link if possible
+  var query = {name : req.body.place }, 
+      projection = {}, 
+      options = {};
+  
+  var mapId = "";
+  var mapLoc = "";
+  
+  Place.findOne(query, projection, options, function (err, places) {
+    if (places)
+    {
+      mapId = places.id;
+      mapLoc = places.loc;
+    }
+    
+    // following is sample code
+    var eventInstance = new EventModel({
+      activated: true,
+      showPublic: true, // TODO
+      name: req.body.name,
+      desc: req.body.desc,
+      schedule: {
+        repeat: req.body.repeat,
+        appDateTime: d,
+      },
+      createdBy: {
+        id: req.user.id,
+        name: req.user.name.displayName
+      },
+      place: {
+        name: req.body.place,
+        id : mapId,
+        loc : mapLoc
+      },
+      sports: req.body.sports,
+      eventType: req.body.types,
+      members: [req.user.id]
+    });
+
+    eventInstance.save(function (err, eventsFromDB) {
+      if (err) { return res.send(500); }
+      res.send(eventsFromDB); // return it to front end
+    });
+  }); 
 }
 
 function get(req, res){
@@ -210,6 +230,7 @@ function get(req, res){
     if (!event) {
       return res.send(404);
     }
+    // send back
     res.send(event);
   });
 }
