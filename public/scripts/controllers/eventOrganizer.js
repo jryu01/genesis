@@ -7,8 +7,8 @@
 var ONE_UNIT = 1000 * 60;
 
  angular.module('genesisApp')
-.controller('EventOrganizerController', ['$scope', '$state', 'EventsFromService',
-function ($scope, $state, EventsFromService) {
+.controller('EventOrganizerController', ['$scope', '$location', '$state', 'EventsFromService',
+function ($scope, $location, $state, EventsFromService) {
   
   // call initialization
   init();
@@ -43,8 +43,9 @@ function ($scope, $state, EventsFromService) {
         $scope.$parent.eventFormData.inputSports = null;
         $scope.$parent.eventFormData.inputTypes = "Casual";
         // TODO : add based on datetime
-        $scope.eventGroup.unshift(data);
-        updateGroups();
+        //$scope.eventGroup.unshift(data);
+        //updateGroups();
+        $location.path('/event/' + data.id);
       },
       // Failure
       function (data, status, headers, config) {
@@ -72,7 +73,6 @@ function ($scope, $state, EventsFromService) {
 
   // update list when updated
   function updateLists(inputParams) {
-    
     $scope.eventsBox.isLoading = true;
     $scope.eventsBox.isThereMoreData = true;
     
@@ -87,11 +87,14 @@ function ($scope, $state, EventsFromService) {
       function (data, status, headers, config) {
         if (data.length === 0) {
           $scope.eventsBox.isThereMoreData = false;
+          return;
         }
         $scope.eventsBox.isLoading = false;
+        
         if ($scope.eventGroup) $scope.eventGroup = $scope.eventGroup.concat(data);
         else  $scope.eventGroup = data;
         updateGroups();
+        return;
       },
       // Failure
       function (data, status, headers, config) {
@@ -103,14 +106,16 @@ function ($scope, $state, EventsFromService) {
   
   // update list when updated
   function updateGroups() {
-      $scope.casualGroup = {};
-      $scope.tournamentGroup = {};
+    $scope.casualGroup = {};
+    $scope.tournamentGroup = {};
     
-      angular.forEach($scope.eventGroup, function(value, key){
-        if (value.eventType == "Tournament") $scope.tournamentGroup[key] = value;
-        else $scope.casualGroup[key] = value;
-      });
-  }
+    angular.forEach($scope.eventGroup, function(value, key){
+      if (value.eventType == "Tournament") $scope.tournamentGroup[key] = value;
+      else $scope.casualGroup[key] = value;
+    });
+    
+    //console.log($scope.casualGroup);
+  };
   
   // load more events
   $scope.loadMoreEvents = function () {

@@ -144,5 +144,13 @@ angular.module('genesisApp')
       .success(success)
       .error(error); 
     },
+    get: function (options, success, error) {
+      var url = 'api/events/' + options.eventId;
+      return $http.get(url, options.config);
+    },
+    addEventComment: function (options, success, error) {
+      var url = 'api/events/' + options.eventId + '/comments' ;
+      return $http.post(url, options.data);
+    },
   };
 }]);
