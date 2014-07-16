@@ -9,6 +9,7 @@ angular.module('genesisApp',
   'Basketball',
   'Badminton'
 ])
+.constant('googleMapApiKey', 'AIzaSyAW2_RQG0vXnwFpgbADoblbL4XK8fHMPu8')
 .config(['$stateProvider','$urlRouterProvider', '$locationProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
 
   //================================================
