@@ -2,7 +2,7 @@
 
 angular.module('genesisApp', 
   [ 'ui.router', 'mobile-angular-ui', 'ui.bootstrap', 'angular-carousel',
-    'infinite-scroll']
+    'infinite-scroll', 'restangular']
 )
 .constant('sportsList', [
   'General',

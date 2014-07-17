@@ -19,21 +19,23 @@ module.exports = function (app) {
   app.get('/api/users', auth.requiresSignin, userCtrl.list);
   
   app.get('/api/events', auth.requiresSignin, eventCtrl.list);
-  app.post('/api/events', auth.requiresSignin, eventCtrl.create);
   app.get('/api/events/:id', auth.requiresSignin, eventCtrl.get);
-  app.post('/api/events/:id/comments', auth.requiresSignin, eventCtrl.addEventComment);
+  app.post('/api/events', auth.requiresSignin, eventCtrl.create);
 
   app.get('/api/places', auth.requiresSignin, placeCtrl.list);
   app.get('/api/places/:id', auth.requiresSignin, placeCtrl.get);
   app.post('/api/places', auth.requiresSignin, placeCtrl.create);
-  app.post('/api/places/:id/comments', auth.requiresSignin, placeCtrl.addComment);
 
   app.get('/api/posts', auth.requiresSignin, postCtrl.list);
   app.get('/api/posts/:id', auth.requiresSignin, postCtrl.get);
   app.post('/api/posts', auth.requiresSignin, postCtrl.create);
-  app.post('/api/posts/:id/comments', auth.requiresSignin, postCtrl.addComments);
+
   app.post('/api/posts/:id/score', auth.requiresSignin, postCtrl.addScore);
   app.del('/api/posts/:id/score', auth.requiresSignin, postCtrl.removeScore);
+
+  app.post('/api/events/:id/comments', auth.requiresSignin, eventCtrl.addEventComment);
+  app.post('/api/places/:id/comments', auth.requiresSignin, placeCtrl.addComment);
+  app.post('/api/posts/:id/comments', auth.requiresSignin, postCtrl.addComments);
 
   // routes for sign in,  sigin up, and signout processes
 
