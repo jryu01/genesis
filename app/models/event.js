@@ -7,6 +7,7 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var CommentSchema = require('./comment');
 
 /**
  * Event Schema
@@ -43,18 +44,7 @@ var EventSchema = new Schema({
   eventType: String, // INPUT
   members: [Schema.Types.ObjectId],
   
-  comments: [{
-    activated: { type: Boolean, default: true },
-    createdAt: { type: Date, default: Date.now },
-    createdBy: {
-      name: String,
-      profilePicture: String,
-      userId: Schema.Types.ObjectId
-    },
-    text: String,
-    score: Number,
-    scorers: [Schema.Types.ObjectId], //array of User Ids
-  }],
+  comments: [CommentSchema],
   
 }); 
 

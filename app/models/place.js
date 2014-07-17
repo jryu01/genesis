@@ -6,7 +6,7 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-// var PostSchema = mongoose.model('Post', PostSchema);
+var CommentSchema = require('./comment');
 
 /**
  * Place Schema
@@ -51,16 +51,7 @@ var PlaceSchema = new Schema({
     closehour: String, 
   }],
   
-  comments: [{ 
-    activated: { type: Boolean, default: true },
-    createdAt: { type: Date, default: Date.now },
-    createdBy: {
-      name: { type: String, required: true },
-      profilePicture: { type: String },
-      userId: { type: Schema.Types.ObjectId, required: true }
-    },
-    text: { type: String, required: true }
-  }],
+  comments: [CommentSchema],
   numComments: Number,
 }); 
 
