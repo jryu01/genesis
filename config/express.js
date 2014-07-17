@@ -14,7 +14,7 @@ module.exports = function (app, config, passport, mongoStore) {
   app.configure(function () {
 
     // set ups for view engine
-    app.engine('html', cons.underscore);
+    app.engine('html', cons.lodash);
     app.set('view engine', 'html');
     app.set('views', config.root + '/public/views');
 
