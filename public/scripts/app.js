@@ -103,17 +103,24 @@ angular.module('genesisApp',
     })
     .state('app.profile', {
       url: 'profile', 
-      template: "<div style='height: 100%; overflow: auto';><div id='test' infinite-scroll-parent infinite-scroll='loadMore()' infinite-scroll-distance='1'><img ng-repeat='image in images' ng-src='http://placehold.it/225x250&text={{image}}'></div></div>",
-      controller: function ($scope) {
-        // infinite scroll test code
-        $scope.images = [1, 2, 3, 4, 5, 6, 7, 8];
+      templateUrl: 'views/partials/profile.html',
+      controller: function ($scope, PostService) {
+        // $scope.posts = PostService.getPosts().$object;
 
-        $scope.loadMore = function() {
-          var last = $scope.images[$scope.images.length - 1];
-          for(var i = 1; i <= 8; i++) {
-            $scope.images.push(last + i);
-          }
-        };
+        PostService.getPostById('53bec2bcc2d7915a453e0037').then(function (post) {
+          $scope.post = post;
+          $scope.post.getList('comments');
+        });
+        // $scope.post.getList('comments');
+
+
+        // PostService.getPostById('53bec2bcc2d7915a453e0037').then(function (post) {
+        //   console.log(post); 
+        //   $scope.post = post;
+        //   post.getList('comments');
+        // });
+        // $scope.post.getList('comments');
+        // $scope.comments = PostService.getComments('53bec2bcc2d7915a453e0037').$object;
       }
     })
     .state('app.user.messages', {
@@ -154,19 +161,23 @@ angular.module('genesisApp',
     };
   }]);
 }])
+.config(['RestangularProvider', function (RestangularProvider) {
+  // RestangularProvider.setBaseUrl('http://localhost:3000/api');
+  RestangularProvider.setBaseUrl('/api');
+}])
 .config(function ($provide) {
-  $provide.decorator('Posts', function ($delegate, $log) {
+  $provide.decorator('PostService', function ($delegate, $log) {
     var decorated = {};
-    var list = function (options) {
+    var getPosts = function (params) {
       var startAt = new Date();
-      var list = $delegate.list(options);
-      list.finally(function () {
+      var getPosts = $delegate.getPosts(params);
+      getPosts.finally(function () {
         $log.info('Fetching posts took ' + (new Date() - startAt) + ' ms');
       });     
-      return list;
+      return getPosts;
     };
 
-    angular.extend(decorated, $delegate, { list: list });
+    angular.extend(decorated, $delegate, { getPosts: getPosts });
     return decorated;
   });
 })

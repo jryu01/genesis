@@ -1,7 +1,7 @@
 'use strict';
 angular.module('genesisApp')
-.controller('EventController', ['$scope', '$state', 'EventsFromService', 'Posts', 'socket',
-function ($scope, $state, EventsFromService, Posts, socket) {
+.controller('EventController', ['$scope', '$state', 'EventsFromService', 'socket',
+function ($scope, $state, EventsFromService, socket) {
   init();  
   
   function init() {     

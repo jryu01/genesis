@@ -87,29 +87,21 @@ angular.module('genesisApp')
     }
   };
 }])
-.factory('Posts', ['$http', function ($http) {
+.factory('PostService', ['Restangular', function (Restangular) {
+  // var restAngular = Restangular.withConfig(function (Configurer) {
+  //   Configurer.setBaseUrl('/api/posts');
+  // });
+  var _postService = Restangular.all('posts');
+
   return {
-    list: function (options) {
-      return $http.get('api/posts', options.config);
+    getPosts: function (params) {
+      return _postService.getList(params);
     },
-    get: function (options) {
-      var url = 'api/posts/' + options.postId;
-      return $http.get(url, options.config);
+    getPostById: function (postId) {
+      return _postService.get(postId);
     },
-    create: function (options) {
-      return $http.post('api/posts', options.data);
-    },
-    addComment: function (options) {
-      var url = 'api/posts/' + options.postId + '/comments' ;
-      return $http.post(url, options.data);
-    },
-    addScore: function (options) {
-      var url = 'api/posts/' + options.postId + '/score' ;
-      return $http.post(url, options.data);
-    },
-    removeScore: function (options) {
-      var url = 'api/posts/' + options.postId + '/score' ;
-      return $http.delete(url, options.data);
+    createPost: function (newPost) {
+      return _postService.post(newPost);
     },
   };
 }])

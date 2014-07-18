@@ -1,7 +1,7 @@
 angular.module('genesisApp')
 .controller('PostController', 
-  ['$scope', '$stateParams', '$timeout', 'socket', 'Posts',
-function ($scope, $stateParams, $timeout, socket, Posts) {
+  ['$scope', '$stateParams', '$timeout', 'socket', 'PostService',
+function ($scope, $stateParams, $timeout, socket, PostService) {
   init();  
 
   $scope.$on('socket updateScore', function (e, data) {
@@ -104,9 +104,8 @@ function ($scope, $stateParams, $timeout, socket, Posts) {
     $scope.loading = true;
     $scope.isCommentFocused = false;
 
-    Posts.get({ postId: $stateParams.id })
-      .success(function (data, status, headers, config) {
-        $scope.post = data;
+    PostService.getPostById($stateParams.id).then(function (post) {
+        $scope.post = post;
         $scope.loading = false;
 
         $timeout(function() {

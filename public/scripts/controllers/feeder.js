@@ -5,8 +5,8 @@
 
  angular.module('genesisApp')
 .controller('FeederController', 
-  ['$scope', '$state', 'Posts', 'socket',
-function ($scope, $state, Posts, socket) {
+  ['$scope', '$state', 'PostService', 'socket',
+function ($scope, $state, PostService, socket) {
   init();
   
   /*
@@ -79,12 +79,12 @@ function ($scope, $state, Posts, socket) {
     $scope.postsBox.isInitialLoading = true;
     $scope.postsBox.isLoading = true;
     $scope.posts = null;
-    Posts.list({ config: { params: params }})
-      .success(function (data, status, headers, config) {
-        $scope.postsBox.isInitialLoading = false;
-        $scope.postsBox.isLoading = false;
-        $scope.posts = data;
-      });
+
+    PostService.getPosts(params).then(function (posts) {
+      $scope.postsBox.isInitialLoading = false;
+      $scope.postsBox.isLoading = false;
+      $scope.posts = posts;
+    });
   });
 
   /*
@@ -169,14 +169,14 @@ function ($scope, $state, Posts, socket) {
     if ($scope.$parent.filter.selected) {
       params.sport = $scope.$parent.filter.selected;
     }  
-    Posts.list({ config: { params: params }})
-      .success(function (data, status, headers, config) {
-        if (data.length === 0) {
-          $scope.postsBox.isThereMoreData = false;
-        }
-        $scope.postsBox.isLoading = false;
-        $scope.posts = $scope.posts.concat(data);
-      });
+
+    PostService.getPosts(params).then(function (posts) {
+      if (posts.length === 0) {
+        $scope.postsBox.isThereMoreData = false;
+      }
+      $scope.postsBox.isLoading = false;
+      $scope.posts = $scope.posts.concat(posts);
+    });
   };
 
   // initializing with data load when page start
@@ -192,11 +192,10 @@ function ($scope, $state, Posts, socket) {
       limit: 10,
       commentsLimit: 0
     }; 
-    Posts.list({ config: { params: params }})
-      .success(function (data, status, headers, config) {
-        $scope.postsBox.isInitialLoading = false;
-        $scope.postsBox.isLoading = false;
-        $scope.posts = data;
-      });
+    PostService.getPosts(params).then(function (posts) {
+      $scope.postsBox.isInitialLoading = false;
+      $scope.postsBox.isLoading = false;
+      $scope.posts = posts;
+    });
   }
 }]);
