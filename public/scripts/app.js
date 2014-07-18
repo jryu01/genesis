@@ -100,37 +100,37 @@ angular.module('genesisApp',
       url: 'place/:id',
       templateUrl: 'views/partials/place.html',
       controller: 'PlaceController'
-    })
-    .state('app.profile', {
-      url: 'profile', 
-      templateUrl: 'views/partials/profile.html',
-      controller: function ($scope, PostService) {
-        // $scope.posts = PostService.getPosts().$object;
-
-        PostService.getPostById('53bec2bcc2d7915a453e0037').then(function (post) {
-          $scope.post = post;
-          $scope.post.getList('comments');
-        });
-        // $scope.post.getList('comments');
-
-
-        // PostService.getPostById('53bec2bcc2d7915a453e0037').then(function (post) {
-        //   console.log(post); 
-        //   $scope.post = post;
-        //   post.getList('comments');
-        // });
-        // $scope.post.getList('comments');
-        // $scope.comments = PostService.getComments('53bec2bcc2d7915a453e0037').$object;
-      }
-    })
-    .state('app.user.messages', {
-      url: 'messages', 
-      template: '<div>Messages</div>'
-    })
-    .state('app.user.settings', {
-      url: 'settings',
-      template: '<div>Settings</div>'
     });
+    // .state('app.profile', {
+    //   url: 'profile', 
+    //   templateUrl: 'views/partials/profile.html',
+    //   controller: function ($scope, PostService) {
+    //     // $scope.posts = PostService.getPosts().$object;
+
+    //     PostService.getPostById('53bec2bcc2d7915a453e0037').then(function (post) {
+    //       $scope.post = post;
+    //       $scope.post.getList('comments');
+    //     });
+    //     // $scope.post.getList('comments');
+
+
+    //     // PostService.getPostById('53bec2bcc2d7915a453e0037').then(function (post) {
+    //     //   console.log(post); 
+    //     //   $scope.post = post;
+    //     //   post.getList('comments');
+    //     // });
+    //     // $scope.post.getList('comments');
+    //     // $scope.comments = PostService.getComments('53bec2bcc2d7915a453e0037').$object;
+    //   }
+    // })
+    // .state('app.user.messages', {
+    //   url: 'messages', 
+    //   template: '<div>Messages</div>'
+    // })
+    // .state('app.user.settings', {
+    //   url: 'settings',
+    //   template: '<div>Settings</div>'
+    // });
 
   // Handle invalid routes
   $urlRouterProvider.otherwise(function ($injector, $location) {
