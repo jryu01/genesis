@@ -5,7 +5,7 @@
 'use strict';
 
 var Place = require('../models/place');
-var _ = require('underscore');
+var _ = require('lodash');
 
 /**
  * REST API ======================================================

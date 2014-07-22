@@ -8,13 +8,13 @@
     "connect-mongo": "~0.3.3",
     "consolidate": "^0.10.0",
     "express": "~3.4.8",
+    "lodash": "^2.4.1",
     "mongoose": "~3.8.8",
     "passport": "~0.2.0",
     "passport-facebook": "~0.1.5",
     "passport-local": "~0.1.6",
     "passport.socketio": "^3.0.1",
     "socket.io": "^0.9.16",
-    "underscore": "^1.6.0",
     "validator": "^3.10.0"
   },
   "devDependencies": {

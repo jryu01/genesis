@@ -4,7 +4,7 @@
 'use strict';
 
 var validator = require('validator');
-var _ = require('underscore');
+var _ = require('lodash');
 var Post = require('../models/post');
 var LIMIT = 5;
 var PROFILE_TYPE = ['User', 'Event'];

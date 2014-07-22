@@ -6,8 +6,8 @@ p
 
 angular.module('genesisApp')
 .controller('MainController', 
-['$scope', '$state', 'Auth', 'socket', 'Posts', 'geolocation',
-function ($scope, $state, Auth, socket, Posts, geolocation) {
+['$scope', '$state', 'Auth', 'socket', 'geolocation',
+function ($scope, $state, Auth, socket, geolocation) {
   console.log("user from MainController");
   console.log($scope.currentUser);
 
