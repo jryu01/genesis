@@ -4,8 +4,8 @@
 'use strict';
 
 angular.module('genesisApp')
-.controller('HomeController', ['$scope', '$state', 'Auth', 'socket', 'sportsList',
-function ($scope, $state, Auth, socket, sportsList) {
+.controller('HomeController', ['$scope', '$timeout', '$state', 'Places', 'Auth', 'socket', 'sportsList',
+function ($scope, $timeout, $state, Places, Auth, socket, sportsList) {
   init();
 
   /*
@@ -77,6 +77,7 @@ function ($scope, $state, Auth, socket, sportsList) {
     if ($scope.eventFormData.tempinputAMPM == "PM") tempinputHour24 = parseInt($scope.eventFormData.tempinputHour) + parseInt(12);
     else tempinputHour24 = $scope.eventFormData.tempinputHour;
     
+    /*
     console.log($scope.eventFormData.tempinputYear,
                                                  $scope.eventFormData.tempinputMonth, 
                                                  $scope.eventFormData.tempinputDay, 
@@ -84,6 +85,7 @@ function ($scope, $state, Auth, socket, sportsList) {
                                                  $scope.eventFormData.tempinputMinute, 
                                                  0, 
                                                  0);
+    */
     
     $scope.eventFormData.Completedate = new Date($scope.eventFormData.tempinputYear, 
                                                  $scope.eventFormData.tempinputMonth, 
@@ -123,8 +125,34 @@ function ($scope, $state, Auth, socket, sportsList) {
     
   };
   
+  // gives another movie array on change
+  var filterTextTimeout;
+  
+  $scope.updateplacesQuery = function(typed){
+    if (filterTextTimeout) $timeout.cancel(filterTextTimeout);
+    filterTextTimeout = $timeout(function() {
+      
+      // search for paticular name
+      Places.list({searchQuery : $scope.eventFormData.inputPlace})
+      .success(function (data, status, headers, config) {
+
+        $scope.placesQuery = [];
+        
+        // process each datas
+        angular.forEach(data, function(value, index){
+          $scope.placesQuery.push(value.name);
+        });
+        
+      });
+      
+    }, 500);
+  };
   //////////////// Initialization ///////////////////
   function init() {
+    
+    // get places 
+    $scope.placesQuery = [];
+    
     $scope.data = {
       titles: ['Home', 'Event'],
       views: ['feeder', 'eventOrganizer'],

@@ -112,6 +112,13 @@ function listPlaces(params, callback) {
       } 
     };
   }
+  
+  if (params.searchQuery) {    
+    query.name = {
+      $regex:params.searchQuery,
+      $options:'i'
+    };
+  }
 
   Place.find(query, projection, options, function (err, places) {
     if (err) return callback(err, null);
