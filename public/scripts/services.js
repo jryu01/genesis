@@ -105,6 +105,16 @@ angular.module('genesisApp')
     },
   };
 }])
+.factory('Post', ['Restangular', function (Restangular) {
+  var Post = Restangular.service('posts');
+  Restangular.extendModel('posts', function (model) {
+      model.addComment = function (comment) {
+        return this.post('comments', comment);
+      };
+      return model;
+    });
+  return Post;
+}])
 .factory('Places', ['$http', function ($http) {
   return {
     list: function (options) {

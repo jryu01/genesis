@@ -100,29 +100,51 @@ angular.module('genesisApp',
       url: 'place/:id',
       templateUrl: 'views/partials/place.html',
       controller: 'PlaceController'
+    })
+    .state('app.profile', {
+      url: 'profile', 
+      templateUrl: 'views/partials/profile.html',
+      controller: function ($timeout, $q, $scope, PostService, Post) {
+
+        Post.getList().then(function (posts) {
+          var post = posts[0];
+          post.addComment({text: "refactroed test"}).then(function (result) {
+            console.log(result);
+          });
+        });
+
+
+        // Promis example
+        function check(bool) {
+          var deferred  = $q.defer();
+          deferred.notify('About to process');
+          $timeout(function () {
+            deferred.notify('30%');
+          }, 1000);
+          $timeout(function () {
+            deferred.notify('60%');
+          }, 2000);
+          $timeout(function () {
+            deferred.notify('100%');
+          }, 3000);
+          $timeout(function () {
+            if (bool) {
+              deferred.resolve({name: 'Jaehwan Ryu', value: 'true value provided'});
+            } else {
+              deferred.reject('false value provided');
+            }
+          }, 3100);
+          return deferred.promise;
+        }
+        check(false).then(function (value) {
+          $scope.value = value;
+        }, function (reason) {
+          console.log(reason);
+        }, function (notify) {
+          console.log(notify);
+        });
+      }
     });
-    // .state('app.profile', {
-    //   url: 'profile', 
-    //   templateUrl: 'views/partials/profile.html',
-    //   controller: function ($scope, PostService) {
-    //     // $scope.posts = PostService.getPosts().$object;
-
-    //     PostService.getPostById('53bec2bcc2d7915a453e0037').then(function (post) {
-    //       $scope.post = post;
-    //       $scope.post.getList('comments');
-    //     });
-    //     // $scope.post.getList('comments');
-
-
-    //     // PostService.getPostById('53bec2bcc2d7915a453e0037').then(function (post) {
-    //     //   console.log(post); 
-    //     //   $scope.post = post;
-    //     //   post.getList('comments');
-    //     // });
-    //     // $scope.post.getList('comments');
-    //     // $scope.comments = PostService.getComments('53bec2bcc2d7915a453e0037').$object;
-    //   }
-    // })
     // .state('app.user.messages', {
     //   url: 'messages', 
     //   template: '<div>Messages</div>'
