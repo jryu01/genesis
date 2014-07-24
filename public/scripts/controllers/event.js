@@ -1,10 +1,13 @@
 'use strict';
 angular.module('genesisApp')
-.controller('EventController', ['$scope', '$state', 'EventsFromService', 'socket',
-function ($scope, $state, EventsFromService, socket) {
+.controller('EventController', ['$scope', '$state','Places', 'EventsFromService', 'geolocation', '$window',
+function ($scope, $state, Places, EventsFromService, geolocation, $window) {
   init();  
   
-  function init() {     
+  
+  function init() {  
+    
+    // prep variables
     $scope.event = {};
     $scope.loading = true;
     
@@ -14,10 +17,30 @@ function ($scope, $state, EventsFromService, socket) {
       isDataReady: false
     };
 
+    // get data with this event id
     EventsFromService.get({ eventId: $state.params.id })
       .success(function (data, status, headers, config) {
         $scope.event = data;
         $scope.loading = false;
+        
+        Places.get($scope.event.place.placeId)
+          .success(function (data2, status, headers, config) {
+
+            $scope.mapData = data2;
+            
+            var coords = {lat: data2.loc[0], lng: data2.loc[1]};
+
+            $scope.map.center = coords;
+            $scope.map.staticUrl = 
+                'http://maps.googleapis.com/maps/api/staticmap?' + 
+                'center=' + coords.lat + ',' + coords.lng + '&' + 
+                'zoom=15&' + 
+                'size=' + $window.innerWidth + 'x200&maptype=roadmap&' + 
+                'markers=color:red%7Clabel:P%7C' + coords.lat + ',' + 
+                coords.lng;
+            $scope.map.isDataReady = true;
+
+          });
       });
   }
   

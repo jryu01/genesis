@@ -33,25 +33,53 @@
         <hr style="color:orange; border-top: 0px solid;"/>
         
         <div class="box_wrapper">
-          <h4 class="event_big">Location</h4>
-          <p class="event_small">{{ event.place.name }}</p>
-
-          {{ event.place.id }}
+          <h4 class="event_big">{{ event.place.name }}</h4>
+          <p class="event_small">
+            {{ mapData.address.street 
+                ? mapData.address.street + ', ' 
+                : ''
+            }} {{ mapData.address.city }}
+          </p>
           
-          <div class="map-wrapper" 
-                ng-if="map.isDataReady"
-                style="height: 200px; width: 100%">
-              <my-map
-                  class="full-height"
-                  center="map.center"
-                  zoom="map.zoom">
-                <my-map-marker
-                    coords="map.center">
-                </my-map-marker>  
-              </my-map> 
+          
+          <div class="static-map-wrapper" 
+              style="cursor:pointer;"
+              ng-click="map.fullscreen = true">
+            <img ng-src="{{map.staticUrl}}">
+          </div>
+          <my-modal my-modal-open="map.fullscreen" 
+                my-modal-open-style="center">
+            <div class="full-height" style="padding-top:50px">
+              <div class="navbar reverse navbar-app navbar-absolute-top">
+                <div class="navbar-brand navbar-brand-center"
+                    style="padding-right:60px; padding-left:60px;">
+                    {{ event.place.name }}
+                </div>
+                <div class="btn-group pull-left">
+                  <div class="btn btn-sm btn-navbar" 
+                      ng-click="map.fullscreen = false">
+                    Close
+                  </div>
+                </div>
+                <div class="btn-group pull-right"></div>
+              </div>
+              <div class="map-wrapper" 
+                  ng-if="map.isDataReady"
+                  style="height: 100%; width: 100%">
+                <my-map
+                    class="full-height"
+                    center="map.center"
+                    zoom="map.zoom">
+                  <my-map-marker
+                      coords="map.center">
+                  </my-map-marker>  
+                </my-map> 
+              </div>
             </div>
-          
+          </my-modal>
         </div>
+        
+        <hr style="color:orange; border-top: 0px solid;"/>
         
         <div class="box_wrapper">
           <h4 class="event_big">Description</h4>
