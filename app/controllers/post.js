@@ -218,7 +218,7 @@ function removeScore(req, res) {
 
 function createNewPost(socket) {
   return function (data, callback) {
-    var user = socket.handshake.user;
+    var user = socket.request.user;
 
     var sport = data.sport;
     var contents = data.contents;
@@ -270,7 +270,7 @@ function createNewPost(socket) {
 
 function toggleScore (socket, isAddingScore) {
   return function (data, callback) {
-    var user = socket.handshake.user;
+    var user = socket.request.user;
     var postId = data.postId;
 
     var query = {};
@@ -327,7 +327,7 @@ function toggleScore (socket, isAddingScore) {
 
 function addNewComment(socket) {
   return function (data, callback) {
-    var user = socket.handshake.user;
+    var user = socket.request.user;
     var postId = data.postId;
     var text = data.comment.text;
     var createdBy = {

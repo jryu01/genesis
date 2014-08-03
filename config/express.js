@@ -18,7 +18,7 @@ module.exports = function (app, config, passport, mongoStore) {
     app.set('view engine', 'html');
     app.set('views', config.root + '/public/views');
 
-    app.set('port', process.env.PORT || 3000);
+    app.set('port', config.port);
     app.use(express.static(config.root + '/public'));
     app.use(express.logger('dev'));
     app.use(express.cookieParser());
