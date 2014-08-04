@@ -31,7 +31,7 @@ module.exports = function (app) {
   app.post('/api/posts', auth.requiresSignin, postCtrl.create);
 
   app.post('/api/posts/:id/score', auth.requiresSignin, postCtrl.addScore);
-  app.del('/api/posts/:id/score', auth.requiresSignin, postCtrl.removeScore);
+  app.delete('/api/posts/:id/score',auth.requiresSignin, postCtrl.removeScore);
 
   app.post('/api/events/:id/comments', auth.requiresSignin, eventCtrl.addEventComment);
   app.post('/api/places/:id/comments', auth.requiresSignin, placeCtrl.addComment);

@@ -5,14 +5,14 @@
  
 'use strict';
 
-var express = require('express');
+var cookieParser = require('cookie-parser'); // wbr
 var User = require('../app/models/user');
 
 module.exports = function (sio, config, passport) {
   sio.use(function(socket, next) {
 
     var sessionStore = config.session.store;
-    var cookie = parseCookie(express.cookieParser(config.session.secret),
+    var cookie = parseCookie(cookieParser(config.session.secret),
                   socket.request.headers.cookie || '');
     socket.request.sessionID = cookie[config.session.key] || '';
 

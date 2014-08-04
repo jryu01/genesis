@@ -7,8 +7,8 @@
 
 var path = require('path');
 var rootPath = path.normalize(__dirname + '/..');
-var express = require('express');
-var mongoStore = require('connect-mongo')(express);
+var session = require('express-session');
+var mongoStore = require('connect-mongo')({ session: session });
 var env = process.env.NODE_ENV || 'development'; // env variable
 var _ = require('lodash');
 
@@ -41,6 +41,8 @@ function getConfig (env) {
       key: "sid",
       cookie: { maxAge: 1000 * 60 * 60 * 24 * 30 }, // expires in 30 days
       secret: "thisisthefirstclasssecrets",
+      resave: true,
+      saveUninitialized: true,
       store: new mongoStore({
         url: "mongodb://localhost/genesis-dev",
         collection: 'sessions'
