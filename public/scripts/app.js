@@ -69,7 +69,7 @@ angular.module('genesisApp',
             // exchange access token with facebook token
             Restangular.all('access_token').post(data).then(function (result) {
               var user = {};
-              user.userId = result.user.id;
+              user.id = result.user.id;
               user.access_token = result.access_token;
               user.role = ACCESS_LEVELS.user; 
               AuthService.setUser(user);

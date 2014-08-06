@@ -29,9 +29,12 @@ function ($scope, $state, PostService, socket) {
           $scope.posts[i].score = 0;
           $scope.posts[i].scorers = [];
         }
+        // increase score
         if (data.score === 1) {
           $scope.posts[i].score +=1;
           $scope.posts[i].scorers.push(data.scorerId);
+
+        // decrese score
         } else if (data.score === -1) {
           var index = $scope.posts[i].scorers.indexOf(data.scorerId);
           if (index !== -1) {

@@ -296,7 +296,7 @@ function toggleScore (socket, isAddingScore) {
         $inc: { score: -1 }
       };
     }
-
+     
     Post.findOneAndUpdate(query, operator, function (err, post) {
       if (err) {
         return callback(err, null);
