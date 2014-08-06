@@ -23,6 +23,7 @@
     "mobile-angular-ui": "~1.1.0-beta.21",
     "font-awesome": "~4.1.0",
     "ngInfiniteScroll": "~1.1.2",
-    "restangular": "~1.4.0"
+    "restangular": "~1.4.0",
+    "angular-cookies": "~1.2.21"
   }
 }

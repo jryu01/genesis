@@ -23,12 +23,12 @@ module.exports = function (app, config, passport) {
 
     app.use(express.static(config.root + '/public'));
 
-    // app.use(morgan('combined')); // logger
-    app.use(morgan('dev')); // logger
     app.use(cookieParser()); // wbr
+    app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: true}));
     app.use(methodOverride());
+    app.use(morgan('dev')); // logger
+    // app.use(morgan('combined')); // logger
     app.use(session(config.session)); //wbr
     app.use(passport.initialize());
     app.use(passport.session()); //wbr

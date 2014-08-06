@@ -15,7 +15,12 @@ var postCtrl = require('../controllers/post');
 
 module.exports = function (app) {
 
+  app.post('/api/access_token', authCtrl.issueAccessToken);
+
+  app.get('/api/test/posts',  authCtrl.bearerAuth, auth.requiresSignin, postCtrl.list);
+
   // secured restful api routes
+  app.all('/api/*', authCtrl.bearerAuth);
   app.get('/api/users', auth.requiresSignin, userCtrl.list);
   
   app.get('/api/events', auth.requiresSignin, eventCtrl.list);

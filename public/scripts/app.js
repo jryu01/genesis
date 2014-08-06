@@ -1,16 +1,27 @@
 'use strict';
 
 angular.module('genesisApp', 
-  [ 'ui.router', 'mobile-angular-ui', 'ui.bootstrap', 'angular-carousel',
-    'infinite-scroll', 'restangular']
+  [ 'ui.router', 
+    'mobile-angular-ui', 
+    'ui.bootstrap', 
+    'angular-carousel',
+    'infinite-scroll', 
+    'restangular', 
+    'ngCookies',
+    'genesisApp.services'
+  ]
 )
+.constant('ACCESS_LEVELS', {
+  pub: 1,
+  user: 2
+})
 .constant('sportsList', [
   'General',
   'Basketball',
   'Badminton'
 ])
 .constant('googleMapApiKey', 'AIzaSyAW2_RQG0vXnwFpgbADoblbL4XK8fHMPu8')
-.config(['$stateProvider','$urlRouterProvider', '$locationProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
+.config(['$stateProvider','$urlRouterProvider', '$locationProvider', '$httpProvider', 'ACCESS_LEVELS', function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, ACCESS_LEVELS) {
 
   //================================================
   // Route configurations 
@@ -25,7 +36,7 @@ angular.module('genesisApp',
     url: '/',
     template: '<div ui-view class="full-height"></div>',
     data: {
-      authenticate: true
+      accessLevel: ACCESS_LEVELS.user
     }
   });
 
@@ -35,7 +46,7 @@ angular.module('genesisApp',
       abstract: true,
       template: '<div ui-view class="full-height"></div>',
       data: {
-        authenticate: false
+        accessLevel: ACCESS_LEVELS.pub
       }
     })
     .state('app.public.start', {
@@ -46,6 +57,32 @@ angular.module('genesisApp',
       url: 'login',
       templateUrl: '/views/partials/login.html',
       controller: 'LoginController'
+    }).state('app.public.facebooklogin', {
+      url: 'facebooklogin',
+      controller: function ($state, Restangular, $log, facebook, AuthService) {
+        facebook.getLoginStatus().then(function (result) {
+          if (result.authResponse && result.status == 'connected') {
+            var data = {
+              grantType: 'facebook_token',
+              token: result.authResponse.accessToken
+            };
+            // exchange access token with facebook token
+            Restangular.all('access_token').post(data).then(function (result) {
+              var user = {};
+              user.userId = result.user.id;
+              user.access_token = result.access_token;
+              user.role = ACCESS_LEVELS.user; 
+              AuthService.setUser(user);
+              $state.go('app.user.home');
+            });
+          } else {
+            $state.go('app.public.login');
+          }
+        }).catch(function (reason) {
+          $log.error(reason);
+          $state.go('app.public.login');
+        });
+      } 
     });
 
 
@@ -103,47 +140,7 @@ angular.module('genesisApp',
     })
     .state('app.profile', {
       url: 'profile', 
-      templateUrl: 'views/partials/profile.html',
-      controller: function ($timeout, $q, $scope, PostService, Post) {
-
-        Post.getList().then(function (posts) {
-          var post = posts[0];
-          post.addComment({text: "refactroed test"}).then(function (result) {
-            console.log(result);
-          });
-        });
-
-
-        // Promis example
-        function check(bool) {
-          var deferred  = $q.defer();
-          deferred.notify('About to process');
-          $timeout(function () {
-            deferred.notify('30%');
-          }, 1000);
-          $timeout(function () {
-            deferred.notify('60%');
-          }, 2000);
-          $timeout(function () {
-            deferred.notify('100%');
-          }, 3000);
-          $timeout(function () {
-            if (bool) {
-              deferred.resolve({name: 'Jaehwan Ryu', value: 'true value provided'});
-            } else {
-              deferred.reject('false value provided');
-            }
-          }, 3100);
-          return deferred.promise;
-        }
-        check(false).then(function (value) {
-          $scope.value = value;
-        }, function (reason) {
-          console.log(reason);
-        }, function (notify) {
-          console.log(notify);
-        });
-      }
+      templateUrl: 'views/partials/profile.html'
     });
     // .state('app.user.messages', {
     //   url: 'messages', 
@@ -163,25 +160,30 @@ angular.module('genesisApp',
   //================================================
   // An interceptor for AJAX errors
   //================================================
-
-  $httpProvider.interceptors.push(['$q', '$injector', function($q, $injector) {
-    return function (promise) {
-      // return promise.then(
-      //   // Successs
-      //   function (response) {
-      //     return response;
-      //   },
-      //   // Error 
-      //   function (response) {
-      //     if (response.status === 401) {
-      //       var $state = $injector.get('$state');
-      //       $state.go('app.public.start');
-      //       return $q.reject(response);
-      //     }
-      //   }
-      // );
+  var interceptor = ['$q', '$rootScope', '$injector', 'AuthService',
+  function ($q, $rootScope, $injector, AuthService) {
+    return {
+      request: function (request) {
+        if (request.url.indexOf('api/') >= 0) {
+          request.params = request.params || {};
+          request.params.access_token = AuthService.getToken();
+        }
+        return request;
+      },
+      responseError: function (rejection) {
+          if (rejection.status === 401) {
+            var $state = $injector.get('$state');            
+            $state.go('app.public.login');
+          }
+        return $q.reject(rejection);
+      }
     };
-  }]);
+  }];
+  $httpProvider.interceptors.push(interceptor);
+
+}])
+.config(['facebookProvider', function (facebookProvider) {
+  facebookProvider.setAppId(260509677458558);
 }])
 .config(['RestangularProvider', function (RestangularProvider) {
   // RestangularProvider.setBaseUrl('http://localhost:3000/api');
@@ -203,37 +205,23 @@ angular.module('genesisApp',
     return decorated;
   });
 })
-.run(['$rootScope', '$state', 'Auth', function ($rootScope, $state, Auth) {
-  // Authentication on stateChnageStart
+.run(['$rootScope', '$state', 'AuthService','Auth', function ($rootScope, $state, AuthService, Auth) {
   $rootScope.$on('$stateChangeStart', 
-  function (event, toState, toParams, fromState, fromParams){
-
-    // if to state needs authentication
-    if (toState.data.authenticate) {
-
-      // if current user is not defiend 
-      if (!Auth.isAuthenticated()) {
+    function (event, toState, toParams, fromState, fromParams) {
+    if (!AuthService.isAuthorized(toState.data.accessLevel)) {
+      if (AuthService.isLoggedIn()) {
+        // the user is logged in, but does not have permissions
+        // to view the view 
         event.preventDefault();
-
-        // send request to server to check if user is signed in
-        Auth.getSignedinUser(function (user) {
-          // user is already signed in
-          if (user) {
-            $rootScope.currentUser = user;
-            var to = (toState.name === 'app') ? 'app.user.home' : toState.name;
-            $state.go(to, toParams);
-
-          // need to sign in           
-          } else {
-            $state.go('app.public.start');
-          }
-        });
-      // if there is a current user using this app
+        $state.go('app.user.home');
       } else {
-        if (toState.name === "app") {
-          event.preventDefault();
-          $state.go('app.user.home');
-        }
+        event.preventDefault();
+        $state.go('app.public.start');
+      }
+    } else {
+     if (toState.name === "app") {
+        event.preventDefault();
+        $state.go('app.user.home');
       }
     }
   });

@@ -6,9 +6,10 @@ p
 
 angular.module('genesisApp')
 .controller('MainController', 
-['$scope', '$state', 'Auth', 'socket', 'geolocation',
-function ($scope, $state, Auth, socket, geolocation) {
+['$scope', '$state', 'AuthService', 'socket', 'geolocation',
+function ($scope, $state, AuthService, socket, geolocation) {
   console.log("user from MainController");
+  $scope.currentUser = AuthService.getUser();
   console.log($scope.currentUser);
 
   // get current location of the user
@@ -20,17 +21,9 @@ function ($scope, $state, Auth, socket, geolocation) {
 
   // signout function
   $scope.signout = function () {
-    Auth.signout(
-      // Success
-      function (reponse) {
-        socket.emit('signout');
-        $state.go('app.public.start');
-      },
-      // Fauilure
-      function (response) {
-        // handle this situation
-      }
-    );
+    AuthService.logout();
+    socket.emit('signout');
+    $state.go('app.public.start');
   }; 
   function registerSocketListeners() {
 
