@@ -75,7 +75,7 @@ function issueAccessToken(req, res) {
     if (req.body.grantType === "facebook_token") {
 
       getFacebookProfile(req.body.token, function (err, profile) {
-        if (err) { return res.send(500, err); }
+        if (err) { return res.send(err.status || 500, err); }
 
         // find a user with facebook id and create one 
         // if does not already exist
@@ -202,6 +202,7 @@ function getFacebookProfile(fbToken, callback) {
         err.type = json.error.type;
         err.code = json.error.code;
         err.subcode = json.error.subcode;
+        err.status = 400;
       } else {
         err.message = 'Failed to fetch facebook user profile';
       }

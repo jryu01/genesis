@@ -5,13 +5,14 @@
 
 'use strict';
 
+var config = require('./config');
 var LocalStrategy = require('passport-local').Strategy; // wbr
 var FacebookStrategy = require('passport-facebook').Strategy; // wbr
 var jwt = require('jwt-simple');
 var BearerStrategy = require('passport-http-bearer').Strategy;
 var User = require('../app/models/user');
 
-module.exports = function (passport, config) {
+module.exports = function (passport) {
 
 
   // Bearer Strategy for token authentication

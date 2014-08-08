@@ -18,14 +18,14 @@ var sio = require('socket.io')(server);
 
 // configuration ===========================================
 
-// db connection
+//connect to db
 mongoose.connect(config.mongo.url);
 
 // passport config
-require('./config/passport')(passport, config);
+require('./config/passport')(passport);
 
 // express app config
-require('./config/express')(app, config, passport);
+require('./config/express')(app, passport);
 
 // socket.io configuration with passportsocket.io
 
@@ -38,10 +38,11 @@ require('./app/routes/api')(app);
 
 // socket 
 require('./app/routes/socket')(sio);
-//io.sockets.on('connection', require('./app/routes/socket'));
 
-// start server ============================================
+  // start server
 server.listen(app.get('port'), function () {
   console.log(config.app.name + ' server listening on port ' + 
               app.get('port') + ' for ' + config.env);
 });
+exports.app = app;
+exports.sio = sio;

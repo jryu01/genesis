@@ -58,6 +58,7 @@ function getConfig (env) {
   // Test configuration
   config.test = {
     env: "test",
+    port: process.env.PORT || 3030,
     mongo: {
       url: "mongodb://localhost/genesis-test"
     },
@@ -65,6 +66,8 @@ function getConfig (env) {
       key: "sid",
       cookie: { maxAge: 1000 * 60 * 60 * 24 * 30 }, 
       secret: "thisisthefirstclasssecrets",
+      resave: true,
+      saveUninitialized: true,
       store: new mongoStore({
         url: "mongodb://localhost/genesis-test",
         collection: 'sessions'

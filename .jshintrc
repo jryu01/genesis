@@ -2,6 +2,12 @@
   "node": true,
 
   "globals": {
-    "angular": false
+    "angular": false,
+    "it": false,
+    "describe": false,
+    "before": false,
+    "after": false,
+    "beforeEach": false,
+    "afterEach": false
   }
 }

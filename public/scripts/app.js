@@ -137,11 +137,11 @@ angular.module('genesisApp',
       url: 'place/:id',
       templateUrl: 'views/partials/place.html',
       controller: 'PlaceController'
-    })
-    .state('app.profile', {
-      url: 'profile', 
-      templateUrl: 'views/partials/profile.html'
     });
+    // .state('app.profile', {
+    //   url: 'profile', 
+    //   templateUrl: 'views/partials/profile.html'
+    // });
     // .state('app.user.messages', {
     //   url: 'messages', 
     //   template: '<div>Messages</div>'
