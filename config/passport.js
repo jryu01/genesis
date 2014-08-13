@@ -5,11 +5,44 @@
 
 'use strict';
 
-var LocalStrategy = require('passport-local').Strategy;
-var FacebookStrategy = require('passport-facebook').Strategy;
+var config = require('./config');
+var LocalStrategy = require('passport-local').Strategy; // wbr
+var FacebookStrategy = require('passport-facebook').Strategy; // wbr
+var jwt = require('jwt-simple');
+var BearerStrategy = require('passport-http-bearer').Strategy;
 var User = require('../app/models/user');
 
-module.exports = function (passport, config) {
+module.exports = function (passport) {
+
+
+  // Bearer Strategy for token authentication
+  passport.use(new BearerStrategy(
+  function (token, done) {
+    var decoded = null;
+    try {
+      decoded = jwt.decode(token, config.jwt.secret);
+    } catch (err) {
+      var error = new Error();
+      error.message = "Invalid Token: " + err.message;
+      return done(error);
+    }
+
+    if (decoded.exp <= Date.now()) {
+      return done(null, false, {
+        message: 'Access token has expired' 
+      });
+    }
+
+    User.findById(decoded.iss, function (err, user) {
+      if (err) { return done(err); }
+      if (!user) { return done(null, false); }
+      return done(null, user);
+    });
+  }));
+
+// 
+// Below will be depreciated
+//
     
   // serialize user into session
   passport.serializeUser(function(user, done) {

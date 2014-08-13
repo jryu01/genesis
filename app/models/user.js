@@ -38,10 +38,10 @@ var UserSchema = new Schema({
   // Authentication information
 
   // local authentication disabled for now
-  // local: {
-  //   email: String,
-  //   password: String, 
-  // },
+  local: {
+    email: String,
+    password: String, 
+  },
   facebook: {
     id: String,
     name: String,
@@ -105,5 +105,4 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
       cb(null, isMatch);
   });
 };
-
 module.exports = mongoose.model('User', UserSchema);

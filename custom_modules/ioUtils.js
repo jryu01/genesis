@@ -7,28 +7,27 @@
  // Helper functions for socket.io
 
 function filterSocketsByUser(socketIo, filter){
-  var handshaken = socketIo.sockets.manager.handshaken;
-  return Object.keys(handshaken || {})
+  var connected = socketIo.sockets.connected; 
+  return Object.keys(connected || {})
     .filter(function(skey){
-      return filter(handshaken[skey].user);
+      return filter(connected[skey].request.user);
     })
     .map(function(skey){
-      return socketIo.sockets.manager.sockets.sockets[skey];
+      return connected[skey];
     });
 }
 
 function filterSocketsBySid(socketIo, sid) {
-
   // Object containing handshaken socket objects 
-  var handshaken = socketIo.sockets.manager.handshaken; 
+  var connected = socketIo.sockets.connected; 
   // Array of socketid keys
-  var socketKeys = Object.keys(handshaken || {});
+  var socketKeys = Object.keys(connected || {});
 
   // filter socketKeys and map to socket object and return the result
   return socketKeys.filter(function (socketKey) {
-    return handshaken[socketKey].sessionID === sid; 
+    return connected[socketKey].request.sessionID === sid; 
   }).map(function (socketKey) {
-    return socketIo.sockets.sockets[socketKey];
+    return connected[socketKey];
   });
 }
 exports.filterSocketsByUser = filterSocketsByUser; 

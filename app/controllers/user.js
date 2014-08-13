@@ -6,7 +6,7 @@
 
 var User = require('../models/user');
 function list(req, res) {
-	User.find(req.query, function (err, users) {
+	User.find({}, function (err, users) {
 		if (err) return res.send(500);
 		res.send(users);
 	});	

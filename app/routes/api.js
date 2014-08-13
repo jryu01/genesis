@@ -15,7 +15,12 @@ var postCtrl = require('../controllers/post');
 
 module.exports = function (app) {
 
+  app.post('/api/access_token', authCtrl.issueAccessToken);
+
+  app.get('/api/test/posts',  authCtrl.bearerAuth, auth.requiresSignin, postCtrl.list);
+
   // secured restful api routes
+  app.all('/api/*', authCtrl.bearerAuth);
   app.get('/api/users', auth.requiresSignin, userCtrl.list);
   
   app.get('/api/events', auth.requiresSignin, eventCtrl.list);
@@ -32,7 +37,7 @@ module.exports = function (app) {
   app.post('/api/posts', auth.requiresSignin, postCtrl.create);
 
   app.post('/api/posts/:id/score', auth.requiresSignin, postCtrl.addScore);
-  app.del('/api/posts/:id/score', auth.requiresSignin, postCtrl.removeScore);
+  app.delete('/api/posts/:id/score',auth.requiresSignin, postCtrl.removeScore);
 
   app.post('/api/events/:id/comments', auth.requiresSignin, eventCtrl.addEventComment);
   app.post('/api/places/:id/comments', auth.requiresSignin, placeCtrl.addComment);
