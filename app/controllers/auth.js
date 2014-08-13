@@ -19,14 +19,14 @@ var config = require('../../config/config');
 function bearerAuth(req, res, next) {
   passport.authenticate('bearer', { session: false }, 
   function(err, user, info) {
-    if (err) return res.send(500, err);
+    if (err) return res.status(500).json(err);
     if (!req.query.access_token) {
-      return res.send(401, {
+      return res.status(401).json( {
         message: "An access token must be provided"
       });
     }
     if (!user) {
-      return res.send(401, { 
+      return res.status(401).json( { 
         message: "Access token has expired or is invalid" 
       });
     }
@@ -39,7 +39,7 @@ function bearerAuth(req, res, next) {
 // generic require signin middleware
 function requiresAuth(req, res, next) {
   if (!req.isAuthenticated()) {
-    return res.send(401, { message: "requires authentication"});
+    return res.status(401).json( { message: "requires authentication"});
   }
   next();
 }
@@ -51,24 +51,24 @@ function requiresAuth(req, res, next) {
 function issueAccessToken(req, res) {
 
   if (!req.body.grantType) {
-    return res.send(400, { message: 'Missing grantType field.'});
+    return res.status(400).json({ message: 'Missing grantType field.'});
   }
 
   if (req.body.grantType === 'facebookToken') {
     if (!req.body.facebookToken) {
-      return res.send(400, { message: 'Missing facebookToken field.'});
+      return res.status(400).json({ message: 'Missing facebookToken field.'});
     }
     getFacebookProfile(req.body.facebookToken, function (err, profile) {
-      if (err) { return res.send(err.status || 500, err); }
+      if (err) { return res.status(err.status || 500).json(err); }
 
       // find a user with facebook id and create one 
       // if does not already exist
       User.findOne({'facebook.id': profile.id}, function (err, user) {
-        if (err) { return res.send(500, err); }
+        if (err) { return res.status(500).json(err); }
         if (user) {
           // issue a token
           var token = issueTokenWithUid(user.id);
-          return res.send({ access_token: token, user: user });
+          return res.json({ access_token: token, user: user });
         } 
         if (!user) {
           // create a new user
@@ -90,10 +90,10 @@ function issueAccessToken(req, res) {
 
           //save user and issue a token
           user.save(function (err) {
-            if (err) { return res.send(500, err); }
+            if (err) { return res.status(500).json(err); }
             // issue a token
             var token = issueTokenWithUid(user.id);
-            return res.send({ access_token: token, user: user });
+            return res.json({ access_token: token, user: user });
           });
         }
       });
@@ -101,31 +101,31 @@ function issueAccessToken(req, res) {
 
   } else if (req.body.grantType === 'password') {
     if (!req.body.email) {
-      return res.send(400, { message: 'Missing email field.'});
+      return res.status(400).json({ message: 'Missing email field.'});
     }
     if (!req.body.password) {
-      return res.send(400, { message: 'Missing password field.'});
+      return res.status(400).json({ message: 'Missing password field.'});
     }
     // User.
     //   findOne({ 'local.email': req.body.email }, function (err, user) {
-    //     if (err) { return res.send(500, err); }
+    //     if (err) { return res.status(500).json(err); }
     //     if (!user) {
-    //       return res.send(401, { message: 'Unknown email'});
+    //       return res.status(401).json( { message: 'Unknown email'});
     //     }
     //     user.comparePassword(req.body.password, function (err, isMatch) {
-    //       if (err) { return res.send(500, err); }
+    //       if (err) { return res.status(500).json(err); }
     //       if(!isMatch) {
-    //         return res.send(401, { message: 'Invalid password.' });
+    //         return res.status(401).json( { message: 'Invalid password.' });
     //       }
 
     //       // issue a token
     //       var token = issueTokenWithUid(user.id);
 
-    //       return res.send({ access_token: token, user: user });
+    //       return res.json({ access_token: token, user: user });
     //     });
     //   }); 
   } else {
-    return res.send(400, { message: 'Invalid grant type.'});
+    return res.status(400).json({ message: 'Invalid grant type.'});
   }
 }
 
@@ -136,10 +136,10 @@ function signup(req, res, next) {
 
   // validate email and password
   if(!email || !email.length) {
-    return res.send(400, { message: 'email is not valid' });
+    return res.status(400).json({ message: 'email is not valid' });
   }
   if(!password || !password.length) {
-    return res.send(400, { message: 'password is not valid' });
+    return res.status(400).json({ message: 'password is not valid' });
   }
   
   User.findOne({ 'local.email': email }, function (err, user) {
@@ -147,7 +147,7 @@ function signup(req, res, next) {
 
     // check if user is already exists
     if (user) {
-      return res.send(409, { message: 'the email is already taken.' });
+      return res.status(409).json({ message: 'the email is already taken.' });
     }
 
     // create and save a new user
@@ -161,7 +161,7 @@ function signup(req, res, next) {
       // issue a token
       var token = issueTokenWithUid(user.id);
 
-      return res.send({ access_token: token, user: user });
+      return res.json({ access_token: token, user: user });
     });
   });
 }
@@ -241,12 +241,12 @@ function signin(req, res, next) {
     if (err) { return next(err); }
     if (!user) {
       req.session.message = [info.message];
-      return res.send(401, info);
+      return res.status(401).json(info);
     }
     // if user, Log in
     req.logIn(user, function(err) {
       if (err) { return next(err); }
-      return res.send(user.toJSON());
+      return res.json(user.toJSON());
     });
   })(req, res, next);
 }
@@ -258,10 +258,10 @@ function signup(req, res, next) {
 
   // validate email and password
   if(!email || !email.length) {
-    return res.send(400, { message: 'email is not valid' });
+    return res.status(400).json({ message: 'email is not valid' });
   }
   if(!password || !password.length) {
-    return res.send(400, { message: 'password is not valid' });
+    return res.status(400).json({ message: 'password is not valid' });
   }
   
   User.findOne({ 'local.email': email }, function (err, user) {
@@ -269,7 +269,7 @@ function signup(req, res, next) {
 
     // check if user is already exists
     if (user) {
-      return res.send(409, { message: 'the email is already taken.' });
+      return res.status(409).json({ message: 'the email is already taken.' });
     }
 
     // create and save a new user
@@ -282,7 +282,7 @@ function signup(req, res, next) {
 
       // login after user is registered and saved
       req.logIn(user, function (err) {
-        return res.send(user.toJSON());
+        return res.json(user.toJSON());
       });
     });
   });
@@ -290,11 +290,11 @@ function signup(req, res, next) {
 
 function signout(req, res) {
   req.logout();
-  res.send(200);
+  res.json(200);
 }
 
 function checkSignin(req, res) {
-  res.send(req.isAuthenticated() ? req.user.toJSON() : '0');
+  res.json(req.isAuthenticated() ? req.user.toJSON() : '0');
 }
 
 // public functions and variables 

@@ -148,7 +148,7 @@ describe('API Route', function () {
           .get('/api/users')
           .query({ "access_token": 'invalidAccessToken' })
           .expect(500, {
-            "message": "Invalid Token:Not enough or too many segments" 
+            "message": "Invalid Token: Not enough or too many segments" 
           }, done);
       });
       it('responds with 200 with an valid access_token', function (done) {

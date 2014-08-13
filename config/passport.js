@@ -23,7 +23,7 @@ module.exports = function (passport) {
       decoded = jwt.decode(token, config.jwt.secret);
     } catch (err) {
       var error = new Error();
-      error.message = "Invalid Token:" + err.message;
+      error.message = "Invalid Token: " + err.message;
       return done(error);
     }
 
