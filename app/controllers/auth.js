@@ -49,78 +49,84 @@ function requiresAuth(req, res, next) {
 ///////////////////////////////////////////////////////////////////////////////
 
 function issueAccessToken(req, res) {
-  // Exchange token by email and password
-  if (req.body.email && req.body.password) {
-    User.
-      findOne({ 'local.email': req.body.email }, function (err, user) {
-        if (err) { return res.send(500, err); }
-        if (!user) {
-          return res.send(401, { message: 'Unknown email'});
-        }
-        user.comparePassword(req.body.password, function (err, isMatch) {
-          if (err) { return res.send(500, err); }
-          if(!isMatch) {
-            return res.send(401, { message: 'Invalid password.' });
-          }
 
+  if (!req.body.grantType) {
+    return res.send(400, { message: 'Missing grantType field.'});
+  }
+
+  if (req.body.grantType === 'facebookToken') {
+    if (!req.body.facebookToken) {
+      return res.send(400, { message: 'Missing facebookToken field.'});
+    }
+    getFacebookProfile(req.body.facebookToken, function (err, profile) {
+      if (err) { return res.send(err.status || 500, err); }
+
+      // find a user with facebook id and create one 
+      // if does not already exist
+      User.findOne({'facebook.id': profile.id}, function (err, user) {
+        if (err) { return res.send(500, err); }
+        if (user) {
           // issue a token
           var token = issueTokenWithUid(user.id);
-
           return res.send({ access_token: token, user: user });
-        });
-      }); 
+        } 
+        if (!user) {
+          // create a new user
+          user = new User();
 
-  //Exchange 3rd party access token with users access token (for now, facebook only)
-  } else if (req.body.grantType && req.body.token) {
-    if (req.body.grantType === "facebook_token") {
+          user.name.givenName = profile.first_name; 
+          user.name.familyName = profile.last_name;
+          user.name.displayName = profile.name; 
+          user.emails.primaryEmail = profile.email;
 
-      getFacebookProfile(req.body.token, function (err, profile) {
-        if (err) { return res.send(err.status || 500, err); }
+          user.facebook.id = profile.id;
+          user.facebook.email = profile.email;
+          user.facebook.accessToken = req.body.facebookToken;
 
-        // find a user with facebook id and create one 
-        // if does not already exist
-        User.findOne({'facebook.id': profile.id}, function (err, user) {
-          if (err) { return res.send(500, err); }
-          if (user) {
+          if (profile.picture && profile.picture.data) {
+            user.photos.profile = profile.picture.data.url;
+            user.facebook.profilePicture = profile.picture.data.url;
+          }
+
+          //save user and issue a token
+          user.save(function (err) {
+            if (err) { return res.send(500, err); }
             // issue a token
             var token = issueTokenWithUid(user.id);
             return res.send({ access_token: token, user: user });
-          } 
-          if (!user) {
-            // create a new user
-            user = new User();
-
-            user.name.givenName = profile.first_name; 
-            user.name.familyName = profile.last_name;
-            user.name.displayName = profile.name; 
-            user.emails.primaryEmail = profile.email;
-
-            user.facebook.id = profile.id;
-            user.facebook.email = profile.email;
-            user.facebook.accessToken = req.body.token;
-
-            if (profile.picture && profile.picture.data) {
-              user.photos.profile = profile.picture.data.url;
-              user.facebook.profilePicture = profile.picture.data.url;
-            }
-
-            //save user and issue a token
-            user.save(function (err) {
-              if (err) { return res.send(500, err); }
-              // issue a token
-              var token = issueTokenWithUid(user.id);
-              return res.send({ access_token: token, user: user });
-            });
-          }
-        });
+          });
+        }
       });
-    } else {
-      return res.send(400, { message: 'Unsupported grant type' });
-    }
-  } else {
-    return res.send(400, { message: 'Missing credentials' });
-  }
+    });
 
+  } else if (req.body.grantType === 'password') {
+    if (!req.body.email) {
+      return res.send(400, { message: 'Missing email field.'});
+    }
+    if (!req.body.password) {
+      return res.send(400, { message: 'Missing password field.'});
+    }
+    // User.
+    //   findOne({ 'local.email': req.body.email }, function (err, user) {
+    //     if (err) { return res.send(500, err); }
+    //     if (!user) {
+    //       return res.send(401, { message: 'Unknown email'});
+    //     }
+    //     user.comparePassword(req.body.password, function (err, isMatch) {
+    //       if (err) { return res.send(500, err); }
+    //       if(!isMatch) {
+    //         return res.send(401, { message: 'Invalid password.' });
+    //       }
+
+    //       // issue a token
+    //       var token = issueTokenWithUid(user.id);
+
+    //       return res.send({ access_token: token, user: user });
+    //     });
+    //   }); 
+  } else {
+    return res.send(400, { message: 'Invalid grant type.'});
+  }
 }
 
 function signup(req, res, next) {
