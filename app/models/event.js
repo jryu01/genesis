@@ -45,6 +45,8 @@ var EventSchema = new Schema({
   members: [Schema.Types.ObjectId],
   
   comments: [CommentSchema],
+  score: Number,
+  scorers: [Schema.Types.ObjectId], //array of User Ids
   
 }); 
 

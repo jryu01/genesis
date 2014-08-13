@@ -71,61 +71,75 @@ function ($scope, $timeout, $state, Places, Auth, socket, sportsList) {
     var isReadyEvent = true;
     $scope.validDateMarker = false;
     $scope.validDateMarker2 = false;
+    $scope.validDateMarker3 = false;
     
-    // process time
-    var tempinputHour24 = 0;
-    if ($scope.eventFormData.tempinputAMPM == "PM") tempinputHour24 = parseInt($scope.eventFormData.tempinputHour) + parseInt(12);
-    else tempinputHour24 = $scope.eventFormData.tempinputHour;
-    
-    /*
-    console.log($scope.eventFormData.tempinputYear,
-                                                 $scope.eventFormData.tempinputMonth, 
-                                                 $scope.eventFormData.tempinputDay, 
-                                                 tempinputHour24, 
-                                                 $scope.eventFormData.tempinputMinute, 
-                                                 0, 
-                                                 0);
-    */
-    
-    $scope.eventFormData.Completedate = new Date($scope.eventFormData.tempinputYear, 
-                                                 $scope.eventFormData.tempinputMonth, 
-                                                 $scope.eventFormData.tempinputDay, 
-                                                 tempinputHour24, 
-                                                 $scope.eventFormData.tempinputMinute, 
-                                                 0, 
-                                                 0);
-    
-    /*
-    // validation 1 - see if it is later than today
-    var todayDate = new Date();
-    if ($scope.eventFormData.Completedate < todayDate)
-    {
-      $scope.validDateMarker = true;
-      isReadyEvent = false;
-      return;
-    }
-    
-    // validation 2 - see if it is valid date
-    if (validator.isDate($scope.eventFormData.Completedate)) {
-      $scope.validDateMarker2 = true;
-      isReadyEvent = false;
-      return;
-    }
-    */
-    
-    
-    // validation complete
-    $scope.validDateMarker = false;
-    $scope.validDateMarker2 = false;
-    if(isReadyEvent) {
-      // broadcasting for child controller to be notified
-      $scope.$broadcast('submit event');
-      $scope.data.eventFormOpened = false;
-    }
-    
+    // check places
+    // search for paticular name
+    Places.list({searchQuery : $scope.eventFormData.inputPlace})
+    .success(function (data, status, headers, config) {
+      if (data.length <= 0){
+        console.log(",,,");
+        isReadyEvent = false;
+        $scope.validDateMarker3 = true;
+        return;
+      }
+      else
+      {
+        // process time
+        var tempinputHour24 = 0;
+        if ($scope.eventFormData.tempinputAMPM == "PM") tempinputHour24 = parseInt($scope.eventFormData.tempinputHour) + parseInt(12);
+        else tempinputHour24 = $scope.eventFormData.tempinputHour;
+
+        /*
+        console.log($scope.eventFormData.tempinputYear,
+                                                     $scope.eventFormData.tempinputMonth, 
+                                                     $scope.eventFormData.tempinputDay, 
+                                                     tempinputHour24, 
+                                                     $scope.eventFormData.tempinputMinute, 
+                                                     0, 
+                                                     0);
+        */
+
+        $scope.eventFormData.Completedate = new Date($scope.eventFormData.tempinputYear, 
+                                                     $scope.eventFormData.tempinputMonth, 
+                                                     $scope.eventFormData.tempinputDay, 
+                                                     tempinputHour24, 
+                                                     $scope.eventFormData.tempinputMinute, 
+                                                     0, 
+                                                     0);
+
+        /*
+        // validation 1 - see if it is later than today
+        var todayDate = new Date();
+        if ($scope.eventFormData.Completedate < todayDate)
+        {
+          $scope.validDateMarker = true;
+          isReadyEvent = false;
+          return;
+        }
+
+        // validation 2 - see if it is valid date
+        if (validator.isDate($scope.eventFormData.Completedate)) {
+          $scope.validDateMarker2 = true;
+          isReadyEvent = false;
+          return;
+        }
+        */
+
+
+        // validation complete
+        $scope.validDateMarker = false;
+        $scope.validDateMarker2 = false;
+        if(isReadyEvent) {
+          // broadcasting for child controller to be notified
+          $scope.$broadcast('submit event');
+          $scope.data.eventFormOpened = false;
+        }
+      }
+    });
   };
   
-  // gives another movie array on change
+  // gives another loc array on change
   var filterTextTimeout;
   
   $scope.updateplacesQuery = function(typed){
@@ -135,7 +149,7 @@ function ($scope, $timeout, $state, Places, Auth, socket, sportsList) {
       // search for paticular name
       Places.list({searchQuery : $scope.eventFormData.inputPlace})
       .success(function (data, status, headers, config) {
-
+        
         $scope.placesQuery = [];
         
         // process each datas

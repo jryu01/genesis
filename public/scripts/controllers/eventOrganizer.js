@@ -13,6 +13,33 @@ function ($scope, $location, $state, EventsFromService) {
   // call initialization
   init();
   
+  // adding score
+  $scope.addScore = function (eventId, upBool) {
+    
+    var $scope = this;
+    var newEventParams = {
+      id: eventId,
+      upScore: upBool
+    };
+    
+    // call create from service
+    EventsFromService.addScore({data: newEventParams})
+    .success(function (data, status, headers, config) {
+        if (upBool == '1')
+        {
+          $scope.event.score = data.score;
+          $scope.event.scorers.push($scope.currentUser.id);
+        }
+        else
+        {
+          $scope.event.score = data.score;
+          var index = $scope.event.scorers.indexOf($scope.currentUser.id);
+          $scope.event.scorers.splice(index,1);
+        }
+      });
+
+  };
+  
   // post Event
   $scope.$on('submit event', function (e) {
 

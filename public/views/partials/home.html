@@ -116,14 +116,17 @@
             </div>
 
             <hr/>
-
           
             <!-- location -->
-          
+            <alert ng-show="validDateMarker3" type="danger">
+              Unknown Place : Please register a place.             
+              <!-- hidden until you pick wrong address -->
+              <a ui-sref="app.user.nearby.list">Add new Place</a>
+            </alert>
           
             <div class="textarea-wrapper">
-          <autocomplete ng-model="eventFormData.inputPlace" attr-placeholder="type to search places..." click-activation="true" data="placesQuery" on-type="updateplacesQuery"></autocomplete>
-                 </div>
+              <autocomplete ng-model="eventFormData.inputPlace" attr-placeholder="type to search places..." click-activation="true" data="placesQuery" on-type="updateplacesQuery"></autocomplete>
+            </div>
           
             <div class="form-group row align_center">
               
