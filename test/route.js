@@ -178,16 +178,15 @@ describe('API Route', function () {
 
   after(function (done) {
     var finished = _.after(1, function (err) {
-
       mongoose.connection.close();
       mongoose.models = {};
       mongoose.modelSchemas = {};
       done();
     });
-    User.remove('adsf', function (err) {
+    User.remove({}, function (err) {
       if (err) throw err;
       finished();
     });
-
   });
+  
 });
