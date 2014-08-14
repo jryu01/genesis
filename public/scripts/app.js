@@ -63,8 +63,8 @@ angular.module('genesisApp',
         facebook.getLoginStatus().then(function (result) {
           if (result.authResponse && result.status == 'connected') {
             var data = {
-              grantType: 'facebook_token',
-              token: result.authResponse.accessToken
+              grantType: 'facebookToken',
+              facebookToken: result.authResponse.accessToken
             };
             // exchange access token with facebook token
             Restangular.all('access_token').post(data).then(function (result) {
