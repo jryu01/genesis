@@ -285,5 +285,9 @@ function ($cookieStore, ACCESS_LEVELS) {
       var url = 'api/events/' + options.eventId + '/comments' ;
       return $http.post(url, options.data);
     },
+    addScore: function (options, success, error) {
+      var url = 'api/events/' + options.data + '/score' ;
+      return $http.post(url, options.data);
+    },
   };
 }]);

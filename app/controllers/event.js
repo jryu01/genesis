@@ -42,6 +42,53 @@ function addEventComment(req, res) {
   
 }
 
+function addScore(req, res) {
+  
+  var eventId = req.body.id;
+  var upBool = req.body.upScore;
+
+  var query;
+  var operator;
+  
+  if (upBool == '1')
+  {
+    query = {
+      _id: eventId,
+      scorers: { $ne: req.user.id }
+    };
+    
+    operator = {
+      $push: { scorers: req.user.id },
+      $inc: { score: 1 }
+    };
+  }
+  else
+  {
+    query = {
+      _id: eventId,
+      scorers: req.user.id
+    };
+    
+    operator = {
+      $pull: { scorers: req.user.id },
+      $inc: { score: -1 }
+    };
+  }
+
+  EventModel.findOneAndUpdate(query, operator, function (err, event) {
+    if (err) {
+      return res.send(500, err);
+    }
+    //TODO: If current user have no acess to this post then return 403
+    //  (eg. if post is from private event page and user is not a member of it)
+    if (!event) {
+      return res.send(404, { message: "event with eventId not exist or post is already scored by current user" });
+    }
+    res.send(event);
+  });
+  
+}
+
 /* list function */
 function list(req, res) {
   
@@ -89,23 +136,21 @@ function list(req, res) {
           }
           
           // if weekly, get the weekday, and get next week day, add to that day based on time
-          if (eventsFromDB[key].schedule.repeat == "weekly")
+          else if (eventsFromDB[key].schedule.repeat == "weekly")
           {
             // calc weekday of key..
-            var tempDay = eventsFromDB[key].schedule.appDateTime.getDay();
-            var todayDay = todayDate.getDay();
+            while (todayDate > eventsFromDB[key].schedule.appDateTime)
+            {
+                eventsFromDB[key].schedule.appDateTime.setDate(eventsFromDB[key].schedule.appDateTime.getDate() + 7);
+            }
             
-            // calc next weekday of this key...
-            if (tempDay < todayDay) tempDay = tempDay + 7;
-            var addedDay = tempDay - todayDay;
+            console.log(eventsFromDB[key].schedule.appDateTime);
             
-            // change date of the key
-            eventsFromDB[key].schedule.appDateTime.setDate(todayDate.getDate() + addedDay); 
             returnEvents.push(eventsFromDB[key]);
           }
           
           // if monthly, get days, and get next day, add to that day
-          if (eventsFromDB[key].schedule.repeat == "monthly")
+          else if (eventsFromDB[key].schedule.repeat == "monthly")
           {
             var originDate = eventsFromDB[key].schedule.appDateTime.getDate();
             
@@ -205,7 +250,8 @@ function create(req, res){
       },
       sports: req.body.sports,
       eventType: req.body.types,
-      members: [req.user.id]
+      members: [req.user.id],
+      score: 0,
     });
     if (place) {
       eventInstance.place.placeId = place.id;
@@ -239,3 +285,4 @@ exports.list = list;
 exports.create = create;
 exports.get = get;
 exports.addEventComment = addEventComment;
+exports.addScore = addScore;

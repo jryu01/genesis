@@ -26,6 +26,7 @@ module.exports = function (app) {
   app.get('/api/events', auth.requiresSignin, eventCtrl.list);
   app.get('/api/events/:id', auth.requiresSignin, eventCtrl.get);
   app.post('/api/events', auth.requiresSignin, eventCtrl.create);
+  app.post('/api/events/:id/score', auth.requiresSignin, eventCtrl.addScore);
 
   app.get('/api/places', auth.requiresSignin, placeCtrl.list);
   app.get('/api/places/:id', auth.requiresSignin, placeCtrl.get);

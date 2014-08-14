@@ -20,8 +20,11 @@
           <img class="pull-left img-rounded event_imgIcon" alt="{{event.sports}}" ng-src="../../images/sportsIcon/{{event.sports}}.png">  
           <h4 class="event_title"><span class="badge"> {{ event.sports }} </span> {{event.name}}</h4> 
           <h4 class="event_title">{{event.schedule.appDateTime | date:'EEEE hh:mma, MMMM d yyyy'}}</h4>       
-
+    
           <div class="clearfix"></div>
+          
+          <h1 class="event_score">{{event.score}}</h1>
+          
         </div>
         
         <div style="margin-top: 14px;">

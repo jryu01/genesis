@@ -12,10 +12,13 @@
       </a>
     </div>
     
-    <div ng-repeat="event in casualGroup" ui-sref="app.user.event({id: event.id})">
+    <div ng-repeat="event in casualGroup">
       <a ng-href="#" class="list-group-item list-group-item-success">
-        <div class="panel-footer">
-          <img class="pull-left img-rounded event_imgIcon" alt="{{event.sports}}" ng-src="../../images/sportsIcon/{{event.sports}}.png">  
+          <h1 class="event_score">{{ event.score }}</h1>
+          <i class="fa fa-plus fa-4x" ng-show="event.scorers.indexOf(currentUser.id) < 0" style="color:grey" ng-click="addScore(event.id, '1')"></i> 
+          <i class="fa fa-plus fa-4x" ng-show="event.scorers.indexOf(currentUser.id) >= 0" style="color:orange" ng-click="addScore(event.id, '-1')"></i>     
+        <div class="panel-footer"  ui-sref="app.user.event({id: event.id})">
+          <img class="img-rounded event_imgIcon" alt="{{event.sports}}" ng-src="../../images/sportsIcon/{{event.sports}}.png" ng-click="addScore(event.id, '-1')">  
           <h4 class="event_title"><span class="badge"> {{ event.sports }} </span> {{event.name}}</h4> 
           at <b>{{event.place.name}} </b> on <b>{{event.schedule.appDateTime | date:'EEEE hh:mma, MMMM d yyyy Z'}}</b>.       
           <div class="clearfix"></div>  
