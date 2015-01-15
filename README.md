@@ -1,7 +1,7 @@
 Genesis Project
 =======================
 
-This is our genesis project
+This is our genesis project built using node.js and angularjs
 
 Installation
 
