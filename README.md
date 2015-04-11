@@ -1,7 +1,7 @@
 Genesis Project
 =======================
 
-This is our genesis project built using node.js and angularjs
+html5 mobile web featuring live feed, location search, and event list built with node.js and angularjs.
 
 Installation
 
