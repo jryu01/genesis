@@ -1,4 +1,4 @@
-Genesis Project
+Passon
 =======================
 
 html5 mobile web featuring live feed, location search, and event list built with node.js and angularjs.
